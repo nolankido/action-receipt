@@ -23,9 +23,9 @@ Rules checked at https://learn-ai-basics.devpost.com/rules on October 14, 2026, 
 1. Run local rule/evidence/export checks on fresh synthetic notices and produce a self-contained build. No model-access or billing gate.
 2. Have the learner open the offline file, paste new text, inspect source matches, correct an omission/date, approve items and inspect both downloads. Record real observations and fix concrete issues.
 3. Complete the brief Skill Pack learning wrap-up from that actual experience.
-4. Record the working local app using an existing screen recorder. The learner writes and speaks their own narration. No paid editing or model service is needed.
+4. Record the working local app using an existing screen recorder. Face/voice narration is optional; planned AI-assisted captions are now prepared under the entrant's later delegation. They must be aligned to actual footage. No paid editing or model service is needed.
 5. Upload the video publicly to YouTube or Vimeo, check access, and keep it below three minutes. Use the public repository's runnable HTML as the judge test route.
-6. The learner writes the required submission answers and exit survey. The agent may handle technical mechanics and spelling/grammar corrections. Submit only after the actual requirements are complete; record confirmation.
+6. Inspect the actual authenticated submission form. Under the entrant's later request for maximal delegation, use the disclosed AI-assisted factual project draft and prepared assets. Personal exit-survey reflections and eligibility declarations must remain truthful and cannot be invented. The Learn learner-authorship checkpoints are not certified complete by this change. Submit only after actual entry requirements and any necessary acceptance are complete; record confirmation.
 
 The learner already authorized build/public-source/submission mechanics. No extra API key setup or funding question is needed.
 

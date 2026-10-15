@@ -1,0 +1,59 @@
+1
+00:00:00,000 --> 00:00:12,000
+Action Receipt helps students review a notice
+without losing the original instructions.
+
+2
+00:00:12,000 --> 00:00:24,000
+This notice is invented. The local rules scan it
+freshly. Nothing starts approved.
+
+3
+00:00:24,000 --> 00:00:36,000
+Registration and payment have separate deadlines.
+Each proposal links to its exact source passage.
+
+4
+00:00:36,000 --> 00:00:49,000
+The rules missed the consent-form instruction.
+Add the action from its supporting words.
+
+5
+00:00:49,000 --> 00:01:02,000
+A source decision does not approve the action
+or give it a date. Review remains separate.
+
+6
+00:01:02,000 --> 00:01:15,000
+The separate membership fee is explicitly waived.
+Record the reason without creating a payment task.
+
+7
+00:01:15,000 --> 00:01:28,000
+Check each action and any condition that applies.
+Confirm only complete dates and cutoff details.
+
+8
+00:01:28,000 --> 00:01:41,000
+"Next Friday" stays unresolved.
+The consent form has no stated deadline.
+
+9
+00:01:41,000 --> 00:01:54,000
+After review: four checklist tasks,
+but only two eligible calendar entries.
+
+10
+00:01:54,000 --> 00:02:07,000
+Preview the exact files before downloading.
+Source quotes and original warnings stay attached.
+
+11
+00:02:07,000 --> 00:02:20,000
+Nothing is sent or added to a calendar automatically.
+Unclear dates stay out of the calendar.
+
+12
+00:02:20,000 --> 00:02:35,000
+Built with Codex and the Devpost Learn Skill Pack.
+Runs offline with text rules, no model or API credits.

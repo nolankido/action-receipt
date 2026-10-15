@@ -1,12 +1,12 @@
 # Real screen-recording checklist
 
-Technical shot plan only. Not a narration script or entrant submission answer. Target **2:35**, leaving 25 seconds below the three-minute ceiling. Actual recording and timing are not yet complete.
+Technical shot plan. Target **2:35**, leaving 25 seconds below the three-minute ceiling. Actual recording and timing are not yet complete. The entrant later delegated factual drafting; planned AI-assisted captions are in `../submission/planned-captions.srt`. Align them to actual footage. A silent captioned demonstration can avoid a face or voice recording.
 
 ## Before recording
 
 - Download the latest public `release/action-receipt.html` and open it in a current desktop browser. Rehearse the controls yourself. Close personal tabs/notifications, enlarge text as needed and check that the cursor and source quotes are readable at the final video size.
 - Use the invented initial notice, not personal student information. The original fixture is in `lib/demo-scenario.ts`. All its dates are future synthetic dates, not real deadlines.
-- Prepare your own short explanation of who this is for, what the notice makes difficult and why you chose this workflow. Use your actual learning experience for any process discussion. Do not read AI-authored entry copy.
+- Use the disclosed factual project material for the audience, problem and workflow explanation. Personal learning statements must reflect an actual experience. No personal reflection is supplied by the planned captions.
 - Start a fresh session. The initial scan should show three proposals, two flags, zero approved tasks and zero calendar entries. **Restart short practice** resets the scenario and keeps one temporary recovery copy; a page reload starts clean.
 - The default scan is real local-rule processing. To visibly demonstrate scanning again, click **Scan again (clears review)** before reviewing. Do not edit or preapprove the source off-camera while implying an untouched result.
 
@@ -37,7 +37,7 @@ If the actions take longer, shorten commentary or remove secondary shots. Keep t
 
 - Watch the complete recording at its intended viewing size. Verify sound, readable content, honest claims and duration below three minutes.
 - Upload publicly to YouTube or Vimeo. Check the exact video URL while signed out. Include footage of the real app on its intended device. Avoid unlicensed third-party media.
-- Add the genuine URL and learner-authored answers to the current entry form. Complete the actual learner final review and learning wrap-up first, as required by the installed Learn workflow.
+- Add the genuine URL and accurately attributed project answers to the current entry form. Actual learner final review and learning wrap-up remain unfinished in the installed Learn workflow; a delegated factual draft does not complete them.
 - Optional impact evidence: use the separate student trial kit, record real observations and mention only findings you actually observed. The trial is not an official entry requirement.
 
 No video, public URL, participant result or submission confirmation exists in this checklist.

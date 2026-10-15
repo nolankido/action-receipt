@@ -12,6 +12,14 @@ On launch, the actual local rules scan a short, explicitly invented notice. Revi
 
 The optional hosted review site is https://action-receipt.huzzahoptimistically.chatgpt.site. It retains the owner's existing private audience. The downloadable app in this public repository is the judge-access route and does not depend on that site.
 
+## Prepared entry pack
+
+[Download the submission-preparation ZIP](https://github.com/nolankido/action-receipt/blob/main/release/action-receipt-submission.zip), extract it, and open `START-HERE.html`. It includes the runnable offline app, judge instructions, generated planning documents, original 3:2 gallery cover, project facts, AI-assisted factual draft and planned silent-demo captions. The [asset guide](devpost/submission/README.md) records authorship and remaining account work. This is a preparation pack, not a submitted entry or completed video.
+
+The entrant explicitly delegated drafting after the Learn pack's learner-authorship guidance was explained. Draft text discloses AI assistance and includes no invented personal learning, participant results or eligibility answers. Personal survey/declaration fields remain blank. The available Devpost browser is signed out, so the authenticated form has not been inspected. Actual app footage and a public YouTube/Vimeo video are still needed; planned captions do not satisfy that requirement. No face or voice is required by the published rules.
+
+To reproduce the archive after the normal build and `npm run rehearse:demo`, run `python scripts/package-submission.py`. It uses the standard library, checks current rehearsal hashes, validates caption timing and cover dimensions, packages an explicit allowlist, and verifies every archive member. The cover PNG was rendered from its editable SVG with an already-installed renderer. No image API or paid editor was used.
+
 ## What the local rules do
 
 - Recognize a bounded set of English action words such as register, pay, submit, upload, bring and email.
@@ -90,7 +98,7 @@ The official Skill Pack was installed and used in Codex. See `devpost/workflow.m
 npx skills add challengepost/learn-ai-basics --all -y
 ```
 
-The current rules require a working project built with the Skill Pack; no runtime model API requirement is stated. This is our reading of https://learn-ai-basics.devpost.com/rules, not an organizer eligibility ruling. See the [four-criterion readiness audit](devpost/competitive-readiness.md) and [recording checklist](devpost/demo/recording-guide.md). Public demonstration video and entrant-written answers are still missing. Actual learner review, learning wrap-up and the exit survey remain unfinished in the Learn workflow. No completed submission is claimed.
+The current rules require a working project built with the Skill Pack; no runtime model API requirement is stated. This is our reading of https://learn-ai-basics.devpost.com/rules, not an organizer eligibility ruling. See the [four-criterion readiness audit](devpost/competitive-readiness.md) and [recording checklist](devpost/demo/recording-guide.md). AI-assisted factual entry material is prepared under the entrant's delegation, but the public demonstration video, authenticated form and personal answers remain incomplete. Actual learner review, learning wrap-up and the exit survey remain unfinished in the Learn workflow. No completed submission is claimed.
 
 ## License
 

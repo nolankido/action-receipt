@@ -14,7 +14,7 @@ The [official rules](https://learn-ai-basics.devpost.com/rules) control this ass
 | Actual Learn Skill Pack use and generated scope, PRD and spec in the repository | `devpost/skill-pack-evidence.json`, `workflow.md`, `scope.md`, `prd.md`, `spec.md`. Agent: Codex. |
 | Public source, open-source license and runnable instructions | Public GitHub repository, MIT license, committed offline HTML, [judge guide](judge-guide.md). |
 | Public YouTube/Vimeo demonstration below three minutes | Missing. [Recording checklist](demo/recording-guide.md) prepared; no recording claimed. |
-| English description and required entry fields | Entrant-authored material pending. |
+| English description and required entry fields | AI-assisted factual draft and structured links prepared under later delegation in `submission/`; authenticated form and personal answers still pending. |
 | Free judge access through judging | Public offline file is the intended route. Preserve repository access through October 30. Owner-private hosted review is not the judge route. |
 | Entrant eligibility and truthful declarations | Entrant must check personal eligibility and current form. Not certified by this audit. |
 
@@ -55,7 +55,7 @@ Artifacts in `devpost/demo/` are conspicuously labeled automated synthetic fixtu
 
 1. Entrant opens the latest offline file, completes the short review and checks actual downloaded files. Record any confusing step or failure. Complete the actual Learn final review and learning wrap-up; do not substitute agent checks.
 2. Recommended: run a small formative trial using `usability/facilitator-guide.md` and the blank observation template. Three to five willing adult students is a practical starting point, not a representative study or a contest gate. Use different notices from the demo. Fix observed blockers before recording.
-3. Record the working app using `demo/recording-guide.md`, with the entrant's own explanation. Confirm the final length and public link while signed out. The 2:35 schedule is a target, not a measured recording.
-4. Entrant writes the project answers and survey in their own words, verifies the current form and eligibility declarations, and submits before the deadline. Record the real confirmation URL.
+3. Record the working app using `demo/recording-guide.md`. AI-assisted planned captions are prepared under the entrant's later delegation; align them to real footage. Face/voice narration is optional. Confirm final length and the public link while signed out. The 2:35 schedule is a target, not a measured recording.
+4. Inspect the authenticated form, disclose AI assistance in the prepared factual draft, obtain truthful personal survey/eligibility answers, and handle required acceptance before submission. Record the real confirmation URL.
 
-The installed Learn `6-ship` workflow requires entrant authorship of submission copy. No entry, participant findings, learner reflection or completed video has been fabricated. Formal shipping remains unfinished until the actual learner checkpoints are completed.
+The installed Learn `6-ship` workflow requires entrant authorship of submission copy. After this limitation was explained, the entrant requested maximal delegation. AI-assisted factual copy is now prepared under that later instruction and disclosed as such; the skill's learner-authorship and experiential checkpoints are not certified complete. No entry, participant findings, learner reflection or completed video has been fabricated. The organizer determines eligibility.
