@@ -20,6 +20,8 @@ import RecoveryBanner from "./recovery-banner.tsx";
 import { recoverWorkspace, type RecoveryCopy, type ReplacementKind, type WorkspaceSnapshot } from "../lib/workspace-recovery.ts";
 import { checkpointReview, reviewContentStamp, reviewSessionState } from "../lib/review-session.ts";
 import ReviewSaveStatus from "./review-save-status.tsx";
+import ActionViewControls from "./action-view-controls.tsx";
+import { chooseActionView, planActionView, revealActionView, type ActionView, type ActionViewFilter } from "../lib/action-view.ts";
 
 function saveFile(text: string, type: string, name: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -71,7 +73,7 @@ function ManualActionForm({ source, disabled, selected, onAdd }: { source: strin
   </div>;
 }
 
-function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0, focusField = "title" }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void; focusSignal?: number; focusField?: "title" | "date" }) {
+function ActionCard({ action, index, onChange, onEvidence, hidden = false, focusSignal = 0, focusField = "title" }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void; hidden?: boolean; focusSignal?: number; focusField?: "title" | "date" }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!focusSignal) return;
@@ -86,7 +88,7 @@ function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0, focu
   const change = (patch: Parameters<typeof editAction>[1]) => onChange(editAction(action, patch));
   const prefix = action.id;
   return (
-    <article id={`action-card-${action.id}`} aria-labelledby={`${prefix}-heading`} className={`action-card ${action.approved ? "is-approved" : ""} ${action.omitted ? "is-omitted" : ""}`}>
+    <article id={`action-card-${action.id}`} hidden={hidden} aria-labelledby={`${prefix}-heading`} className={`action-card ${action.approved ? "is-approved" : ""} ${action.omitted ? "is-omitted" : ""}`}>
       <div className="action-top"><span className="action-number">{String(index + 1).padStart(2, "0")}</span><span className="action-origin">{action.origin === "user" ? "Added by you" : action.origin === "imported" ? "Imported · check again" : action.origin === "rules" ? "Local proposal" : "Saved example"}</span><span className={`badge ${action.omitted ? "neutral" : action.approved ? "green" : !action.evidenceValid ? "red" : "neutral"}`}>
         {action.omitted ? "Omitted" : action.approved ? <><Check size={12} /> Approved</> : !action.evidenceValid ? "Check evidence" : "To review"}
       </span><button className="icon-button omit-button" aria-label={action.omitted ? `Restore ${action.title}` : `Omit ${action.title}`} onClick={() => change({ omitted: !action.omitted })}>{action.omitted ? <RotateCcw size={15} /> : <X size={15} />}</button></div>
@@ -127,6 +129,7 @@ export default function ReceiptWorkspace() {
   const [source, setSource] = useState(demoScenario.source);
   const [title, setTitle] = useState(demoScenario.title);
   const [actions, setActions] = useState<ReviewedAction[]>(initial.actions);
+  const [actionView, setActionView] = useState<ActionView>(() => chooseActionView([], "all"));
   const [notes, setNotes] = useState(initial.notes);
   const [attention, setAttention] = useState<SourceReviewItem[]>(initial.attention);
   const [mode, setMode] = useState<"sample" | "local" | "manual" | null>("local");
@@ -174,6 +177,7 @@ export default function ReceiptWorkspace() {
   const approved = exportPlan.checklist;
   const calendar = exportPlan.calendar;
   const active = actions.filter(a => !a.omitted);
+  const actionViewPlan = planActionView(actions, actionView);
   const calendarDraftsFit = actions.every(a => a.time.length <= MAX_CALENDAR_DRAFT_LENGTH && a.utcOffset.length <= MAX_CALENDAR_DRAFT_LENGTH);
   const questionCount = clarificationCandidates(source, actions, attention).length;
   const meta = (): ReceiptMeta => ({ mode: mode ?? "manual", title, createdAt: createdAt.current, receiptId: receiptId.current, notes, attention, restored: restoredReview });
@@ -185,6 +189,7 @@ export default function ReceiptWorkspace() {
     if (replacement) rememberWorkspace(replacement.kind, replacement.label);
     // Comparison data must not retain a different notice after replacement.
     setSaveBaseline(""); setDownloadRequested(false);
+    setActionView(chooseActionView([], "all"));
     workspaceVersion.current++; requestId.current++; currentSource.current = newSource; setSource(newSource); setActions([]); setNotes([]); setAttention([]); setSelected(null); setMode(null); setSampleId(null); setError(""); setBusy(false); setRestoredReview(false); setFileError(""); setFileMessage("");
     receiptId.current = crypto.randomUUID(); createdAt.current = new Date();
     setFocusedAction({ id: "", signal: 0, field: "title" }); setFocusedFlag({ id: "", signal: 0 }); setPreviewOpen(false); setQuestionsOpen(false);
@@ -203,6 +208,7 @@ export default function ReceiptWorkspace() {
     if (!inputState.ready) { setError(inputState.message); return; }
     rememberWorkspace("scan", "Before the last scan");
     const submitted = source; const thisRequest = ++requestId.current;
+    setActionView(chooseActionView([], "all"));
     workspaceVersion.current++; setRestoredReview(false); setFileError(""); setFileMessage("");
     setBusy(true); setError(""); setActions([]); setNotes([]); setAttention([]); setSelected(null); setMode(null); setSampleId(null);
     try {
@@ -238,9 +244,12 @@ export default function ReceiptWorkspace() {
     const action = manualAction(source, title, quote, condition, nextManualNumber(actions));
     workspaceVersion.current++;
     if (!mode) { setMode("manual"); receiptId.current = crypto.randomUUID(); createdAt.current = new Date(); }
-    setActions(old => [...old, action]); setAnnouncement("Added your action with its source passage. Review and approve it before exporting.");
+    setActions(old => [...old, action]); reviewLinkedAction(action.id); setAnnouncement("Added your action with its source passage. Review and approve it before exporting.");
   }
-  function reviewLinkedAction(id: string, field: "title" | "date" = "title") { setFocusedAction(old => ({ id, signal: old.signal + 1, field })); }
+  function reviewLinkedAction(id: string, field: "title" | "date" = "title") { setActionView(view => revealActionView(view, id)); setFocusedAction(old => ({ id, signal: old.signal + 1, field })); }
+  function selectActionView(filter: ActionViewFilter) {
+    setActionView(chooseActionView(actions, filter));
+  }
   function goToReview(target: ReviewTarget) {
     if (busy || openingReview) return;
     if (target.kind === "flag") setFocusedFlag(old => ({ id: target.id, signal: old.signal + 1 }));
@@ -348,7 +357,15 @@ export default function ReceiptWorkspace() {
             <section className="actions-panel" aria-labelledby="actions-heading"><div className="panel-heading"><div><ReceiptText size={17} /><h2 id="actions-heading" tabIndex={-1}>Your action receipt</h2><span className="count-badge">{active.length}</span></div><span className="panel-caption">YOUR DECISIONS</span></div>
               <ReviewGuide actions={actions} items={attention} hasResults={mode !== null} canScan={inputState.ready} inputStatus={inputState.kind} disabled={busy || openingReview} onGo={goToReview} onScan={() => void analyze()} onPaste={() => { setEditing(true); setTimeout(() => noticeInput.current?.focus(), 0); }} onDate={id => reviewLinkedAction(id, "date")} questionCount={questionCount} onQuestions={openQuestions} />
               {attention.length > 0 && <SourceReviewQueue key={requestId.current} items={attention} actions={actions} focusedFlag={focusedFlag} disabled={busy || openingReview} onEvidence={highlight} onAction={reviewLinkedAction} onRecord={recordFlag} onCreate={createFromFlag} />}
-              <div className="actions-list">{actions.length > 0 && <div className="action-list-label"><h3>Check each action</h3><span>{approved.length} of {active.length} active actions approved</span></div>}{busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} focusSignal={focusedAction.id === a.id ? focusedAction.signal : 0} focusField={focusedAction.id === a.id ? focusedAction.field : "title"} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={highlight} />) : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "local" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "local" ? "Check the original notice yourself. The text rules may have missed something. Add actions from exact source passages." : "Scan a notice locally, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}</div>
+              <div className="actions-list">
+                {actions.length > 0 && <ActionViewControls view={actionView} plan={actionViewPlan} disabled={busy || openingReview} onChoose={selectActionView} />}
+                <div id="action-list-items" className="action-list-items">
+                  {busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? <>
+                    {actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} hidden={!actionViewPlan.visibleIds.has(a.id)} focusSignal={focusedAction.id === a.id ? focusedAction.signal : 0} focusField={focusedAction.id === a.id ? focusedAction.field : "title"} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={highlight} />)}
+                    {actionViewPlan.visibleCount === 0 && <div className="empty-actions empty-action-view"><span className="empty-icon"><ReceiptText size={28} /></span><h3>{actionView.filter === "approved" ? "No approved actions yet." : actionView.filter === "omitted" ? "No omitted actions." : "No actions waiting in this view."}</h3><p>{actionView.filter === "approved" ? "Check each action against its source before approving. A calendar date is optional." : actionView.filter === "omitted" ? "Actions you omit individually will be available here to inspect or restore." : "Flagged passages and optional calendar details may still need attention."}</p><button className="text-button" onClick={() => selectActionView("all")}>Show all actions <ArrowRight size={14} /></button></div>}
+                  </> : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "local" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "local" ? "Check the original notice yourself. The text rules may have missed something. Add actions from exact source passages." : "Scan a notice locally, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}
+                </div>
+              </div>
               {notes.length > 0 && <details className="notice-notes"><summary><Info size={14} /> Notice-level notes <ChevronDown size={13} /></summary><ul>{notes.map((note, i) => <li key={i}>{note}</li>)}</ul></details>}
               {inputState.ready && <ManualActionForm key={requestId.current} source={source} disabled={busy || openingReview || actions.length >= 20} selected={selected} onAdd={addManual} />}
               <div className="export-area"><div className="export-title"><span className="export-icon"><ShieldCheck size={18} /></span><div><h3>Your approval controls the tasks.</h3><p>Files also include source quotes, decision notes and flagged passages.</p></div></div><button className="preview-button" disabled={busy || openingReview || !actions.length} onClick={() => setPreviewOpen(true)}><Eye size={16} /> Preview downloads & see what is missing <ArrowUpRight size={14} /></button><button className="preview-button question-open" disabled={busy || openingReview || !questionCount} onClick={openQuestions}><MessageCircleQuestion size={16} /> Prepare clarification questions <span>{questionCount}</span></button><div className="export-buttons"><button disabled={!approved.length} onClick={exportChecklist}><Download size={15} /> Checklist <span>{approved.length}</span></button><button disabled={!calendar.length} onClick={exportCalendar}><CalendarDays size={15} /> Calendar <span>{calendar.length}</span></button></div><p className="export-hint">{approved.length > calendar.length ? `${approved.length - calendar.length} approved item${approved.length - calendar.length === 1 ? " stays" : "s stay"} in the checklist only. Confirm complete dates in Review details to include them in the calendar.` : "Downloads a Markdown checklist or .ics file. Nothing is added to your calendar automatically."}</p></div>

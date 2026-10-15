@@ -214,6 +214,22 @@ input[type=checkbox]:disabled { cursor: not-allowed; }
 .action-list-label { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 5px 16px; padding-block: 2px; }
 .action-list-label h3 { font-size: 12px; font-weight: 650; color: #4b6143; }
 .action-list-label > span { color: var(--muted); font-size: 11px; }
+.action-list-items { display: flex; flex-direction: column; gap: 16px; }
+.action-view-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.action-view-filters button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 40px; padding: 8px 10px; border: 1px solid #c8d7bc; border-radius: 7px; background: white; color: #47633c; font-size: 12px; font-weight: 600; line-height: 1.6; }
+.action-view-filters button > span { min-width: 19px; padding: 1px 4px; border-radius: 4px; background: #eef4e6; font-size: 11px; font-variant-numeric: tabular-nums; }
+.action-view-filters button:hover:not(:disabled) { border-color: #8ba775; background: #f1f6e9; }
+.action-view-filters button[aria-pressed=true] { border-color: var(--green); background: var(--green); color: white; }
+.action-view-filters button[aria-pressed=true] > span { background: #ffffff22; }
+.action-view-filters button[aria-pressed=true]:hover:not(:disabled) { border-color: var(--green-dark); background: var(--green-dark); color: white; }
+.action-view-boundary { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.action-view-refresh { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 11px; margin-top: 10px; border: 1px solid #d7e2cb; border-radius: 7px; background: #f3f7ed; }
+.action-view-refresh p { color: #536b45; font-size: 12px; line-height: 1.8; }
+.action-view-refresh .text-button { flex-shrink: 0; font-size: 12px; }
+.action-view-refresh.has-updates { border-color: #e0cda0; background: #fcf7e9; }
+.action-view-refresh.has-updates p { color: #775b26; }
+.empty-action-view .text-button { margin-top: 13px; justify-content: center; }
+.action-card[hidden] { display: none; }
 .action-card { --card-pad: 21px; padding: 15px var(--card-pad) 0; border: 1px solid #d6dfce; border-radius: var(--radius); background: white; box-shadow: 0 2px 4px #223c2410; scroll-margin-top: 24px; }
 .action-card.is-approved { border-color: #8daa7a; box-shadow: 0 0 0 1px #8daa7a12; }
 .action-card.is-omitted { border-style: dashed; background: #f4f5ef; box-shadow: none; }
@@ -576,6 +592,11 @@ footer button, .offline-download { display: inline-flex; align-items: center; ga
   .queue-form-buttons { align-items: stretch; flex-direction: column; }
   .queue-form-buttons > button { justify-content: center; }
   .actions-list { padding: 0 16px 19px; gap: 14px; }
+  .action-list-items { gap: 14px; }
+  .action-view-filters button { min-height: 44px; font-size: 12px; }
+  .action-view-boundary { font-size: 12px; }
+  .action-view-refresh { align-items: flex-start; flex-direction: column; gap: 3px; }
+  .action-view-refresh p, .action-view-refresh .text-button { font-size: 12px; }
   .action-card { --card-pad: 16px; padding-top: 12px; }
   .action-card h3 { font-size: 17px; }
   .action-top { gap: 6px; }
@@ -641,6 +662,7 @@ footer button, .offline-download { display: inline-flex; align-items: center; ga
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
 @media print {
+  .action-view-controls { display: none; }
   body { background: white; }
   .app-shell { max-width: none; padding: 0; }
   .intro, .practice-intro, .sample-section, .workspace-steps, .review-save-status, .guide-buttons, .export-area, .source-tabs, .analyze-area, .action-tools, .omit-button, .manual-action-area, .recovery-buttons, .offline-download, .method-button, footer button { display: none; }

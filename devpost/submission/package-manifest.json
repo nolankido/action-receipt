@@ -1,15 +1,15 @@
 {
   "format_version": 1,
   "purpose": "Submission preparation, not a completed entry",
-  "application_version": "0.16.0",
-  "application_sha256": "95a226737774991a55d4aa209ff8726768a6dd4bc563bf6e84d2027c629a7807",
+  "application_version": "0.17.0",
+  "application_sha256": "473dcb2621de934c2442b60ebdc9a70c6f4a08b29d0e95458da5553f79ac57d8",
   "caption_duration_seconds": 155,
   "caption_status": "Planned text only; no footage recorded",
   "entry_submitted": false,
   "video_recorded": false,
   "files_sha256": {
     "LICENSE": "04d277b1cd52093fd10dcf701192bb4655c6bdcd9d3c3bf1c3f1df57bc45b489",
-    "README.md": "1dadf50a41b818eca8c4087f41947970165dc44fd0cc0bd4f39fce594baf12e7",
+    "README.md": "7d2c06ffe7993b10dd114e6b263c5d3b4cf7aeb5a5196b21e2e044c45a981082",
     "START-HERE.html": "6c8c8c6222e8c0c91aa9877c3e7699dacb61a61c18e61dbf8d072bbe213c7a67",
     "THIRD_PARTY_NOTICES.md": "4f2a0d62a0271b1328da13690992420c445ba33340090d7e5466440565b4c458",
     "devpost/checklist.md": "a94f99bc258d381748768fa1737e4893c7f9726cefd3d4f1c43f582c70ea449d",
@@ -17,7 +17,7 @@
     "devpost/demo/automated-calendar.ics": "e67b393297eedf738ea8dfcd83c567ca6418d6003189ad49ae7fe554910c805b",
     "devpost/demo/automated-checklist.md": "d8936ea08ccf07ea84a5215a0b4603b2da48235dfece34c695eb00a8c988729b",
     "devpost/demo/recording-guide.md": "8a961b317c6b6780e02170bbc5175d36d2fe73afbc96930bed178c519d1353c8",
-    "devpost/demo/rehearsal.json": "4a701b86fd1e241472a0773a31464b2e71e352fcbce755a341d8debc1a99687f",
+    "devpost/demo/rehearsal.json": "20d553134d4a22fa75d69a3921cb4ba76bcf929e7117dc073f33e12fcd15387b",
     "devpost/demo/technical-video-domain-data.json": "db5b356d1d21437fbf6d62f0238ec7f43ed503b3da7305511b964db554fbcfcc",
     "devpost/judge-guide.md": "c9324a34b8c20d607327c6006a2feca987aa06a540cfe623167bda5b106bf33a",
     "devpost/local-smoke.json": "a7568e18956ce4dfbe1005134bf31099fb9aba21a0abf88d9bfc9298534240a7",
@@ -40,6 +40,6 @@
     "devpost/usability/participant-notices.md": "3810c13f7fe3210f1623f85ed882e0925167b6e072780ed6d081fdef2af7a187",
     "devpost/workflow.md": "f1af66c22e187d5dd3de61263684862ae72ed1c1ce7cce3d45c57f2e1921f80b",
     "devpost/zero-cost-plan.md": "b17d14e1baed3bd1bd8ba0751fd05e83859b7852c510f103c4b847912578ff60",
-    "release/action-receipt.html": "95a226737774991a55d4aa209ff8726768a6dd4bc563bf6e84d2027c629a7807"
+    "release/action-receipt.html": "473dcb2621de934c2442b60ebdc9a70c6f4a08b29d0e95458da5553f79ac57d8"
   }
 }
