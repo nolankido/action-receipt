@@ -6,7 +6,7 @@ import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCheck, ChevronDown,
 import { reviewScenario, samples } from "../lib/samples.ts";
 import { demoScenario } from "../lib/demo-scenario.ts";
 import { extractLocally } from "../lib/local-extraction.ts";
-import { MAX_CALENDAR_DRAFT_LENGTH, calendarEligible, canApprove, canConfirmDate, dateConfirmationIssues, displayDate, editAction, manualAction, nextManualNumber, noticeInputState, resultIsCurrent, validateExtraction, validDate, validOffset, validTime, type Evidence, type ReviewedAction, type SourceReviewItem } from "../lib/receipt.ts";
+import { MAX_CALENDAR_DRAFT_LENGTH, calendarEligible, canApprove, canConfirmDate, displayDate, editAction, manualAction, nextManualNumber, noticeInputState, resultIsCurrent, validateExtraction, validOffset, validTime, type Evidence, type ReviewedAction, type SourceReviewItem } from "../lib/receipt.ts";
 import { calendarText, checklistText, planExports, type ReceiptMeta } from "../lib/export.ts";
 import { MAX_REVIEW_BYTES, openReviewFile as parseReviewFile, saveReviewFile } from "../lib/review-file.ts";
 import ExportPreview from "./export-preview.tsx";
@@ -26,6 +26,7 @@ import SourceInspectionBar from "./source-inspection-bar.tsx";
 import { planSourceReturn, type SourceOrigin } from "../lib/source-inspection.ts";
 import ReviewFileFeedback from "./review-file-feedback.tsx";
 import type { ReviewFileFeedback as FileFeedback } from "../lib/review-file-feedback.ts";
+import CalendarReview from "./calendar-review.tsx";
 
 function saveFile(text: string, type: string, name: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -79,16 +80,16 @@ function ManualActionForm({ source, disabled, selected, onAdd }: { source: strin
 
 function ActionCard({ action, index, onChange, onEvidence, hidden = false, focusSignal = 0, focusField = "title" }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence, trigger: HTMLElement) => void; hidden?: boolean; focusSignal?: number; focusField?: "title" | "date" }) {
   const [open, setOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
   useEffect(() => {
     if (!focusSignal) return;
     setOpen(true);
+    if (focusField === "date") setCalendarOpen(true);
     const timer = setTimeout(() => { const field = document.getElementById(`${action.id}-${focusField}`); field?.scrollIntoView({ block: "center", behavior: "instant" }); field?.focus({ preventScroll: true }); }, 0);
     return () => clearTimeout(timer);
   }, [focusSignal, action.id, focusField]);
   const eligible = action.dateConfirmed && canConfirmDate(action);
   const needsClarification = !canConfirmDate(action);
-  const dateIssues = dateConfirmationIssues(action);
-  const oversizedDraft = action.time.length > MAX_CALENDAR_DRAFT_LENGTH || action.utcOffset.length > MAX_CALENDAR_DRAFT_LENGTH;
   const change = (patch: Parameters<typeof editAction>[1]) => onChange(editAction(action, patch));
   const prefix = action.id;
   return (
@@ -110,13 +111,7 @@ function ActionCard({ action, index, onChange, onEvidence, hidden = false, focus
         <div className="original-deadline"><span className="field-label">Original deadline wording</span><p>{action.deadlineText || "Not stated in the notice"}</p></div>
         {action.dateEvidence.map((e, i) => <button className="evidence-quote" key={`date-${i}`} onClick={event => onEvidence(e, event.currentTarget)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span><ArrowUpRight size={12} /></button>)}
         {action.evidence.slice(1).map((e, i) => <button className="evidence-quote" key={`action-${i}`} onClick={event => onEvidence(e, event.currentTarget)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span></button>)}
-        <label htmlFor={`${prefix}-date`}>Calendar date <span className="optional-label">confirm after checking</span></label><input type="date" id={`${prefix}-date`} min="1000-01-01" max="9999-12-31" aria-invalid={Boolean(action.date) && !validDate(action.date)} aria-describedby={`${prefix}-calendar-help`} value={action.date} onChange={e => change({ date: e.target.value })} />
-        {!action.sourceRequiresTime && <label className="check-row timed-cutoff-toggle"><input type="checkbox" checked={action.requiresTime} onChange={e => change({ requiresTime: e.target.checked })} /><span>This action has a timed cutoff.</span></label>}
-        {action.requiresTime && <div className="time-fields"><div><label htmlFor={`${prefix}-time`}>Cutoff time</label><input type="time" id={`${prefix}-time`} step={60} aria-invalid={Boolean(action.time) && !validTime(action.time)} aria-describedby={`${prefix}-calendar-help`} value={action.time} onChange={e => change({ time: e.target.value })} /></div><div><label htmlFor={`${prefix}-offset`}>UTC offset on that date</label><input id={`${prefix}-offset`} placeholder="e.g. -10:00" aria-invalid={Boolean(action.utcOffset) && !validOffset(action.utcOffset)} aria-describedby={`${prefix}-calendar-help`} value={action.utcOffset} onChange={e => change({ utcOffset: e.target.value })} /></div></div>}
-        <p className="field-hint">{action.requiresTime ? "Confirm the cutoff and UTC offset for this specific date. Daylight saving time can change offsets." : "Calendar export creates an all-day deadline marker. No cutoff time or reminder is inferred."}</p>
-        <div id={`${prefix}-calendar-help`} className={`calendar-review-help ${dateIssues.length ? "needs-details" : ""}`}><strong>{dateIssues.length ? "Calendar is optional. These details still need checking:" : eligible ? "Date details confirmed." : "Complete details, ready for your date check."}</strong>{dateIssues.length > 0 && <ul>{dateIssues.map(issue => <li key={issue}>{issue}</li>)}</ul>}{action.requiresTime && action.time && !validTime(action.time) && <p>Time value needing review: <code>{action.time}</code></p>}<p>{action.requiresTime ? "Use HH:MM and an explicit signed UTC offset, such as -10:00 or +05:30. The full offset paste is kept; unsupported formats are not shortened." : "Keep the action undated for checklist-only use if its deadline is unknown. Never guess a date to finish."}</p>{oversizedDraft && <p className="error-message">A time or offset draft is over 64 characters. The full value is kept, but shorten it before saving a review file.</p>}</div>
-        <label className="check-row date-confirm"><input type="checkbox" aria-label={`Confirm ${action.requiresTime ? "date, time and UTC offset" : "date"} for: ${action.title || "untitled action"}`} checked={action.dateConfirmed} disabled={!canConfirmDate(action) || action.omitted} onChange={e => onChange({ ...action, dateConfirmed: e.target.checked, approved: false })} /><span>I confirmed this date{action.requiresTime ? ", time, and UTC offset" : ""}.</span></label>
-        <p className="provenance">{action.dateOrigin === "user supplied" ? "Date or time edited by you. Original wording and warnings stay in the receipt." : action.dateOrigin === "review file" ? "Date or time loaded from a review file. Check it against the source and confirm again." : "Dates are proposals until you confirm them."}</p>
+        <CalendarReview action={action} open={calendarOpen} onOpenChange={setCalendarOpen} onChange={onChange} />
         {action.issues.length > 0 && <div className="review-flags"><span className="field-label"><TriangleAlert size={13} /> Original review flags</span><ul>{action.issues.map((issue, i) => <li key={i}>{issue}</li>)}</ul>{eligible && <p>Your confirmed date resolves calendar eligibility. Original flags remain in the export.</p>}</div>}
         {action.evidence.some(e => e.starts.length > 1) && <p className="field-hint">A quotation appears multiple times. “View source” highlights every match.</p>}
       </div>}

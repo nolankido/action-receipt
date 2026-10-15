@@ -217,3 +217,30 @@ The v0.21.0 application publication completed on October 15, 2026 at 15:02 UTC. 
 Private deployment `appgdep_6ad0eafa7474819182057be58857f308` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_900052f534188191bcfd8b46450e6ff5` at the existing preview URL. Application SHA-256: `4dbce6349bcadbca234c56bdc901e2bb3107018f5ae5742979394229b902fa3c`. Portable archive SHA-256: `bbd89b9eaeca0e84d68b465dc963e133de8924046d95931ded8cc3c0b423be96`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal fingerprints and all 34 archive members.
 
 This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
+
+## Optional calendar disclosure: v0.22.0
+
+Verified starting state: public main `5ab1c4a3d9c83d0d343a29d7439aea56e989ff5e`, Sites source `d58f65229830073769298ac8ef7511cd63602a63`, shared tree `7481be717b300d7b73d06b5faf709294da34ded8`. The previous documentation follow-up succeeded privately as deployment `appgdep_6ad0eb785d5081918b76c7b1dc72a15b` for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_06eb0ba29f048191ae7eb44ce85302af`. Current main, recent commits, open PRs, repository instructions, this record and actual source were read. No AGENTS.md file, open PR, dirty checkout or observable concurrent writer was found. Existing source was synchronized through the Sites helper. Audience remains custom owner-only with no additional visitors.
+
+### Source-inspected problem and change
+
+Review details placed the entire optional calendar form in the main wording/source review flow: date, cutoff controls, offset, validation help, confirmation and provenance. That made a checklist-only review work through optional form content before reaching the remaining warnings and approval area. The existing interface already says calendar export is optional; its hierarchy now reflects that distinction.
+
+Calendar controls are grouped inside a native Optional calendar details disclosure. The summary always states whether details need checking, are ready for a date check or are confirmed. Oversized time/offset drafts have an explicit save-blocking message in the summary even when collapsed. No date is inferred or confirmed by opening the disclosure.
+
+The action's existing deadline summary, conditions, source/date quotations and original review flags remain outside the optional calendar control group. Action approval remains separate. Guided date-review links open both action details and this calendar disclosure before the existing date-field focus runs. Ordinary wording review does not force the calendar open. The disclosure state is held with the card, so existing stable action views do not replace it or serialize it into review files.
+
+The existing date/time/offset validators, field IDs, full overlong drafts, source-required cutoff protection, confirmation gates, provenance copy and edit invalidation were retained in the extracted component. Confirmation still clears action approval. Collapsing uses native details behavior rather than removing inputs from the DOM. No extraction, export or trust logic changed, and no new dependency, runtime network request or persistence was added.
+
+### Executed checks and limits
+
+- All 186 existing tests passed. No test count increase was needed for this presentation refactor.
+- TypeScript and `git diff --check` passed.
+- The supported static build, all 14 fresh synthetic scans and the source-hashed production-domain rehearsal passed. The rehearsal fingerprint includes the extracted calendar component.
+- Nine actual SSR markup states passed structural checks: initial workspace, closed/open undated controls, ready dated controls, closed confirmed controls, timed controls, invalid offset, closed oversized draft and omitted action. Checks included unique IDs, valid labels/descriptions, native summary/open state, retained input values, confirmation gates, optionality wording and initial unchecked approvals.
+- Temporary direct component-handler checks verified that toggling calls only the presentation callback, editing a date still clears approval and date confirmation, confirming a date still clears approval, and the original action object remains unchanged. These checks invoke component props, not DOM events in a browser.
+- Existing paper/forest form styling and colors were reused. The Sites skill requires skipping browser QA because the required control-browser skill remains unavailable. Native disclosure interaction, guided date focus, screen-reader behavior, viewport fit and actual appearance remain unverified. No screenshots or browser test results are claimed.
+
+The portable archive is regenerated and verified against the final source, standalone HTML and rehearsal hashes. Returned publication identities are recorded separately. Submission, video and account work remain untouched.
+
+Next useful task: with supported browser QA, verify the shorter checklist-only review, native summary keyboard behavior, guided date opening/focus, hidden-view return and oversized-draft warning. If browser access remains unavailable, review the existing interface for a reproduced issue; do not manufacture another release just to fill time.

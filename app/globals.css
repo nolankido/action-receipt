@@ -291,6 +291,18 @@ input[type=checkbox]:disabled { cursor: not-allowed; }
 .action-details > label:first-child { margin-top: 0; }
 .action-details textarea, .action-details input:not([type=checkbox]) { font-size: 14px; }
 .optional-label { font-weight: 400; color: var(--muted); margin-left: 4px; }
+.calendar-editor { margin-top: 16px; border: 1px solid #d5dfcc; border-radius: 8px; background: #fbfcf8; }
+.calendar-editor > summary { display: flex; align-items: center; gap: 9px; min-height: 58px; padding: 12px; list-style: none; cursor: pointer; color: var(--green); }
+.calendar-editor > summary::-webkit-details-marker { display: none; }
+.calendar-editor > summary > svg { flex-shrink: 0; }
+.calendar-editor > summary > span { min-width: 0; flex: 1; }
+.calendar-editor > summary strong { display: block; font-size: 13px; line-height: 1.6; }
+.calendar-editor > summary small { display: block; margin-top: 2px; color: #536b45; font-size: 12px; line-height: 1.7; }
+.calendar-editor[open] > summary { border-bottom: 1px solid #d5dfcc; }
+.calendar-editor[open] > summary > svg:last-child { transform: rotate(180deg); }
+.calendar-editor-body { padding: 0 13px 14px; }
+.calendar-editor-body > label:not(.check-row) { display: block; margin: 16px 0 7px; color: #465f3e; font-size: 12px; font-weight: 600; line-height: 1.7; }
+.calendar-optional-note { margin-top: 12px; }
 .original-deadline { margin-top: 16px; }
 .field-label { display: flex; align-items: center; gap: 6px; color: #506545; font-size: 11px; font-weight: 600; line-height: 1.7; }
 .original-deadline p { margin: 6px 0 11px; color: #506545; font-size: 13px; line-height: 1.8; }
