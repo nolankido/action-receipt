@@ -1,6 +1,6 @@
 # Real screen-recording checklist
 
-Technical shot plan. Target **2:35**, leaving 25 seconds below the three-minute ceiling. Actual recording and timing are not yet complete. The entrant later delegated factual drafting; planned AI-assisted captions are in `../submission/planned-captions.srt`. Align them to actual footage. A silent captioned demonstration can avoid a face or voice recording.
+Original technical shot plan, with a **2:35** target. The completed demonstration now measures **158.01 seconds** and uses 14 actual browser screenshots arranged into 13 edited scenes, with disclosed offline computer narration. It is not continuous screen recording. See the [completed-demo manifest](../submission/browser-demo-manifest.json) and [33 measured caption cues](../submission/browser-demo-captions.srt). The original planned AI-assisted captions remain in `../submission/planned-captions.srt` for reference. A public video link is still required.
 
 ## Before recording
 
@@ -40,4 +40,4 @@ If the actions take longer, shorten commentary or remove secondary shots. Keep t
 - Add the genuine URL and accurately attributed project answers to the current entry form. Actual learner final review and learning wrap-up remain unfinished in the installed Learn workflow; a delegated factual draft does not complete them.
 - Optional impact evidence: use the separate student trial kit, record real observations and mention only findings you actually observed. The trial is not an official entry requirement.
 
-No video, public URL, participant result or submission confirmation exists in this checklist.
+The edited actual-browser demonstration is complete locally. No public video URL, participant result or submission confirmation is claimed. Exact file previews and download requests were verified; saved download bytes and calendar import were not verified.

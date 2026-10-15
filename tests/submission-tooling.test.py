@@ -1,9 +1,12 @@
 """Isolated packaging/readiness checks, separate from application domain tests."""
 import importlib.util
+from contextlib import redirect_stdout
+import io
 import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 import zipfile
 
 spec = importlib.util.spec_from_file_location("submission_check", Path(__file__).resolve().parents[1] / "scripts/check-submission.py")
@@ -59,6 +62,27 @@ class SubmissionChecks(unittest.TestCase):
     def test_technical_video_does_not_complete_demo(self):
         entry = self.entry | {"technical_video_created": True, "technical_video_duration_seconds": 162}
         self.assertEqual(check.entry_blockers(entry), check.entry_blockers(self.entry))
+
+    def test_completed_local_browser_demo_still_requires_a_public_video_url(self):
+        entry = self.entry | {"video_recorded": True, "submission_demo_complete": True,
+                              "current_form_inspected": True}
+        blockers = check.entry_blockers(entry)
+        self.assertEqual(len(blockers), 3)
+        self.assertTrue(any("public HTTPS YouTube/Vimeo" in item for item in blockers))
+        self.assertTrue(any("Final submission" in item for item in blockers))
+        self.write("devpost/submission/entry-data.json", entry)
+        name = "devpost/submission/entry-data.json"
+        self.members[name] = (self.root / name).read_bytes()
+        self.manifest["files_sha256"][name] = check.digest(self.members[name])
+        self.manifest["video_recorded"] = True
+        self.package()
+        with patch.object(check, "ROOT", self.root), patch("sys.argv", ["check-submission.py"]), redirect_stdout(io.StringIO()):
+            self.assertEqual(check.main(), 2)
+
+    def test_submission_flag_and_url_cannot_replace_an_observed_site_confirmation(self):
+        entry = self.entry | {"submitted": True, "submission_confirmation_url": "https://devpost.com/software/action-receipt"}
+        self.assertTrue(any("Final submission" in item for item in check.entry_blockers(entry)))
+        self.assertTrue(any("Final submission" in item for item in check.entry_blockers(entry | {"submission_site_confirmation_observed": False})))
 
     def test_video_urls_reject_host_spoofs_and_non_video_pages(self):
         for value in (None, "https://youtube.com.evil.test/watch?v=abcdefghijk", "http://youtu.be/abcdefghijk",

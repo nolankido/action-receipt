@@ -10,11 +10,11 @@ The [official rules](https://learn-ai-basics.devpost.com/rules) control this ass
 
 | Requirement | Evidence or remaining work |
 | --- | --- |
-| New working software created during the contest | New application; standard starter and dependencies disclosed in `THIRD_PARTY_NOTICES.md`. Actual browser run still needs checking. |
+| New working software created during the contest | New application; standard starter and dependencies disclosed in `THIRD_PARTY_NOTICES.md`. Focused owner-authenticated production-browser checks verify repeated scanning and consent repair after the sibling-key fix. |
 | Actual Learn Skill Pack use and generated scope, PRD and spec in the repository | `devpost/skill-pack-evidence.json`, `workflow.md`, `scope.md`, `prd.md`, `spec.md`. Agent: Codex. |
 | Public source, open-source license and runnable instructions | Public GitHub repository, MIT license, committed offline HTML, [judge guide](judge-guide.md). |
-| Public YouTube/Vimeo demonstration below three minutes | Missing. [Recording checklist](demo/recording-guide.md) prepared; no recording claimed. |
-| English description and required entry fields | AI-assisted factual draft and structured links prepared under later delegation in `submission/`; authenticated form and personal answers still pending. |
+| Public YouTube/Vimeo demonstration below three minutes | A 158.01-second edited sequence of actual browser screenshots with disclosed computer narration is complete locally. Public YouTube/Vimeo upload remains missing. [Provenance](submission/browser-demo-manifest.json) records the capture method and limits. |
+| English description and required entry fields | Authenticated draft `1239349-action-receipt` has saved project fields, cover and entrant-directed Additional info; three of five steps are complete. Public video link, final terms and submission remain pending. |
 | Free judge access through judging | Public offline file is the intended route. Preserve repository access through October 30. Owner-private hosted review is not the judge route. |
 | Entrant eligibility and truthful declarations | Entrant must check personal eligibility and current form. Not certified by this audit. |
 
@@ -29,7 +29,7 @@ Each criterion carries 25%. Ratings below describe evidence coverage, not predic
 | Design | Coherent source/action review; usability remains unmeasured | Paper/forest typography and hierarchy, source-return navigation, stable action views, explicit file/download feedback, optional calendar controls and source-backed repair | Human desktop/offline review, keyboard checks and actual export opening. Fix any observed confusion. |
 | Potential Impact | Specific student-notice hypothesis, no observed audience results | Make the relevant failure cases reproducible and supply exact success criteria for the existing trial kit | Observe willing students using a different notice without coaching. Report successes, failures and assistance honestly. Do not claim time savings or adoption from automated checks. |
 | Innovation/Idea | Incremental workflow distinction in a crowded category | Focus the demonstration on source-backed repair, unresolved dates and separate approval/calendar gates | Explain the tradeoff in the entrant's own words. Test whether this combination is useful enough to justify another tool. No uniqueness claim is supported. |
-| Presentation | Weakest entry component because the mandatory video is absent | One coherent short scenario, checked export artifacts, judge instructions and a 2:35 recording plan | Real end-to-end screen recording, aligned captions or narration, accurate written answers and a signed-out video-link check. |
+| Presentation | Edited actual-interface demonstration complete locally; public access is still missing | A 158.01-second demonstration using actual browser captures, measured captions, disclosed computer narration and source-backed workflow | Public YouTube/Vimeo upload and signed-out link check, final entry preview and actual submission. |
 
 ## Existing tools and the defensible distinction
 
@@ -55,7 +55,7 @@ Artifacts in `devpost/demo/` are conspicuously labeled automated synthetic fixtu
 
 1. Entrant opens the latest offline file, completes the short review and checks actual downloaded files. Record any confusing step or failure. Complete the actual Learn final review and learning wrap-up; do not substitute agent checks.
 2. Recommended: run a small formative trial using `usability/facilitator-guide.md` and the blank observation template. Three to five willing adult students is a practical starting point, not a representative study or a contest gate. Use different notices from the demo. Fix observed blockers before recording.
-3. Record the working app using `demo/recording-guide.md`. AI-assisted planned captions are prepared under the entrant's later delegation; align them to real footage. Face/voice narration is optional. Confirm final length and the public link while signed out. The 2:35 schedule is a target, not a measured recording.
-4. Inspect the authenticated form, disclose AI assistance in the prepared factual draft, obtain truthful personal survey/eligibility answers, and handle required acceptance before submission. Record the real confirmation URL.
+3. Upload the completed 158.01-second edited actual-browser demonstration publicly and verify the exact link while signed out. Its separate measured captions and provenance disclose the screenshot-sequence editing and computer narration. The original 2:35 recording plan remains for reference.
+4. Continue the existing authenticated draft. Its project fields, cover and entrant-directed Additional info are saved. Add the finished public video link, review remaining final terms and complete the actual submission. Record the real confirmation URL.
 
 The installed Learn `6-ship` workflow requires entrant authorship of submission copy. After this limitation was explained, the entrant requested maximal delegation. AI-assisted factual copy is now prepared under that later instruction and disclosed as such; the skill's learner-authorship and experiential checkpoints are not certified complete. No entry, participant findings, learner reflection or completed video has been fabricated. The organizer determines eligibility.

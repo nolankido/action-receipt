@@ -1,6 +1,6 @@
 # Action Receipt
 
-*AI-assisted factual draft prepared at the entrant's request. Not a claim of learner-written copy or personal learning. The current authenticated entry form has not yet been inspected.*
+*AI-assisted factual draft prepared at the entrant's request. Not a claim of learner-written copy or personal learning. The authenticated Devpost draft has saved project fields and a cover; the entry is not submitted.*
 
 ## Tagline
 
@@ -32,7 +32,7 @@ The finished app uses bounded English text rules, not a runtime AI model. It run
 
 ### Engineering findings and validation
 
-The implementation separates quotation matching from meaning, action approval from date confirmation, and imported data from current-session trust. Regression work covered abbreviated dates, contradictory weekdays, malformed clocks, conditional scope, cutoff conversion, review-file recovery and download failure states. Automated verification includes 186 regression tests, 14 fresh synthetic notice checks and a reproducible source-to-export rehearsal. These are technical checks, not human usability findings. Browser interaction and actual participant testing remain unverified.
+The implementation separates quotation matching from meaning, action approval from date confirmation, and imported data from current-session trust. Regression work covered abbreviated dates, contradictory weekdays, malformed clocks, conditional scope, cutoff conversion, review-file recovery and download failure states. Automated verification includes 186 regression tests, 14 fresh synthetic notice checks and a reproducible source-to-export rehearsal. Supported browser checks verified two successive scans without duplicate source-review controls and a working consent-action repair on the owner-authenticated production app. These are technical checks, not human usability findings; participant testing remains unverified.
 
 ### Next step
 
@@ -52,7 +52,7 @@ TypeScript, React, Vite, Codex, Devpost Learn Skill Pack, HTML, CSS, iCalendar.
 - Runnable file: https://github.com/nolankido/action-receipt/blob/main/release/action-receipt.html
 - Judge instructions: https://github.com/nolankido/action-receipt/blob/main/devpost/judge-guide.md
 - License: MIT
-- Video: not recorded or uploaded. No placeholder video URL should be submitted.
+- Video: a 158.01-second edited sequence of actual production-browser screenshots with disclosed computer narration is complete locally. It is not continuous screen recording. No public video URL is claimed, and no placeholder URL should be submitted.
 
 ## Not answered by this draft
 

@@ -1,0 +1,134 @@
+1
+00:00:00,350 --> 00:00:05,910
+Action Receipt helps students turn a notice into actions they can check against the original.
+
+2
+00:00:05,910 --> 00:00:09,880
+This invented notice contains no personal student information.
+
+3
+00:00:11,350 --> 00:00:16,550
+The local text rules find three proposals and flag two passages for review.
+
+4
+00:00:16,550 --> 00:00:18,275
+Nothing starts approved.
+
+5
+00:00:18,275 --> 00:00:22,310
+The complete source stays available alongside the proposed actions.
+
+6
+00:00:23,610 --> 00:00:28,830
+Registration and the bus deposit keep separate deadlines and exact source quotations.
+
+7
+00:00:28,830 --> 00:00:32,380
+A quotation match still needs a person to check the meaning.
+
+8
+00:00:33,680 --> 00:00:36,150
+The rules missed the consent form.
+
+9
+00:00:36,150 --> 00:00:39,950
+The source review creates a separate action from that exact passage.
+
+10
+00:00:39,950 --> 00:00:44,565
+It is labeled as an addition, with no invented deadline or automatic approval.
+
+11
+00:00:47,680 --> 00:00:49,885
+The separate membership fee is waived.
+
+12
+00:00:49,885 --> 00:00:57,295
+Recording it as not an obligation preserves the explanation without creating another payment task or
+calendar event.
+
+13
+00:00:59,680 --> 00:01:03,200
+Action approval and date confirmation are separate checks.
+
+14
+00:01:03,200 --> 00:01:05,780
+Registration has a complete date.
+
+15
+00:01:05,780 --> 00:01:11,360
+Confirming that date allows an approved registration action to become an all day calendar marker.
+
+16
+00:01:12,680 --> 00:01:14,930
+The deposit has a timed cutoff.
+
+17
+00:01:14,930 --> 00:01:22,680
+Its date, five P M time, and explicit U T C minus ten offset must all be checked before it can enter the
+calendar.
+
+18
+00:01:25,680 --> 00:01:28,885
+Accessible transport applies only if needed.
+
+19
+00:01:28,885 --> 00:01:31,295
+Next Friday stays unresolved.
+
+20
+00:01:31,295 --> 00:01:37,755
+The undated consent form and conditional email can remain checklist tasks, without guessed calendar
+dates.
+
+21
+00:01:39,060 --> 00:01:43,505
+After these review choices, the checklist contains four approved actions.
+
+22
+00:01:43,505 --> 00:01:48,370
+Only the two actions with complete, confirmed dates qualify for the calendar.
+
+23
+00:01:49,670 --> 00:01:52,465
+The preview shows the exact checklist text.
+
+24
+00:01:52,465 --> 00:01:57,895
+Approved actions keep supporting quotations, original warnings, and decision notes.
+
+25
+00:01:57,895 --> 00:02:00,165
+Check the context before sharing.
+
+26
+00:02:01,670 --> 00:02:06,640
+The calendar preview explains excluded items and shows the actual calendar file.
+
+27
+00:02:06,640 --> 00:02:09,830
+Downloading it does not add events automatically.
+
+28
+00:02:09,830 --> 00:02:12,620
+Unclear dates stay outside the calendar.
+
+29
+00:02:13,920 --> 00:02:19,855
+Built with Codex and the Devpost Learn Skill Pack, the finished app uses local English text rules.
+
+30
+00:02:19,855 --> 00:02:24,935
+The downloadable version works offline, without a runtime model or A P I credits.
+
+31
+00:02:26,920 --> 00:02:29,535
+Try the public offline app on GitHub.
+
+32
+00:02:29,535 --> 00:02:34,625
+This edited sequence uses actual browser screenshots and computer narration.
+
+33
+00:02:34,625 --> 00:02:37,055
+Human review remains essential.

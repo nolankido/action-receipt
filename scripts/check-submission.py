@@ -60,7 +60,7 @@ def entry_blockers(entry):
         blockers.append("Authenticate to Devpost and inspect the current entry form; complete its actual fields.")
     if entry.get("terms_accepted") is not True:
         blockers.append("Entrant must review eligibility and handle required declarations and terms truthfully.")
-    if entry.get("submitted") is not True or not entry.get("submission_confirmation_url"):
+    if entry.get("submitted") is not True or not entry.get("submission_confirmation_url") or entry.get("submission_site_confirmation_observed") is not True:
         blockers.append("Final submission and its actual confirmation remain unverified.")
     return blockers
 

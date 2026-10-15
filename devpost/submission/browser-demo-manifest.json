@@ -1,0 +1,151 @@
+{
+  "format_version": 1,
+  "status": "complete",
+  "kind": "Edited sequence of actual production-browser screenshots",
+  "actual_browser_ui": true,
+  "continuous_screen_recording": false,
+  "synthetic_notice": true,
+  "narration": "Computer-generated narration, synthesized offline with FFmpeg libflite. Not the entrant's voice.",
+  "media": {
+    "filename": "action-receipt-ui-demo.mp4",
+    "sha256": "dee2c61468cbd8c166cf71258c63b0effa28644ff5d57b439bca11acd133491d",
+    "bytes": 6247449,
+    "duration_seconds": 158.01,
+    "width": 1600,
+    "height": 1200,
+    "video_codec": "H.264",
+    "frame_rate": 24,
+    "audio_codec": "AAC",
+    "audio_channels": 1
+  },
+  "captions": {
+    "filename": "browser-demo-captions.srt",
+    "sha256": "e5a421472347bdc252c3e785183bea90e26c72923e17f8169369aceb352a11b7",
+    "cue_count": 33,
+    "last_cue_end_seconds": 157.055,
+    "timing_monotonic": true,
+    "overlaps": false,
+    "burned_in": true,
+    "separate_srt": true
+  },
+  "capture": {
+    "method": "Supported cloud browser CUA screenshots, captured from actual user interactions. No reconstructed or generated interface.",
+    "app_version": "0.23.0",
+    "hosted_fix_commit": "7a69d8d",
+    "public_repo_fix_commit": "9ba3acba2b9133c5560ae88dc18aaa2df00b910c",
+    "screenshot_frame_count": 14,
+    "logical_scene_count": 13
+  },
+  "verified_browser_evidence": {
+    "after_two_scans": {
+      "createButtonCount": 1,
+      "sourceReviewHeadingCount": 1
+    },
+    "sole_consent_control_opens_editor": true,
+    "markdown_preview_task_count": 4,
+    "markdown_retains_condition": true,
+    "markdown_retains_fee_decision": true,
+    "checklist_download_event": true,
+    "calendar_preview_event_count": 2,
+    "calendar_has_registration_marker": true,
+    "calendar_has_payment_utc_instant": true,
+    "calendar_event_summaries": [
+      "SUMMARY:Register for the architecture trip",
+      "SUMMARY:Pay the bus deposit"
+    ],
+    "calendar_download_event": true,
+    "browser_saved_download_files_verified": false,
+    "download_limitation": "Browser download events emitted with reported paths, but matching bytes unavailable in shared filesystem. Exact rendered file previews verified; no verified saved download bytes or calendar import claimed."
+  },
+  "source_capture_manifest_sha256": "d130395e9728a67dc8fcec2ecced387c1b7b52729b1fe59985d7f0fcbb1fea00",
+  "screenshot_frames": [
+    {
+      "file": "01-workspace.jpg",
+      "sha256": "2d3f358bbb2659d458c4d6bb23ad9aa90324404c0cf1a11abbb8d7c8bba43a61",
+      "observed_state": "Fresh practice workspace, complete invented notice, three unapproved proposals, two source flags, zero checklist and calendar count."
+    },
+    {
+      "file": "02-scan.jpg",
+      "sha256": "aaa7f9edf15ca2534fa6d2737c892f71cd528007edcc071fe90d8ef89424290a",
+      "observed_state": "Fresh local-rule results after two actual scans. Single functioning source-review queue; three proposals, two flags, no approvals."
+    },
+    {
+      "file": "03-source.jpg",
+      "sha256": "b1d7fc26f601b61fdbbf112d2d1f075fafa63bc2929c89bd3878285a23d04346",
+      "observed_state": "Exact registration quotation visibly highlighted in original notice. Registration and payment proposal cards have separate deadlines and unchecked approvals."
+    },
+    {
+      "file": "04-consent-repair.jpg",
+      "sha256": "8b38c37c44e985cef34400ea0599d35a360012f86ade19802b95988f5d71b68b",
+      "observed_state": "Created consent action from exact flagged passage through functioning source review. New card shows Added by you and To review; source consent passage highlighted; no guessed date."
+    },
+    {
+      "file": "05-waived-fee.jpg",
+      "sha256": "c152de8c94574d13c3011566bc9ae56e80f5910894c4f16c5551c394b953bf53",
+      "observed_state": "Exact waived-fee source quote highlighted. Single source-review queue shows Reviewed:not an obligation and recorded reason preserving separate deposit obligation."
+    },
+    {
+      "file": "06-registration-date.jpg",
+      "sha256": "2ebe5f66ab6770f7d221d86299c038f20063fc262ab662aab5eac96d8120d47a",
+      "observed_state": "Registration2032-11-05 field visible. All-day marker wording, separate checked date-confirmation and action-approval controls."
+    },
+    {
+      "file": "07-payment-time.jpg",
+      "sha256": "587ab2160d0229c596f724999032d510698feb241cb8c2997977e6458876bea5",
+      "observed_state": "Deposit2032-11-08,05:00PM,-10:00 fields visible together. Date/time/offset confirmed and action approval checked separately."
+    },
+    {
+      "file": "08-conditional-email.jpg",
+      "sha256": "57b08f29cffa7f26ffa7a7bfcaa819961c41683eb61ed0458b7b63d7b076d745",
+      "observed_state": "Approved conditional email retains If you need accessible transport and unresolved nextFriday. Approved consent action also has no date; both checklist-only."
+    },
+    {
+      "file": "09-four-and-two.jpg",
+      "sha256": "270e25cd264c4f60209b02e2c7cc0d2b9e0e327e8e8433ace58fdd70940afe0b",
+      "observed_state": "Actual preview shows four checklist tasks, two calendar entries, separate registration and payment deadlines, unresolved email and consent dates."
+    },
+    {
+      "file": "10-checklist-preview.jpg",
+      "sha256": "e016a471f6fb8e56d497ee45a130e49e0cabaec6d87348004e8db4c855f21f67",
+      "observed_state": "Expanded actual exact Markdown text, retained source quotations, original warning, date provenance and checklist generation. Full DOM text verified four task lines and decision notes."
+    },
+    {
+      "file": "11-calendar-exclusions.jpg",
+      "sha256": "6149aa08c5734429da4af0373aa165e6e7f33876814bba3dc0641c3e845a18a9",
+      "observed_state": "Actual preview visibly shows both excluded actions and checklist-only explanations. Their titles and reasons are not added as calendar events."
+    },
+    {
+      "file": "11-calendar-preview.jpg",
+      "sha256": "7cac88909c6f35e1b9bf9a8bdf31bfa8253f863904941a4c95947de9f70a4103",
+      "observed_state": "Actual exact iCalendar text expanded, VCALENDAR and registration all-day marker visible, plus Download requested2 entries. Full DOM text verified two VEVENT, deposit UTCinstant20321109T030000Z."
+    },
+    {
+      "file": "12-method.jpg",
+      "sha256": "52d42da9347e0a39f18b7d5fe48bab53e38d6b882149ad6997e12a654d730fe4",
+      "observed_state": "Actual method/privacy dialog describes local English rules, no runtimeAI/API, quotation/meaning distinction, date checks, human approval, offline app and Devpost Learn Skill Pack."
+    },
+    {
+      "file": "13-repo-final.jpg",
+      "sha256": "c1989b29ec1160ead2d950b29a76051300268f8308bb7fe8269574ed32862546",
+      "observed_state": "Actual public GitHub README with ActionReceipt title, DevpostLearnSkillPack disclosure, finished offline app download and installation-free instructions."
+    }
+  ],
+  "public_video_url": null,
+  "entry_submitted": false,
+  "limits": "Actual browser captures edited into scenes, not continuous screen recording. Download requests and exact rendered previews were checked; saved download bytes, calendar import, learner review and participant testing are not claimed. Public YouTube/Vimeo upload, final terms and submission remain pending.",
+  "technical_qa": {
+    "full_media_decode_passed": true,
+    "frame_rate": "24/1",
+    "video_codec": "H.264",
+    "pixel_format": "yuv420p",
+    "audio_codec": "AAC",
+    "audio_channels": 1,
+    "audio_sample_rate": 48000,
+    "audio_mean_db": -18.0,
+    "audio_peak_db": -3.6,
+    "contact_sheet_visually_checked": true,
+    "decoded_captioned_payment_frame_visually_checked": true,
+    "no_generated_or_reconstructed_ui": true,
+    "continuous_screen_recording": false
+  }
+}
