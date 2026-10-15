@@ -84,3 +84,9 @@ The downloadable file runs without hosting, credentials or a model download. The
 
 ## Pre-submission Improvement Pass
 Deadline matching excludes prefix/trailing conditions and later semicolon clauses. Clock/offset matching is limited to a recognized deadline tail; conflicting values remain unresolved. Compound instructions stay visible in action wording. Collapsed cards display a cutoff only when the reviewed item is timed. Rescan labels disclose that review state is replaced.
+
+## Source integrity and accessible review refinement
+
+Keep the entire pasted notice in the editor, even above the 15,000-character processing limit. Show the exact excess and require deliberate shortening before scanning, manual additions or review-file saving. Short inputs explain the 30-character minimum excluding surrounding whitespace. Preserve the complete pasted supporting excerpt too; above 1,200 characters it cannot create an action. No native input cap may silently remove source or evidence text. The next-step guide must distinguish empty, short, over-limit and ready input.
+
+Compact action cards show cutoff time with the explicit UTC offset and label unconfirmed dates or unresolved clock fields. Source inspection transfers keyboard focus to the actual highlighted passage, including repeated inspection of the same quotation. Action/date checkboxes name their action; controls use readable text on narrow screens. These refinements grant no approval or date confirmation.

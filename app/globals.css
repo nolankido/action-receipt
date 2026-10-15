@@ -53,3 +53,13 @@
 .actions-panel .guide-counts{gap:14px 25px}
 @media(max-width:900px){.practice-intro{align-items:stretch;flex-direction:column;gap:12px}.practice-intro button{align-self:flex-start}}
 @media(max-width:600px){.practice-intro{padding:15px}.practice-intro button{width:100%;align-self:stretch}.file-feedback{padding:10px 15px}}
+
+/* Preserve the whole pasted notice and make input limits visible before work. */
+.analyze-area .notice-validation{font-size:12px;line-height:1.7;margin:0 0 13px;color:var(--muted)}
+.analyze-area .notice-validation.needs-input{padding:10px 12px;border:1px solid #e1c995;border-radius:6px;background:var(--amber-pale);color:#73501b}
+.notice-editor textarea{font-size:14px}
+.editor-footer{font-size:11px;color:var(--muted);flex-wrap:wrap}
+.notice-editor textarea[aria-invalid=true]{border-color:#ad8039}
+.notice-content mark:focus{outline:3px solid var(--green);outline-offset:3px}
+.action-card h3,.evidence-line>span,.deadline-line>span,.queue-decision p{overflow-wrap:anywhere;min-width:0}
+@media(max-width:600px){.app-shell input:not([type=checkbox]),.app-shell textarea,.app-shell select{font-size:16px}.editor-footer{font-size:11px}}

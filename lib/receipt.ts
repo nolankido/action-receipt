@@ -6,6 +6,16 @@ export { mentionsTime, validOffset, validTime } from "./times.ts";
 
 export const MAX_NOTICE_LENGTH = 15_000;
 export const MIN_NOTICE_LENGTH = 30;
+export function noticeInputState(source: string): { ready: boolean; kind: "empty" | "short" | "long" | "ready"; message: string } {
+  if (source.length > MAX_NOTICE_LENGTH) {
+    const extra = source.length - MAX_NOTICE_LENGTH;
+    return { ready: false, kind: "long", message: `This notice is ${extra.toLocaleString("en-US")} ${extra === 1 ? "character" : "characters"} over the 15,000-character limit. The full text is still here. Shorten it before scanning, adding actions or saving a review.` };
+  }
+  const length = source.trim().length;
+  if (!length) return { ready: false, kind: "empty", message: "Paste the complete notice: 30 to 15,000 characters. Include its dates and conditions." };
+  if (length < MIN_NOTICE_LENGTH) return { ready: false, kind: "short", message: `Add at least ${MIN_NOTICE_LENGTH - length} more characters before continuing. Notices need 30 to 15,000 characters; surrounding spaces do not count toward the minimum.` };
+  return { ready: true, kind: "ready", message: "Full text kept. Check that the notice includes all its dates and conditions before scanning." };
+}
 export const deadlineSchema = z.object({
   text: z.string().max(600),
   evidence: z.array(z.string().min(1).max(1200)).max(4),
@@ -118,6 +128,8 @@ export function canConfirmDate(action: ReviewedAction): boolean {
   return validDate(action.date) && (!action.requiresTime || cutoffFitsCalendar(action.date, action.time, action.utcOffset));
 }
 export function manualAction(source: string, title: string, quote: string, condition: string, id: number): ReviewedAction {
+  const input = noticeInputState(source);
+  if (!input.ready) throw new Error(input.message);
   title = title.trim(); quote = quote.trim(); condition = condition.trim();
   if (!title || title.length > 240) throw new Error("Write a short action, up to 240 characters.");
   if (!quote || quote.length > 1200 || !source.includes(quote)) throw new Error("Paste an exact supporting passage from this notice, up to 1,200 characters.");

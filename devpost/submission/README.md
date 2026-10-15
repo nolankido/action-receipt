@@ -6,6 +6,8 @@ These files reduce submission work. They do not constitute a submitted entry.
 
 A **2:42 narrated technical walkthrough** has been created and provided separately as `action-receipt-technical-walkthrough.mp4`. It presents real production-domain outputs captured from the notice, repair, decision, approval/date, export and reopen functions. Its input data is in `../demo/technical-video-domain-data.json`; the narration script, full spoken captions and a scene/hash manifest are included here. The voice is computer-generated offline using FFmpeg libflite, not the entrant's voice. No voice cloning, paid service or API request was used. Every scene identifies scripted synthetic choices and states that the browser interface is not shown.
 
+The captured domain outputs predate the v0.12 source-input and keyboard-access refinements. The capture and movie retain their original hashes; no footage of the new interface is implied.
+
 This video is not the finished hackathon demonstration. Browser policy blocked opening the local HTML file and expressly prohibited workarounds. No browser recording, screenshot-based imitation of the interface, human review or participant session is claimed. A proper recording of the actual browser interface and a public YouTube/Vimeo link remain open. Do not submit the technical walkthrough as if those requirements had been completed.
 
 Reproduction in a local environment with Node 22.13+, Python/Pillow, DejaVu fonts at `/usr/share/fonts/truetype/dejavu`, and FFmpeg with the libflite and subtitles filters:

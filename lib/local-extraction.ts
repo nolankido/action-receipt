@@ -1,4 +1,4 @@
-import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, explicitDates, locateEvidence, mentionsTime, validateExtraction, type Extraction, type RawAction, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
+import { explicitDates, locateEvidence, mentionsTime, noticeInputState, validateExtraction, type Extraction, type RawAction, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
 import { datedWeekdayPattern, protectDateAbbreviations, weekdayConflicts, weekdayPattern } from "./dates.ts";
 import { explicitOffset, parseClock } from "./times.ts";
 
@@ -17,7 +17,8 @@ function passages(source: string): string[] {
 }
 /** Deliberately bounded English pattern matching. No network, model, clock-date inference or saved-result lookup. */
 export function extractLocally(source: string, revision = 1): { actions: ReviewedAction[]; notes: string[]; attention: SourceReviewItem[] } {
-  if (source.trim().length < MIN_NOTICE_LENGTH || source.length > MAX_NOTICE_LENGTH) throw new Error(`Paste ${MIN_NOTICE_LENGTH} to ${MAX_NOTICE_LENGTH.toLocaleString()} characters.`);
+  const input = noticeInputState(source);
+  if (!input.ready) throw new Error(input.message);
   const actions: RawAction[] = [];
   const attention: SourceReviewItem[] = []; let attentionOverflow = 0;
   function flag(index: number, quote: string, reason: string) {
