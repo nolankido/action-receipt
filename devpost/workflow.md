@@ -36,3 +36,6 @@ The learner required no API credits or new paid dependencies. The evidence/appro
 
 ## Final improvement pass
 The learner requested another improvement pass before submission. Added explicit local review-file save/open within the one-notice workflow. No automatic storage, remote history or new dependency. Independent read-only review identified a cutoff-guard bypass through stripped imported metadata and incorrect current-user attribution for imported edits. Both were fixed with regression coverage. Fifty-seven automated tests, including review-file validation and recovery checks, pass. The actual learner exploration, video, answers and submission are still pending.
+
+## Download-preview improvement
+The learner requested another improvement pass. Added a read-only preview within the approved export workflow. Included actions and exclusion reasons share eligibility rules with the actual downloads; the exact serialized content is inspectable and downloadable. Conditions, offsets and source-context disclosure remain visible. Six additional behavioral tests cover agreement between export plans and actual files, plus date and review transitions. Sixty-three automated tests pass. No browser observation, new user feedback or submission is claimed.

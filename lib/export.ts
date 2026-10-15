@@ -1,10 +1,33 @@
-import { calendarEligible, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
+import { calendarEligible, canConfirmDate, checklistEligible, validDate, validTime, validOffset, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
 
 export type ReceiptMeta = { mode: "sample" | "local" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[]; attention?: SourceReviewItem[]; restored?: boolean };
-const modeDescription = (mode: ReceiptMeta["mode"], restored = false) => (restored ? "Imported review file; declared prior mode (unverified): " : "") + (mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : mode === "manual" ? "Manual review; actions added by the user, no AI extraction" : "Local text rules; browser-only proposals, no AI model or API");
+export const modeDescription = (mode: ReceiptMeta["mode"], restored = false) => (restored ? "Imported review file; declared prior mode (unverified): " : "") + (mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : mode === "manual" ? "Manual review; actions added by the user, no AI extraction" : "Local text rules; browser-only proposals, no AI model or API");
 const actionOrigin = (action: ReviewedAction) => action.origin === "imported" ? "Imported review file; verify its interpretation" : action.origin === "user" ? "Added by user from source" : action.origin === "rules" ? "Local text rules" : "Saved sample proposal";
 const textLine = (value: string) => value.replace(/[\r\n]+/g, " ").trim();
 const markdown = (value: string) => textLine(value).replace(/([\\`*_{}\[\]<>#|])/g, "\\$1");
+export function reviewedDateText(a: ReviewedAction): string {
+  return a.dateConfirmed && canConfirmDate(a) ? a.date + (a.requiresTime ? ` ${a.time} UTC${a.utcOffset}` : " (day marker)") : "Unresolved / not confirmed; no calendar entry";
+}
+function checklistBlocker(a: ReviewedAction): string {
+  if (a.omitted) return "Omitted from this review. Restore and approve it to include it.";
+  if (!a.evidenceValid) return "Supporting quotation is not matched to the notice. Approval is blocked.";
+  if (!a.title.trim()) return "Action wording is empty. Add wording and approve it.";
+  return "Action has not been approved. Check it against the source first.";
+}
+function calendarBlocker(a: ReviewedAction): string {
+  if (!checklistEligible(a)) return checklistBlocker(a);
+  if (!validDate(a.date)) return "Checklist only: supply a complete, valid date in Review details.";
+  if (a.requiresTime && !validTime(a.time)) return "Checklist only: supply a valid cutoff time in Review details.";
+  if (a.requiresTime && !validOffset(a.utcOffset)) return "Checklist only: supply a valid UTC offset for the cutoff date.";
+  return "Checklist only: confirm the date" + (a.requiresTime ? ", time and UTC offset" : "") + " in Review details.";
+}
+export function planExports(actions: ReviewedAction[]) {
+  return {
+    checklist: actions.filter(checklistEligible), calendar: actions.filter(calendarEligible),
+    notInChecklist: actions.filter(a => !checklistEligible(a)).map(action => ({ action, reason: checklistBlocker(action) })),
+    notInCalendar: actions.filter(a => !calendarEligible(a)).map(action => ({ action, reason: calendarBlocker(action) })),
+  };
+}
 function corrections(a: ReviewedAction): string[] {
   const imported = a.origin === "imported";
   return [
@@ -15,13 +38,13 @@ function corrections(a: ReviewedAction): string[] {
 }
 export function checklistText(actions: ReviewedAction[], meta: ReceiptMeta): string {
   const out = [`# Action Receipt`, "", `Notice: ${markdown(meta.title)}`, `Created: ${meta.createdAt.toISOString()}`, `Mode: ${modeDescription(meta.mode, meta.restored)}`, "", "Source quotations show where text appeared. They do not certify correct interpretation or completeness.", ""];
-  const approved = actions.filter(a => a.approved && !a.omitted && a.evidenceValid && a.title.trim());
+  const approved = planExports(actions).checklist;
   for (const a of approved) {
     out.push(`- [ ] ${markdown(a.title)}`);
     out.push(`  - Action origin: ${actionOrigin(a)}`);
     if (a.condition) out.push(`  - Condition: ${markdown(a.condition)}`);
     out.push(`  - Original deadline wording: ${markdown(a.deadlineText || "Not stated")}`);
-    out.push(`  - Reviewed date: ${a.dateConfirmed ? a.date + (a.requiresTime ? ` ${a.time} UTC${a.utcOffset}` : " (day marker)") : "Unresolved / not confirmed; no calendar entry"}`);
+    out.push(`  - Reviewed date: ${reviewedDateText(a)}`);
     out.push(`  - Date provenance: ${a.dateOrigin}${a.dateConfirmed ? "; confirmed by user" : ""}`);
     for (const correction of corrections(a)) out.push(`  - ${markdown(correction)}`);
     for (const e of a.evidence) out.push(`  - Action source: “${markdown(e.quote)}”`);
@@ -55,7 +78,7 @@ export function foldLine(line: string): string {
 function utcStamp(date: Date): string { return date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z"); }
 export function calendarText(actions: ReviewedAction[], meta: ReceiptMeta): string {
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Action Receipt//Reviewed notices//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
-  for (const a of actions.filter(calendarEligible)) {
+  for (const a of planExports(actions).calendar) {
     const description = [
       meta.mode === "sample" && !meta.restored ? "SYNTHETIC SAMPLE WALKTHROUGH. Saved example results, not live AI extraction." : modeDescription(meta.mode, meta.restored),
       `Action origin: ${actionOrigin(a)}.`,

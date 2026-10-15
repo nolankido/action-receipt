@@ -17,6 +17,7 @@ The optional hosted review site is https://action-receipt.huzzahoptimistically.c
 - Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
 - Save a local review file and reopen it later with source, edits, omissions and context intact. Opening resets every action approval and date confirmation; imported interpretations stay visibly unverified.
 - Export approved checklists and eligible calendar entries, retaining source quotations, warnings, notice-level notes, flagged source context, mode and user corrections. Source-review flags stay context; they do not create extra tasks or calendar events.
+- Preview downloads before saving: see included actions, reasons for exclusions and the exact Markdown or iCalendar content. The preview uses the same eligibility rules and file generators as the downloads and changes no approvals.
 
 These are text patterns, not semantic AI. They can miss unfamiliar wording, implicit instructions, cross-sentence context or cancellations. Read the complete source. Use **Add an action from the source** for omissions. A quotation match confirms presence, not interpretation or completeness. Twenty actions per receipt; 30 to 15,000 input characters.
 
@@ -43,12 +44,12 @@ npm run build
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 57 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
+Current verification: 63 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
 
 ## Project structure
 
 - `standalone/`, `vite.static.config.ts`: static React entry and configuration.
-- `app/receipt-workspace.tsx`, `app/globals.css`: review interface.
+- `app/receipt-workspace.tsx`, `app/export-preview.tsx`, `app/globals.css`: review interface and read-only download preview.
 - `lib/local-extraction.ts`: bounded, network-free English text rules.
 - `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`: evidence, date/review rules, approved exports and explicit local review save/open.
 - `lib/samples.ts`: synthetic notices and saved walkthroughs.

@@ -33,6 +33,8 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 ### Exports
 `lib/export.ts` implements `prd.md > Export`. Export only approved items. Escape iCalendar content lines, fold UTF-8 lines, use stable per-action UIDs, represent date-only entries as all-day markers and timed deadlines as zero-duration instants with explicit offsets. Never invent an event length. Omit unresolved calendar items visibly. Preserve notice notes and source-review flags as context in both download formats, without creating additional tasks or events.
 
+`app/export-preview.tsx` provides an optional modal preview for both formats. `planExports` shares the exact checklist/calendar eligibility selectors used by serializers and workspace counts, and provides exclusion reasons. `reviewedDateText` reports only valid confirmed dates as confirmed. Read-only action summaries show conditions and time/offset wording, alongside context disclosure and the exact serialized file text. Download the same displayed string. Mount the preview only while open to avoid serializing files during ordinary editing. The dialog uses native focus handling, accessible labels and plain format buttons; source text renders as escaped React text. It makes no network request and changes no review state.
+
 ### Samples
 `lib/samples.ts` holds three synthetic notices and explicitly saved walkthrough results: multiple deadlines, ambiguity, and conflicting dates/conditional instructions. Always label this mode and its generated exports.
 
@@ -66,6 +68,6 @@ No external runtime services. Development dependencies are listed in package/loc
 The learner explicitly required no new spending. A single-file ordinary browser app avoids API bills, model downloads, hardware-specific inference setup and hosting dependence. Manual source-backed repair covers bounded-parser omissions while preserving the original evidence/approval kernel.
 
 ## Decisions and Open Issues
-The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Fifty-seven automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
+The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Sixty-three automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
 
 Date resolution retains original warnings. A confirmed user-supplied date can become calendar-eligible while original ambiguity remains in exports. Exact action evidence is always mandatory. Saved examples, local rules and user additions retain distinct provenance.

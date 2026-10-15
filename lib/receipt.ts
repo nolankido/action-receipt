@@ -161,7 +161,10 @@ export function nextManualNumber(actions: ReviewedAction[]): number {
   return id;
 }
 export function calendarEligible(action: ReviewedAction): boolean {
-  return action.approved && !action.omitted && action.evidenceValid && action.dateConfirmed && canConfirmDate(action) && Boolean(action.title.trim());
+  return checklistEligible(action) && action.dateConfirmed && canConfirmDate(action);
+}
+export function checklistEligible(action: ReviewedAction): boolean {
+  return action.approved && canApprove(action);
 }
 export function canApprove(action: ReviewedAction): boolean {
   return action.evidenceValid && !action.omitted && Boolean(action.title.trim());
