@@ -1,0 +1,263 @@
+{
+  "runAt": "2026-10-15T00:39:55.470Z",
+  "source": "current checkout, newly authored synthetic notices",
+  "model": "gpt-5-mini",
+  "interpretation": "Observed real-service responses, not independent correctness certification. Human review is required.",
+  "cases": [
+    {
+      "id": "workshop",
+      "status": 502,
+      "source": "STUDENT PHOTOGRAPHY WORKSHOP\nCampus Arts Club · Synthetic example\n\nJoin our workshop on November 10, 2026, in the student center.\n\nRegister using the club form by November 5, 2026. Pay the $15 materials fee by November 7, 2026. Registration does not include payment.\n\nBring your student ID to check in on November 10, 2026.\n\nIf you need accessibility accommodations, email the coordinator by next Friday.\n\nQuestions? Contact the club office. This notice is an invented example, not an actual campus announcement.",
+      "expected_reference": {
+        "actions": [
+          {
+            "title": "Register for the workshop",
+            "condition": null,
+            "evidence": [
+              "Register using the club form by November 5, 2026."
+            ],
+            "deadline": {
+              "text": "November 5, 2026",
+              "evidence": [
+                "Register using the club form by November 5, 2026."
+              ],
+              "date": "2026-11-05",
+              "time": null,
+              "utcOffset": null,
+              "status": "explicit"
+            },
+            "issues": []
+          },
+          {
+            "title": "Pay the $15 materials fee",
+            "condition": null,
+            "evidence": [
+              "Pay the $15 materials fee by November 7, 2026."
+            ],
+            "deadline": {
+              "text": "November 7, 2026",
+              "evidence": [
+                "Pay the $15 materials fee by November 7, 2026."
+              ],
+              "date": "2026-11-07",
+              "time": null,
+              "utcOffset": null,
+              "status": "explicit"
+            },
+            "issues": []
+          },
+          {
+            "title": "Bring your student ID",
+            "condition": null,
+            "evidence": [
+              "Bring your student ID to check in on November 10, 2026."
+            ],
+            "deadline": {
+              "text": "November 10, 2026",
+              "evidence": [
+                "Bring your student ID to check in on November 10, 2026."
+              ],
+              "date": "2026-11-10",
+              "time": null,
+              "utcOffset": null,
+              "status": "explicit"
+            },
+            "issues": []
+          },
+          {
+            "title": "Email the coordinator about accommodations",
+            "condition": "Only if you need accessibility accommodations",
+            "evidence": [
+              "If you need accessibility accommodations, email the coordinator by next Friday."
+            ],
+            "deadline": {
+              "text": "next Friday",
+              "evidence": [
+                "If you need accessibility accommodations, email the coordinator by next Friday."
+              ],
+              "date": null,
+              "time": null,
+              "utcOffset": null,
+              "status": "ambiguous"
+            },
+            "issues": []
+          }
+        ],
+        "notes": [
+          "The workshop date is different from the registration and payment deadlines.",
+          "The notice does not establish which calendar date ‘next Friday’ means."
+        ]
+      },
+      "actual": {
+        "error": "provider_error",
+        "message": "The AI service is temporarily at its limit. Please try again later."
+      },
+      "observed": null,
+      "human_review": {
+        "status": "not_reviewed",
+        "missed_actions": [],
+        "wrong_actions": [],
+        "required_edits": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "grant",
+      "status": 502,
+      "source": "STUDENT RESEARCH GRANT\nSynthetic example\n\nSubmit your project outline within seven days of receiving this notice.\n\nUpload your budget by December 2, 2026 at 5:00 pm.\n\nA recommendation letter is optional. If you choose to include one, ask your adviser to upload it by December 1, 2026.\n\nThe information session is November 20, 2026. Attendance is not required.\n\nThis is an invented notice for testing. The received date and time zone are intentionally unspecified.",
+      "expected_reference": {
+        "actions": [
+          {
+            "title": "Submit your project outline",
+            "condition": null,
+            "evidence": [
+              "Submit your project outline within seven days of receiving this notice."
+            ],
+            "deadline": {
+              "text": "within seven days of receiving this notice",
+              "evidence": [
+                "Submit your project outline within seven days of receiving this notice."
+              ],
+              "date": null,
+              "time": null,
+              "utcOffset": null,
+              "status": "ambiguous"
+            },
+            "issues": []
+          },
+          {
+            "title": "Upload your budget",
+            "condition": null,
+            "evidence": [
+              "Upload your budget by December 2, 2026 at 5:00 pm."
+            ],
+            "deadline": {
+              "text": "December 2, 2026 at 5:00 pm",
+              "evidence": [
+                "Upload your budget by December 2, 2026 at 5:00 pm."
+              ],
+              "date": "2026-12-02",
+              "time": "17:00",
+              "utcOffset": null,
+              "status": "explicit"
+            },
+            "issues": [
+              "The notice does not specify a time zone. Confirm the UTC offset before calendar export."
+            ]
+          },
+          {
+            "title": "Ask your adviser to upload a recommendation",
+            "condition": "Optional: only if you choose to include a recommendation letter",
+            "evidence": [
+              "A recommendation letter is optional. If you choose to include one, ask your adviser to upload it by December 1, 2026."
+            ],
+            "deadline": {
+              "text": "December 1, 2026",
+              "evidence": [
+                "If you choose to include one, ask your adviser to upload it by December 1, 2026."
+              ],
+              "date": "2026-12-01",
+              "time": null,
+              "utcOffset": null,
+              "status": "explicit"
+            },
+            "issues": []
+          }
+        ],
+        "notes": [
+          "The information session is optional and is not a submission deadline."
+        ]
+      },
+      "actual": {
+        "error": "provider_error",
+        "message": "The AI service is temporarily at its limit. Please try again later."
+      },
+      "observed": null,
+      "human_review": {
+        "status": "not_reviewed",
+        "missed_actions": [],
+        "wrong_actions": [],
+        "required_edits": [],
+        "notes": ""
+      }
+    },
+    {
+      "id": "club",
+      "status": 502,
+      "source": "CAMPUS MAKERS CLUB\nApplication notice · Synthetic example\n\nApplications close on December 8, 2026.\n\nUse the membership form to apply. At the bottom of the same form, the printed deadline says December 11, 2026. This notice does not say which deadline is correct.\n\nIf your project uses the workshop, complete the safety orientation by December 15, 2026.\n\nYou do not need to pay a membership fee. An older payment request has been withdrawn.\n\nContact the club coordinator to clarify the application deadline. This is an invented notice for demonstration.",
+      "expected_reference": {
+        "actions": [
+          {
+            "title": "Apply using the membership form",
+            "condition": null,
+            "evidence": [
+              "Use the membership form to apply."
+            ],
+            "deadline": {
+              "text": "December 8, 2026 or December 11, 2026",
+              "evidence": [
+                "Applications close on December 8, 2026.",
+                "At the bottom of the same form, the printed deadline says December 11, 2026."
+              ],
+              "date": null,
+              "time": null,
+              "utcOffset": null,
+              "status": "conflict"
+            },
+            "issues": []
+          },
+          {
+            "title": "Complete the safety orientation",
+            "condition": "Only if your project uses the workshop",
+            "evidence": [
+              "If your project uses the workshop, complete the safety orientation by December 15, 2026."
+            ],
+            "deadline": {
+              "text": "December 15, 2026",
+              "evidence": [
+                "If your project uses the workshop, complete the safety orientation by December 15, 2026."
+              ],
+              "date": "2026-12-15",
+              "time": null,
+              "utcOffset": null,
+              "status": "explicit"
+            },
+            "issues": []
+          },
+          {
+            "title": "Contact the coordinator to clarify the application deadline",
+            "condition": null,
+            "evidence": [
+              "Contact the club coordinator to clarify the application deadline."
+            ],
+            "deadline": {
+              "text": "",
+              "evidence": [],
+              "date": null,
+              "time": null,
+              "utcOffset": null,
+              "status": "missing"
+            },
+            "issues": []
+          }
+        ],
+        "notes": [
+          "The payment request was withdrawn. No payment action is proposed.",
+          "Both application dates are preserved; the walkthrough does not choose one."
+        ]
+      },
+      "actual": {
+        "error": "provider_error",
+        "message": "The AI service is temporarily at its limit. Please try again later."
+      },
+      "observed": null,
+      "human_review": {
+        "status": "not_reviewed",
+        "missed_actions": [],
+        "wrong_actions": [],
+        "required_edits": [],
+        "notes": ""
+      }
+    }
+  ]
+}

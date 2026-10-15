@@ -5,7 +5,8 @@ This file is technical preparation, not ready-to-paste entrant submission copy.
 - [x] New application with the official installed Skill Pack and generated planning documents.
 - [x] MIT license and third-party notices.
 - [x] Reproducible tests and production build.
-- [ ] Configure secure live model access and preserve actual fresh-notice test results.
+- [x] Configure a secure local API key and preserve actual failed-service test results.
+- [ ] Resolve exhausted API credits, configure secure hosted AI if used, and preserve successful fresh-notice extraction results.
 - [ ] Learner tries the application and confirms readiness after any fixes.
 - [ ] Complete the brief learning wrap-up; do not invent a reflection.
 - [x] Public GitHub repository exists: https://github.com/nolankido/action-receipt. Public visibility and source verified; unauthenticated Git access checked separately.

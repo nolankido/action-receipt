@@ -25,10 +25,10 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 ## Components
 
 ### Workspace
-`app/page.tsx` and `app/receipt-workspace.tsx` implement `prd.md > Notice Entry`, `Evidence Review`, `Corrections and Approval` and all normal/error/empty states. Memory only. The current source revision invalidates old responses.
+`app/page.tsx` and `app/receipt-workspace.tsx` implement `prd.md > Notice Entry`, `Evidence Review`, `Corrections and Approval` and all normal/error/empty states. Memory only. The current source revision invalidates old responses. A compact manual action form accepts a title, exact source passage and optional condition. User-added items are labeled visibly, begin unapproved with unresolved dates, and share all approval/export rules.
 
 ### Extraction Endpoint
-`app/api/extract/route.ts` implements `prd.md > Notice Entry` and `Dates and Conditions`. Limit input bytes and text length, require same-origin browser POST, impose a timeout, use a strict schema, no model tools or link fetching, no raw body logging, and return readable failure codes. Without a key, return a service-unavailable response, not sample data. `app/api/status/route.ts` reports capability without exposing credentials.
+`app/api/extract/route.ts` implements `prd.md > Notice Entry` and `Dates and Conditions`. Limit input bytes and text length, require same-origin browser POST, impose a timeout, use a strict schema, no model tools or link fetching, no raw body logging, and return readable failure codes. Without a key, return a service-unavailable response, not sample data. Parse bounded provider error codes/types without reflecting raw error bodies: quota, temporary rate, authentication and model-access failures stay distinct. `app/api/status/route.ts` reports capability without exposing credentials.
 
 ### Validation and Review Rules
 `lib/receipt.ts` implements `prd.md > Evidence Review` and `Dates and Conditions`. Treat model fields as untrusted; cap counts and lengths; locate exact quotations locally; preserve issue codes and conditions. A complete explicit date is required for calendar eligibility; date confirmation is distinct from approval. Code confirms quotation presence only, not the truth or completeness of extraction.
@@ -40,7 +40,7 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 `lib/samples.ts` holds three synthetic notices and explicitly saved walkthrough results: multiple deadlines, ambiguity, and conflicting dates/conditional instructions. Always label this mode and its generated exports.
 
 ## Data Model
-An immutable source string and revision; extraction mode/model; candidate actions with title, condition, action evidence, date evidence, literal deadline, proposed ISO date, time and offset, issues; reviewed actions with edited values, date confirmation, user-change provenance, approval and omission. Everything lives in browser memory; no database. A new extraction resets approvals. Provider processing is covered by provider terms, not a claim of zero retention.
+An immutable source string and revision; extraction mode/model; candidate actions with title, condition, action evidence, date evidence, literal deadline, proposed ISO date, time and offset, issues; reviewed actions with edited values, date confirmation, user-change provenance, action origin (extracted/user), approval and omission. Receipt mode distinguishes saved samples, live proposals and manual review. Everything lives in browser memory; no database. A new extraction resets approvals. Provider processing is covered by provider terms, not a claim of zero retention.
 
 ## File Structure
 | Path | Purpose |
@@ -65,6 +65,8 @@ AI endpoint: POST `https://api.openai.com/v1/responses` with bearer key, configu
 One notice and no persistent storage keep the evidence trail inspectable. Native file downloads avoid calendar account access. Explicit time offsets avoid silently selecting a time zone. Three saved examples allow interface review while model configuration is pending.
 
 ## Decisions and Open Issues
-The learner approved the displayed scope and React/TypeScript/Worker proposal, and delegated routine implementation. No personal technical uncertainty was identified; do not invent one. The genuine implementation risk to investigate is whether quotes and date roles survive live model extraction. API access, runtime extraction verification, actual learner review and public submission materials remain open.
+The learner approved the displayed scope and React/TypeScript/Worker proposal, and delegated routine implementation. No personal technical uncertainty was identified; do not invent one. The genuine implementation risk to investigate is whether quotes and date roles survive live model extraction. Local API credentials are configured securely; real requests returned credit_balance_exhausted / insufficient_quota. Successful runtime extraction verification, secure hosted AI configuration, actual learner review and public submission materials remain open. The public repository exists.
 
 Date resolution retains original flags as historical evidence. A complete user-confirmed date can become calendar-eligible while its original ambiguity remains in the downloaded receipt. Action quotations always remain mandatory. Test stale responses, approval invalidation, separate event/deadline dates, and source-grounding independently from model-quality evaluation.
+
+Manual action repair remains inside the evidence-review loop. Exact passages can be up to 1,200 characters; their full text and detected date conflicts remain in the receipt. Manual dates are never auto-assigned. Exported mode and per-action origin distinguish human additions from model proposals.

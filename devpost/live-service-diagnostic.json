@@ -1,0 +1,15 @@
+{
+  "observedAt": "2026-10-15T00:47:32.831778+00:00",
+  "request": "One newly authored synthetic campus notice via the application extraction service",
+  "model": "gpt-5-mini",
+  "provider_http_status": 429,
+  "provider_error_code": "credit_balance_exhausted",
+  "provider_error_type": "insufficient_quota",
+  "classification": "API credit balance exhausted",
+  "original_application_status": 502,
+  "fix": "Classify quota from either provider error code or type. Return quota_exhausted / HTTP 503 with no raw provider details. Verified using injected contract responses; no further real requests made after the diagnosis.",
+  "live_extraction_succeeded": false,
+  "human_quality_review": "not_reviewed",
+  "hosted_paid_inference_enabled": false,
+  "credential_handling": "Local ignored server environment file only. No key material or account identifiers in this report."
+}

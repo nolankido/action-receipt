@@ -4,7 +4,7 @@ A small notice-review application: paste a campus notice, inspect proposed actio
 
 ## Current status
 
-The review interface, evidence/date validation and file exports are implemented. Three clearly labeled synthetic walkthroughs work without an API key. The live extraction endpoint is implemented but has not yet been exercised against the real model service in this environment. Twenty-nine automated contract/API/export tests pass; mock provider responses are not live model-quality evidence. Browser interaction and actual learner review remain pending.
+The review interface, evidence/date validation and file exports are implemented. Three clearly labeled synthetic walkthroughs and source-backed manual review work without an API key. The live extraction endpoint has been exercised against the real service, which returned HTTP 429 with `credit_balance_exhausted` / `insufficient_quota`. No successful live extraction is claimed. The API key is stored securely in an ignored local server file; hosted paid processing remains disabled. Thirty-four automated contract/API/export tests pass; mock provider responses are not live model-quality evidence. Browser interaction and actual learner review remain pending.
 
 ## Run locally
 
@@ -33,10 +33,11 @@ npm run build
 
 1. Try a synthetic notice. Its sample label remains visible and appears in exported files.
 2. Select **View source** to highlight all exact occurrences of a quotation.
-3. Open **Review details** to inspect source evidence, edit wording/conditions, and clarify date/time information. A missed cutoff can be added explicitly.
-4. Confirm complete dates separately from approving actions. A time in the source requires a confirmed time and UTC offset.
-5. Check **I checked this action**. Edits revoke approval.
-6. Download a Markdown checklist or `.ics` calendar file. Unresolved approved items remain checklist-only. Imports do not happen automatically.
+3. If an instruction was missed, use **Add an action from the source** with an exact supporting passage. This also supports manual review without sending text to the AI service. Added items start unapproved and retain user provenance in both exports.
+4. Open **Review details** to inspect source evidence, edit wording/conditions, and clarify date/time information. A missed cutoff can be added explicitly.
+5. Confirm complete dates separately from approving actions. A time in the source requires a confirmed time and UTC offset.
+6. Check **I checked this action**. Edits revoke approval.
+7. Download a Markdown checklist or `.ics` calendar file. Unresolved approved items remain checklist-only. Imports do not happen automatically.
 
 The application does not guarantee correct interpretation or complete extraction. A model can quote a real passage while misunderstanding it. Read the complete notice, including qualifications and cancellations.
 
@@ -44,7 +45,9 @@ The application does not guarantee correct interpretation or complete extraction
 
 The app has no notice database, stored history, inbox access or autonomous actions. Source text and review decisions live in browser memory; refreshing clears them. Live processing sends the notice to OpenAI through the server using `store: false`; provider retention and processing are governed by provider policies. Application code does not log notice bodies. Exported files contain source quotations and may contain personal data from your notice.
 
-For actual model checks after secure key configuration, run `node --env-file=.dev.vars --experimental-strip-types scripts/smoke-live.ts`. It uses synthetic notices, preserves failures in `devpost/live-smoke.json`, and leaves human assessment explicitly pending.
+For actual model checks after secure key configuration, run `node --env-file=.dev.vars --experimental-strip-types scripts/smoke-live.ts`. It uses synthetic notices, records only safe provider status/code/type diagnostics, preserves failures in `devpost/live-smoke.json`, and leaves human assessment explicitly pending.
+
+The observed credit issue is recorded in `devpost/live-service-diagnostic.json`; original failed runs remain intact. Enable live AI only after account credits are available and secure hosted configuration is complete. There is no silent fallback from a failed AI request to the synthetic results.
 
 ## Project structure
 

@@ -49,3 +49,18 @@ test("per-user short-term limit rejects the fifth request in one minute", async 
 test("streamed body is bounded by actual bytes, independent of content-length", async () => {
   await assert.rejects(() => limitedText(new Response("🎓".repeat(100)), 100), /too_large/);
 });
+test("quota exhaustion is distinct from a temporary rate limit", async () => {
+  const call = (code: string) => handleExtraction(request(), config, (async () => Response.json({ error: { code, message: "Do not reflect raw provider messages" } }, { status: 429 })) as typeof fetch);
+  const quota = await call("insufficient_quota"); assert.equal(quota.status, 503);
+  const q = await quota.json() as { error: string; message: string }; assert.equal(q.error, "quota_exhausted"); assert.match(q.message, /billing/); assert.ok(!q.message.includes("try again later"));
+  const typedQuota = await handleExtraction(request(), config, (async () => Response.json({ error: { code: "credit_balance_exhausted", type: "insufficient_quota", message: "Do not reflect raw provider messages" } }, { status: 429 })) as typeof fetch);
+  assert.equal(typedQuota.status, 503); assert.equal((await typedQuota.json() as { error: string }).error, "quota_exhausted");
+  const rate = await call("rate_limit_exceeded"); assert.equal(rate.status, 429);
+  assert.equal((await rate.json() as { error: string }).error, "provider_rate_limit");
+});
+test("authentication and model-access failures have distinct safe messages", async () => {
+  for (const [status, expected] of [[401, "provider_authentication"], [403, "provider_access"], [404, "provider_access"]] as const) {
+    const response = await handleExtraction(request(), config, (async () => Response.json({ error: { message: "sensitive detail" } }, { status })) as typeof fetch);
+    const data = await response.json() as { error: string; message: string }; assert.equal(data.error, expected); assert.ok(!data.message.includes("sensitive detail"));
+  }
+});

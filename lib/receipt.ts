@@ -45,6 +45,7 @@ export type ReviewedAction = {
   evidenceValid: boolean;
   approved: boolean;
   omitted: boolean;
+  origin: "extracted" | "user";
   issues: string[];
 };
 
@@ -133,7 +134,7 @@ export function validateExtraction(source: string, input: unknown, revision = 1)
       originalUtcOffset: validOffset(item.deadline.utcOffset ?? "") ? item.deadline.utcOffset! : "",
       sourceRequiresTime,
       requiresTime, dateConfirmed: false, dateOrigin: proposedDate ? "source proposal" : "unresolved",
-      evidenceValid, approved: false, omitted: false, issues: [...new Set(issues)],
+      evidenceValid, approved: false, omitted: false, origin: "extracted", issues: [...new Set(issues)],
     };
   });
   return { actions, notes: raw.notes };
@@ -141,6 +142,15 @@ export function validateExtraction(source: string, input: unknown, revision = 1)
 
 export function canConfirmDate(action: ReviewedAction): boolean {
   return validDate(action.date) && (!action.requiresTime || (validTime(action.time) && validOffset(action.utcOffset)));
+}
+export function manualAction(source: string, title: string, quote: string, condition: string, id: number): ReviewedAction {
+  title = title.trim(); quote = quote.trim(); condition = condition.trim();
+  if (!title || title.length > 240) throw new Error("Write a short action, up to 240 characters.");
+  if (!quote || quote.length > 1200 || !source.includes(quote)) throw new Error("Paste an exact supporting passage from this notice, up to 1,200 characters.");
+  if (condition.length > 600) throw new Error("Keep the condition under 600 characters.");
+  if (!Number.isSafeInteger(id) || id < 1) throw new Error("The action identifier is invalid.");
+  const result = validateExtraction(source, { actions: [{ title, condition: condition || null, evidence: [quote], deadline: { text: "", evidence: [quote], date: null, time: null, utcOffset: null, status: "ambiguous" }, issues: [] }], notes: [] }).actions[0];
+  return { ...result, id: `manual-${id}`, origin: "user", dateOrigin: "unresolved", issues: ["Added by you from source text. Check its meaning, condition and any date or time before approving.", ...result.issues] };
 }
 export function calendarEligible(action: ReviewedAction): boolean {
   return action.approved && !action.omitted && action.evidenceValid && action.dateConfirmed && canConfirmDate(action) && Boolean(action.title.trim());

@@ -22,7 +22,7 @@ The profile records unknown experience and learning preferences as unknown inste
 - Saved sample walkthrough results are synthetic examples, not live extraction evidence.
 - Unit/contract tests exercise injected provider responses. They do not establish live model quality.
 - Browser control was unavailable in the managed workspace; no browser interaction or visual QA is claimed.
-- Live model access is pending secure configuration. No actual inference or human usability study is claimed.
+- Local model access was configured securely. Actual requests reached OpenAI but returned exhausted API credits; preserved reports and a safe code/type diagnostic record the failure. No successful live inference or human usability study is claimed. Hosted paid AI remains disabled.
 - No submission is claimed until the actual Devpost confirmation exists.
 
 ## Independent review and changes

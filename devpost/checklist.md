@@ -31,7 +31,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [ ] Optional edit and transfer reflection addressed
 - [x] `devpost/app-map.html` generated from finished code, checked and shown
 
-Activity and evidence: 29 automated tests, TypeScript and the production build pass. Implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
+Activity and evidence: 34 automated tests, TypeScript and the production build pass. Implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
 Route and stops: reference-only route in app-map.html: ActionCard, calendarEligible, calendarText. It has not been toured with the learner.
 Edit outcome: not yet offered.
 Reflection: not yet offered; private answer must stay in the ignored profile.
@@ -42,4 +42,7 @@ Activity mode: pending.
 - Standard Sites scaffolding was generated separately and copied alongside the installed curriculum because the setup helper requires an empty directory. No application code from another project was reused.
 - Selected pnpm from the managed starter and retained the unused npm lock outside active inputs.
 - Independent review added a missed-cutoff control and identical correction provenance in both download formats; regression tests cover both.
-- Browser control is unavailable, so managed preview and browser QA were skipped as required by the hosting workflow. Live inference remains unverified.
+- Browser control is unavailable, so managed preview and browser QA were skipped as required by the hosting workflow. Successful live inference remains unverified; real requests reached the service and failed for exhausted API credits.
+
+- Added source-backed manual action repair without broadening the one-notice loop. Exact quotations are mandatory; items begin unapproved, with manual origin preserved in both exports. A review caught the 600/1,200-character boundary and discarded conflict warnings; both were fixed and covered by a regression check.
+- Secure local key setup completed. Real-service failures are retained in live-smoke reports; the safe diagnostic records exhausted credits. Quota and transient rate errors are now distinct. No further paid requests were made after diagnosis. Hosted paid AI stays disabled.

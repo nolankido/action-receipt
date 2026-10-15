@@ -1,13 +1,15 @@
 import { calendarEligible, type ReviewedAction } from "./receipt.ts";
 
-export type ReceiptMeta = { mode: "sample" | "live"; title: string; createdAt: Date; receiptId: string; notes: string[] };
+export type ReceiptMeta = { mode: "sample" | "live" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[] };
+const modeDescription = (mode: ReceiptMeta["mode"]) => mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : mode === "manual" ? "Manual review; actions added by the user, no AI extraction" : "Live AI proposals reviewed by the user";
 const textLine = (value: string) => value.replace(/[\r\n]+/g, " ").trim();
 const markdown = (value: string) => textLine(value).replace(/([\\`*_{}\[\]<>#|])/g, "\\$1");
 export function checklistText(actions: ReviewedAction[], meta: ReceiptMeta): string {
-  const out = [`# Action Receipt`, "", `Notice: ${markdown(meta.title)}`, `Created: ${meta.createdAt.toISOString()}`, `Mode: ${meta.mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : "Live AI proposals reviewed by the user"}`, "", "Source quotations show where text appeared. They do not certify correct interpretation or completeness.", ""];
+  const out = [`# Action Receipt`, "", `Notice: ${markdown(meta.title)}`, `Created: ${meta.createdAt.toISOString()}`, `Mode: ${modeDescription(meta.mode)}`, "", "Source quotations show where text appeared. They do not certify correct interpretation or completeness.", ""];
   const approved = actions.filter(a => a.approved && !a.omitted && a.evidenceValid && a.title.trim());
   for (const a of approved) {
     out.push(`- [ ] ${markdown(a.title)}`);
+    out.push(`  - Action origin: ${a.origin === "user" ? "Added by user from source" : "Extracted proposal"}`);
     if (a.condition) out.push(`  - Condition: ${markdown(a.condition)}`);
     out.push(`  - Original deadline wording: ${markdown(a.deadlineText || "Not stated")}`);
     out.push(`  - Reviewed date: ${a.dateConfirmed ? a.date + (a.requiresTime ? ` ${a.time} UTC${a.utcOffset}` : " (day marker)") : "Unresolved / not confirmed; no calendar entry"}`);
@@ -43,7 +45,8 @@ export function calendarText(actions: ReviewedAction[], meta: ReceiptMeta): stri
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Action Receipt//Reviewed notices//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
   for (const a of actions.filter(calendarEligible)) {
     const description = [
-      meta.mode === "sample" ? "SYNTHETIC SAMPLE WALKTHROUGH. Saved example results, not live AI extraction." : "AI proposal reviewed and approved by user.",
+      meta.mode === "sample" ? "SYNTHETIC SAMPLE WALKTHROUGH. Saved example results, not live AI extraction." : modeDescription(meta.mode),
+      `Action origin: ${a.origin === "user" ? "Added by user from source" : "Extracted proposal"}.`,
       `Notice: ${textLine(meta.title)}`, `Original deadline: ${a.deadlineText || "Not stated"}`,
       `Date provenance: ${a.dateOrigin}; confirmed by user.`,
       a.requiresTime ? "This entry marks the deadline instant; no event duration or reminder is inferred." : "This is an all-day deadline marker; no exact cutoff time or reminder is inferred.",

@@ -32,7 +32,7 @@ Every action and date may have separate exact quotations. Match them against imm
 Display original date wording. Explicit full dates can be proposed, but every date needs human confirmation. Relative dates, missing years, incomplete times/zones, invalid dates and conflicts require clarification. Optional or conditional instructions keep those qualifications visible. The user may keep an action undated for checklist use. Calendar export requires a confirmed calendar date; timed source deadlines require a confirmed time and UTC offset. No guessed dates, durations or reminders.
 
 ### Corrections and Approval
-Each action can be edited, omitted or approved. Changing an action, date or condition revokes its approval. A user-supplied date is labeled as such. All actions start unapproved. An unresolved action may be approved for checklist use with the issue retained; it stays ineligible for calendar export.
+Each action can be edited, omitted or approved. A missed action can be added from an exact supporting source passage, with an optional condition and explicit user provenance. This works without AI. It begins with an unresolved date and no approval; the same date and export gates apply. Receipts hold at most 20 actions. Changing an action, date or condition revokes its approval. A user-supplied date is labeled as such. All actions start unapproved. An unresolved action may be approved for checklist use with the issue retained; it stays ineligible for calendar export.
 
 ### Export
 Export an evidence-bearing Markdown checklist and an iCalendar file from the current reviewed state. Buttons show eligible counts and are disabled when empty. Calendar export explicitly reports omitted approved-but-unresolved items. Include evidence and user corrections in descriptions. Export performs no network write or automatic calendar insertion.
@@ -41,7 +41,7 @@ Export an evidence-bearing Markdown checklist and an iCalendar file from the cur
 - Empty: actionable guidance and synthetic samples.
 - Processing: progress label and disabled duplicate submissions; source remains editable.
 - No actions: explain that nothing actionable was identified and suggest checking the notice.
-- Missing service configuration: explicit unavailable message; sample walkthrough remains available.
+- Missing service configuration: explicit unavailable message; sample walkthrough and source-backed manual review remain available. Quota, authentication and model-access failures have distinct messages.
 - Failed model/schema/evidence checks: report the failure without fabricating success or silently using samples.
 - New source: previous approvals and results cleared.
 - Refresh/close: session text and actions disappear. No persistence claim about the external AI provider.
@@ -56,4 +56,4 @@ The complete single-notice loop above, with inspectable source, uncertainty and 
 Inbox connections, multiple documents, background reminders, cloud history, PDF/OCR and collaborative workflows.
 
 ## Open Questions
-Live model access is pending a secure connection. Exact public repository creation capability and the entrant's final written answers will be checked before submission. These do not justify simulated live-extraction claims.
+Local API credentials are securely configured. Actual service requests failed because the account has no API credits, so live extraction quality remains unverified and hosted paid processing stays disabled. Public source is available at https://github.com/nolankido/action-receipt. The entrant's hands-on review and final written answers remain pending. These do not justify simulated live-extraction claims.

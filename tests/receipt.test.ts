@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { samples } from "../lib/samples.ts";
-import { calendarEligible, canApprove, canConfirmDate, editAction, explicitDates, locateEvidence, resultIsCurrent, validDate, validOffset, validateExtraction } from "../lib/receipt.ts";
+import { calendarEligible, canApprove, canConfirmDate, editAction, explicitDates, locateEvidence, manualAction, resultIsCurrent, validDate, validOffset, validateExtraction } from "../lib/receipt.ts";
 import { calendarText, checklistText, foldLine, type ReceiptMeta } from "../lib/export.ts";
 
 const first = () => validateExtraction(samples[0].source, samples[0].result).actions;
@@ -132,4 +132,28 @@ test("calendar text escapes injection and folds UTF-8 by bytes without splitting
   const folded = foldLine("DESCRIPTION:" + "🎓".repeat(50));
   for (const line of folded.split("\r\n")) assert.ok(new TextEncoder().encode(line).length <= 75);
   assert.equal(folded.replace(/\r\n /g, ""), "DESCRIPTION:" + "🎓".repeat(50));
+});
+test("user-added actions require exact source evidence and start unapproved", () => {
+  const a = manualAction(samples[0].source, "Register", "Register using the club form by November 5, 2026.", "Only if attending", 1);
+  assert.equal(a.origin, "user"); assert.equal(a.evidenceValid, true); assert.equal(a.approved, false); assert.equal(a.date, ""); assert.equal(a.id, "manual-1");
+  assert.throws(() => manualAction(samples[0].source, "Invented action", "An invented quotation.", "", 2), /exact supporting passage/);
+  assert.throws(() => manualAction(samples[0].source, " ", "Register", "", 3), /short action/);
+});
+test("manual timed actions preserve cutoff requirements and manual provenance in downloads", () => {
+  const a = manualAction(samples[1].source, "Upload budget", "Upload your budget by December 2, 2026 at 5:00 pm.", "", 1);
+  assert.equal(a.sourceRequiresTime, true);
+  const reviewed = { ...editAction(a, { date: "2026-12-02", time: "17:00", utcOffset: "-10:00" }), dateConfirmed: true, approved: true };
+  const manualMeta = { ...meta, mode: "manual" as const };
+  assert.equal(calendarEligible(reviewed), true);
+  for (const output of [checklistText([reviewed], manualMeta), calendarText([reviewed], manualMeta).replace(/\r\n /g, "")]) {
+    assert.match(output, /Manual review/); assert.match(output, /Added by user from source/); assert.match(output, /no AI extraction/);
+  }
+});
+test("long manual passages retain full evidence and detected date-conflict warnings", () => {
+  const quote = "Register by November 5, 2026. " + "Read all conditions carefully. ".repeat(25) + "The same form says November 7, 2026.";
+  assert.ok(quote.length > 600 && quote.length <= 1200);
+  const a = manualAction(quote, "Register", quote, "", 2);
+  assert.equal(a.evidence[0].quote, quote); assert.equal(a.date, "");
+  assert.ok(a.issues.some(issue => /conflicting/.test(issue)));
+  assert.match(checklistText([{ ...a, approved: true }], { ...meta, mode: "manual" }), /conflicting date/);
 });

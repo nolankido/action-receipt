@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCheck, ChevronDown, CircleHelp, Download, FileText, Info, LoaderCircle, LockKeyhole, Pencil, Quote, ReceiptText, RotateCcw, ShieldCheck, Sparkles, TriangleAlert, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCheck, ChevronDown, CircleHelp, Download, FileText, Info, LoaderCircle, LockKeyhole, Pencil, Plus, Quote, ReceiptText, RotateCcw, ShieldCheck, Sparkles, TriangleAlert, X } from "lucide-react";
 import { samples } from "../lib/samples.ts";
-import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, calendarEligible, canApprove, canConfirmDate, displayDate, editAction, resultIsCurrent, validateExtraction, type Evidence, type ReviewedAction } from "../lib/receipt.ts";
+import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, calendarEligible, canApprove, canConfirmDate, displayDate, editAction, manualAction, resultIsCurrent, validateExtraction, type Evidence, type ReviewedAction } from "../lib/receipt.ts";
 import { calendarText, checklistText, type ReceiptMeta } from "../lib/export.ts";
 
 function saveFile(text: string, type: string, name: string) {
@@ -24,6 +24,35 @@ function SourcePassage({ source, selected }: { source: string; selected: Evidenc
   return <>{chunks}</>;
 }
 
+function ManualActionForm({ source, disabled, onAdd }: { source: string; disabled: boolean; onAdd: (title: string, quote: string, condition: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [quote, setQuote] = useState("");
+  const [condition, setCondition] = useState("");
+  const [error, setError] = useState("");
+  const titleInput = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (open) titleInput.current?.focus(); }, [open]);
+  const exactMatch = Boolean(quote.trim() && source.includes(quote.trim()));
+  return <div className="manual-action-area">
+    <button className="manual-toggle" disabled={disabled} aria-expanded={open} aria-controls="manual-action-form" onClick={() => setOpen(!open)}><Plus size={15} /> {open ? "Close action form" : "Add an action from the source"}<ChevronDown size={14} className={open ? "rotate" : ""} /></button>
+    {disabled && <p className="field-hint">Add actions after processing finishes. A receipt can hold up to 20 actions.</p>}
+    {open && <form id="manual-action-form" className="manual-action-form" onSubmit={e => {
+      e.preventDefault(); if (disabled) return;
+      try { onAdd(title, quote, condition); setTitle(""); setQuote(""); setCondition(""); setError(""); setOpen(false); }
+      catch (e) { setError(e instanceof Error ? e.message : "This action could not be added."); }
+    }}>
+      <p>Repair a missed instruction, or review a notice yourself. Your action will be labeled as added by you and needs approval before export.</p>
+      <label htmlFor="manual-action-title">What needs to be done?</label><input ref={titleInput} id="manual-action-title" required maxLength={240} value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Bring a signed permission slip" />
+      <label htmlFor="manual-action-quote">Exact supporting passage</label><textarea id="manual-action-quote" required rows={3} maxLength={1200} value={quote} onChange={e => setQuote(e.target.value)} placeholder="Copy the relevant words from the original notice." aria-describedby="manual-passage-hint" />
+      <p className={`field-hint ${exactMatch ? "matched-passage" : ""}`} id="manual-passage-hint">{quote.trim() ? exactMatch ? "This passage occurs in the notice. Check that it supports your action." : "This passage does not match the notice. Copy its exact wording." : "Include any conditions, dates and times that apply. Up to 1,200 characters."}</p>
+      <label htmlFor="manual-action-condition">Condition or optionality <span>(optional)</span></label><input id="manual-action-condition" maxLength={600} value={condition} onChange={e => setCondition(e.target.value)} placeholder="e.g. Only if you plan to attend" />
+      <p className="field-hint">Set and confirm any date in Review details after adding the action.</p>
+      {error && <p className="error-message" role="alert">{error}</p>}
+      <button className="primary-button" type="submit" disabled={disabled || !title.trim() || !exactMatch}><Plus size={15} /> Add for review</button>
+    </form>}
+  </div>;
+}
+
 function ActionCard({ action, index, onChange, onEvidence }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void }) {
   const [open, setOpen] = useState(false);
   const eligible = action.dateConfirmed && canConfirmDate(action);
@@ -36,6 +65,7 @@ function ActionCard({ action, index, onChange, onEvidence }: { action: ReviewedA
         {action.omitted ? "Omitted" : action.approved ? <><Check size={12} /> Approved</> : !action.evidenceValid ? "Evidence needs attention" : eligible ? "Date confirmed" : needsClarification ? "Needs clarification" : "Ready to review"}
       </span><button className="icon-button omit-button" aria-label={action.omitted ? `Restore ${action.title}` : `Omit ${action.title}`} onClick={() => change({ omitted: !action.omitted })}>{action.omitted ? <RotateCcw size={15} /> : <X size={15} />}</button></div>
       <h3>{action.title}</h3>
+      {action.origin === "user" && <p className="correction-label"><Pencil size={11} /> Added by you from source</p>}
       {(action.title !== action.originalTitle || action.condition !== action.originalCondition) && <p className="correction-label"><Pencil size={11} /> Wording edited by you</p>}
       {action.condition && <p className="condition">{action.condition}</p>}
       <div className={`deadline-line ${!action.date ? "unresolved" : ""}`}><CalendarDays size={15} /><span>{action.date ? displayDate(action.date) : action.deadlineText || "No deadline stated"}{action.time && action.date ? ` · ${action.time}` : ""}</span>{eligible && <Check size={14} className="confirmed-check" />}</div>
@@ -71,7 +101,7 @@ export default function ReceiptWorkspace() {
   const [title, setTitle] = useState(first.title);
   const [actions, setActions] = useState<ReviewedAction[]>(initial.actions);
   const [notes, setNotes] = useState(initial.notes);
-  const [mode, setMode] = useState<"sample" | "live" | null>("sample");
+  const [mode, setMode] = useState<"sample" | "live" | "manual" | null>("sample");
   const [sampleId, setSampleId] = useState<string | null>(first.id);
   const [editing, setEditing] = useState(false);
   const [selected, setSelected] = useState<Evidence | null>(null);
@@ -82,6 +112,7 @@ export default function ReceiptWorkspace() {
   const [methodOpen, setMethodOpen] = useState(false);
   const [model, setModel] = useState("");
   const requestId = useRef(0); const currentSource = useRef(source);
+  const manualId = useRef(0);
   const receiptId = useRef("session"); const createdAt = useRef(new Date());
   const dialog = useRef<HTMLDialogElement>(null); const noticeInput = useRef<HTMLTextAreaElement>(null);
   useEffect(() => { receiptId.current = crypto.randomUUID(); fetch("/api/status").then(r => r.ok ? r.json() : null).then(d => setLiveReady(Boolean(d && typeof d === "object" && "liveAI" in d && d.liveAI === true))).catch(() => setLiveReady(false)); }, []);
@@ -91,7 +122,7 @@ export default function ReceiptWorkspace() {
   const calendar = actions.filter(calendarEligible);
   const active = actions.filter(a => !a.omitted);
   const unclear = active.filter(a => !a.dateConfirmed || !canConfirmDate(a)).length;
-  const meta = (): ReceiptMeta => ({ mode: mode === "live" ? "live" : "sample", title, createdAt: createdAt.current, receiptId: receiptId.current, notes });
+  const meta = (): ReceiptMeta => ({ mode: mode ?? "manual", title, createdAt: createdAt.current, receiptId: receiptId.current, notes });
   function resetResults(newSource: string) {
     requestId.current++; currentSource.current = newSource; setSource(newSource); setActions([]); setNotes([]); setSelected(null); setMode(null); setSampleId(null); setError(""); setBusy(false); setModel("");
   }
@@ -120,6 +151,13 @@ export default function ReceiptWorkspace() {
     } finally { if (thisRequest === requestId.current) setBusy(false); }
   }
   function highlight(evidence: Evidence) { setSelected(evidence); setEditing(false); setAnnouncement(`Highlighted ${evidence.starts.length} source match${evidence.starts.length === 1 ? "" : "es"}.`); }
+  function addManual(title: string, quote: string, condition: string) {
+    if (busy || actions.length >= 20) throw new Error("A receipt can hold up to 20 actions. Wait for processing to finish before adding one.");
+    const action = manualAction(source, title, quote, condition, manualId.current + 1);
+    manualId.current++;
+    if (!mode) { setMode("manual"); receiptId.current = crypto.randomUUID(); createdAt.current = new Date(); }
+    setActions(old => [...old, action]); setAnnouncement("Added your action with its source passage. Review and approve it before exporting.");
+  }
   function exportChecklist() { saveFile(checklistText(actions, meta()), "text/markdown;charset=utf-8", "action-receipt.md"); setAnnouncement(`Downloaded a checklist with ${approved.length} approved actions.`); }
   function exportCalendar() { saveFile(calendarText(actions, meta()), "text/calendar;charset=utf-8", "action-receipt.ics"); setAnnouncement(`Downloaded ${calendar.length} calendar entries. ${approved.length - calendar.length} approved items omitted because their dates are unresolved.`); }
   return (
@@ -127,24 +165,26 @@ export default function ReceiptWorkspace() {
       <a className="skip-link" href="#workspace">Skip to workspace</a>
       <header className="site-header"><a className="brand" href="/" aria-label="Action Receipt home"><span className="brand-icon"><ReceiptText size={22} strokeWidth={1.7} /></span><span>Action Receipt<span className="brand-dot">.</span></span></a><div className="header-right"><span className="session-label"><span className="status-dot" /> One notice. Clear next steps.</span><button className="method-button" onClick={() => setMethodOpen(true)}><CircleHelp size={16} /> How it works</button></div></header>
       <main>
-        <section className="intro"><div><p className="eyebrow"><span /> FROM NOTICE TO NEXT STEP</p><h1>Know what’s next.<br /><em>Keep the proof.</em></h1><p className="intro-copy">Turn a tangled notice into a checklist you can check.<br className="desktop-break" /> Every action has a source. Every unclear date stays yours to resolve.</p></div><div className="intro-aside"><div className="mini-proof"><Quote size={19} /><div><strong>Less guessing.<br />More checking.</strong><p>AI proposes. You decide.</p></div></div><button className="own-notice-button" onClick={ownNotice}>Use your own notice <ArrowUpRight size={17} /></button></div></section>
+        <section className="intro"><div><p className="eyebrow"><span /> FROM NOTICE TO NEXT STEP</p><h1>Know what’s next.<br /><em>Keep the proof.</em></h1><p className="intro-copy">Turn a tangled notice into a checklist you can check.<br className="desktop-break" /> Every action has a source. Every unclear date stays yours to resolve.</p></div><div className="intro-aside"><div className="mini-proof"><Quote size={19} /><div><strong>Less guessing.<br />More checking.</strong><p>Read. Review. Decide.</p></div></div><button className="own-notice-button" onClick={ownNotice}>Use your own notice <ArrowUpRight size={17} /></button></div></section>
         <section className="sample-section" aria-label="Synthetic sample notices"><div className="section-heading"><span>TAKE A QUICK LOOK</span><span>Three invented notices. Three useful checks.</span></div><div className="samples">{samples.map((sample, i) => <button className={`sample-choice ${sampleId === sample.id ? "selected" : ""}`} key={sample.id} onClick={() => loadSample(sample.id)}><span className="sample-index">0{i + 1}</span><span className="sample-copy"><strong>{sample.label}</strong><span>{sample.kind}</span></span><ArrowUpRight size={17} /></button>)}</div></section>
         <section id="workspace" className="workspace" aria-label="Notice review workspace">
           <div className="workspace-top"><div className="workspace-title"><span className="workspace-number">01</span><h2>Your notice, made clearer</h2></div><span className="privacy-label"><LockKeyhole size={13} /> No saved notice history</span></div>
           {mode === "sample" && <div className="mode-banner"><Info size={16} /><p><strong>Synthetic sample walkthrough.</strong> These are saved example results, not live AI extraction. Review, edit, and export them to explore the workflow.</p></div>}
           {mode === "live" && <div className="mode-banner live"><Sparkles size={16} /><p><strong>Live AI proposals{model ? ` · ${model}` : ""}.</strong> Check the notice for missed or misinterpreted instructions before approving.</p></div>}
+          {mode === "manual" && <div className="mode-banner"><Pencil size={16} /><p><strong>Manual review.</strong> You added these actions from the source. No AI extraction was used for this receipt.</p></div>}
           <div className="workspace-grid">
             <section className="source-panel" aria-labelledby="source-heading"><div className="panel-heading"><div><FileText size={17} /><h2 id="source-heading">The original notice</h2></div><span className="panel-caption">YOUR SOURCE OF TRUTH</span></div>
               <div className="source-meta"><label htmlFor="notice-title">Notice name <span>(optional)</span></label><input id="notice-title" maxLength={120} value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Campus workshop registration" /></div>
               <div className="source-tabs" role="group" aria-label="Source view"><button className={!editing ? "active" : ""} onClick={() => setEditing(false)} disabled={!source}><FileText size={13} /> Read & inspect</button><button className={editing ? "active" : ""} onClick={() => setEditing(true)}><Pencil size={13} /> Edit notice</button></div>
               {editing ? <div className="notice-editor"><label className="sr-only" htmlFor="notice-text">Paste the notice text</label><textarea ref={noticeInput} id="notice-text" value={source} maxLength={MAX_NOTICE_LENGTH} placeholder="Paste a school, club, or event notice here. Include the dates and conditions exactly as written." onChange={e => resetResults(e.target.value)} /><div className="editor-footer"><span>Editing clears previous results and approvals.</span><span>{source.length.toLocaleString()} / 15,000</span></div></div> : <div className="notice-paper">{source ? <><p className="document-kicker">{mode === "sample" ? "SYNTHETIC EXAMPLE" : "ORIGINAL TEXT"}</p><pre className="notice-content"><SourcePassage source={source} selected={selected} /></pre><div className="paper-end"><span /><ReceiptText size={17} /><span /></div></> : <div className="empty-source"><FileText size={30} /><h3>A little context goes a long way.</h3><p>Paste the complete notice, including dates and conditions.</p><button className="text-button" onClick={() => { setEditing(true); setTimeout(() => noticeInput.current?.focus(), 0); }}>Paste a notice <ArrowRight size={14} /></button></div>}</div>}
               {selected && !editing && <div className="highlight-note"><Quote size={13} /> {selected.starts.length} exact match{selected.starts.length === 1 ? "" : "es"} highlighted<button onClick={() => setSelected(null)} aria-label="Clear source highlighting"><X size={13} /></button></div>}
-              <div className="analyze-area"><button className="primary-button analyze-button" disabled={busy || source.trim().length < MIN_NOTICE_LENGTH} onClick={analyze}>{busy ? <LoaderCircle size={17} className="spin" /> : <Sparkles size={17} />}{busy ? "Reading your notice…" : "Analyze notice with AI"}<ArrowRight size={17} /></button><p>{liveReady === false ? "Live AI is not connected yet. The sample walkthrough is available above." : "Sends this text to OpenAI for processing. Avoid sensitive personal information."}</p>{liveReady === false && <p className="processing-disclosure">Using Analyze sends text to OpenAI once live AI is enabled.</p>}{error && <div className="error-message" role="alert"><TriangleAlert size={16} /><span>{error}</span></div>}</div>
+              <div className="analyze-area"><button className="primary-button analyze-button" disabled={busy || liveReady === false || source.trim().length < MIN_NOTICE_LENGTH} onClick={analyze}>{busy ? <LoaderCircle size={17} className="spin" /> : <Sparkles size={17} />}{busy ? "Reading your notice…" : "Analyze notice with AI"}<ArrowRight size={17} /></button><p>{liveReady === false ? "Live AI is not connected yet. Try a sample above, or add actions from your own notice manually." : "Sends this text to OpenAI for processing. Avoid sensitive personal information."}</p>{liveReady === false && <p className="processing-disclosure">Using Analyze sends text to OpenAI once live AI is enabled.</p>}{error && <div className="error-message" role="alert"><TriangleAlert size={16} /><span>{error}</span></div>}</div>
             </section>
             <section className="actions-panel" aria-labelledby="actions-heading"><div className="panel-heading"><div><ReceiptText size={17} /><h2 id="actions-heading">Your action receipt</h2><span className="count-badge">{active.length}</span></div><span className="panel-caption">REVIEW BEFORE YOU EXPORT</span></div>
               <div className="review-summary"><span><span className="summary-dot green-dot" /> {approved.length} approved</span><span><span className="summary-dot amber-dot" /> {unclear} date{unclear === 1 ? "" : "s"} to confirm</span></div>
-              <div className="actions-list">{busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} onChange={next => setActions(old => old.map(item => item.id === next.id ? next : item))} onEvidence={highlight} />) : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "live" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "live" ? "Check the original notice yourself. The model may have missed something." : "Analyze a notice or try a synthetic sample. Nothing is approved automatically."}</p></div>}</div>
+              <div className="actions-list">{busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} onChange={next => setActions(old => old.map(item => item.id === next.id ? next : item))} onEvidence={highlight} />) : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "live" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "live" ? "Check the original notice yourself. The model may have missed something." : "Analyze a notice, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}</div>
               {notes.length > 0 && <details className="notice-notes"><summary><Info size={14} /> Notice-level notes <ChevronDown size={13} /></summary><ul>{notes.map((note, i) => <li key={i}>{note}</li>)}</ul></details>}
+              {source.trim().length >= MIN_NOTICE_LENGTH && <ManualActionForm key={requestId.current} source={source} disabled={busy || actions.length >= 20} onAdd={addManual} />}
               <div className="export-area"><div className="export-title"><span className="export-icon"><ShieldCheck size={18} /></span><div><h3>Your approval is the final step.</h3><p>Only checked actions leave this workspace.</p></div></div><div className="export-buttons"><button disabled={!approved.length} onClick={exportChecklist}><Download size={15} /> Checklist <span>{approved.length}</span></button><button disabled={!calendar.length} onClick={exportCalendar}><CalendarDays size={15} /> Calendar <span>{calendar.length}</span></button></div><p className="export-hint">{approved.length > calendar.length ? `${approved.length - calendar.length} approved item${approved.length - calendar.length === 1 ? " stays" : "s stay"} in the checklist only. Confirm complete dates in Review details to include them in the calendar.` : "Downloads a Markdown checklist or .ics file. Nothing is added to your calendar automatically."}</p></div>
             </section>
           </div>
@@ -153,7 +193,7 @@ export default function ReceiptWorkspace() {
       </main>
       <footer><span className="footer-brand"><ReceiptText size={15} /> Action Receipt</span><p>A small tool for a more considered next step.</p><button onClick={() => setMethodOpen(true)}>Method & privacy <ArrowUpRight size={12} /></button></footer>
       <div className="sr-only" role="status" aria-live="polite">{announcement}</div>
-      <dialog ref={dialog} className="method-dialog" onCancel={() => setMethodOpen(false)} onClose={() => setMethodOpen(false)}><button className="dialog-close icon-button" onClick={() => setMethodOpen(false)} aria-label="Close method and privacy"><X size={20} /></button><span className="dialog-symbol"><ReceiptText size={27} /></span><p className="eyebrow">A RECEIPT, WITH REASONS</p><h2>Useful AI leaves room<br />for your judgment.</h2><p>Action Receipt helps you inspect proposed actions from one notice. It does not guarantee a correct or complete reading.</p><ol><li><strong>Find the source.</strong> Quotations are matched exactly against the pasted text. A match proves the quotation is present, not that the interpretation is right.</li><li><strong>Clarify the date.</strong> Relative wording, missing years and conflicting dates need your decision. Timed deadlines also need a confirmed UTC offset.</li><li><strong>Approve deliberately.</strong> Edits clear approval. Calendar downloads contain only approved actions with confirmed, complete dates. Original warnings stay in the files.</li></ol><h3>What happens to your notice?</h3><p>Walkthroughs use invented notices and saved results in your browser. Live analysis sends the notice to OpenAI through this app’s server. Provider data handling is governed by its terms. The app does not save a notice history or log notice bodies; refreshing clears your session. Downloaded files may contain your source quotations.</p><p className="dialog-note">The live AI service is being configured and tested in the owner’s private review site. Sample mode is always labeled, including in downloads.</p><button className="primary-button" onClick={() => setMethodOpen(false)}>Back to the workspace <ArrowRight size={16} /></button></dialog>
+      <dialog ref={dialog} className="method-dialog" onCancel={() => setMethodOpen(false)} onClose={() => setMethodOpen(false)}><button className="dialog-close icon-button" onClick={() => setMethodOpen(false)} aria-label="Close method and privacy"><X size={20} /></button><span className="dialog-symbol"><ReceiptText size={27} /></span><p className="eyebrow">A RECEIPT, WITH REASONS</p><h2>Useful AI leaves room<br />for your judgment.</h2><p>Action Receipt helps you inspect proposed actions from one notice. It does not guarantee a correct or complete reading.</p><ol><li><strong>Find the source.</strong> Quotations are matched exactly against the pasted text. A match proves the quotation is present, not that the interpretation is right.</li><li><strong>Clarify the date.</strong> Relative wording, missing years and conflicting dates need your decision. Timed deadlines also need a confirmed UTC offset.</li><li><strong>Approve deliberately.</strong> Edits clear approval. Calendar downloads contain only approved actions with confirmed, complete dates. Original warnings stay in the files.</li></ol><h3>What happens to your notice?</h3><p>Walkthroughs use invented notices and saved results in your browser. Manual review stays in your browser. Live analysis sends the notice to OpenAI through this app’s server. Provider data handling is governed by its terms. The app does not save a notice history or log notice bodies; refreshing clears your session. Downloaded files may contain your source quotations.</p><p className="dialog-note">The live AI service is being configured and tested in the owner’s private review site. Sample and manual modes are always labeled, including in downloads.</p><button className="primary-button" onClick={() => setMethodOpen(false)}>Back to the workspace <ArrowRight size={16} /></button></dialog>
     </div>
   );
 }
