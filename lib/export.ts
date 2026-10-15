@@ -1,4 +1,5 @@
 import { calendarEligible, canConfirmDate, checklistEligible, validDate, validTime, validOffset, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
+import { sourceDecisionLines, sourceReviewSummary } from "./source-review.ts";
 
 export type ReceiptMeta = { mode: "sample" | "local" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[]; attention?: SourceReviewItem[]; restored?: boolean };
 export const modeDescription = (mode: ReceiptMeta["mode"], restored = false) => (restored ? "Imported review file; declared prior mode (unverified): " : "") + (mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : mode === "manual" ? "Manual review; actions added by the user, no AI extraction" : "Local text rules; browser-only proposals, no AI model or API");
@@ -54,8 +55,10 @@ export function checklistText(actions: ReviewedAction[], meta: ReceiptMeta): str
   }
   if (meta.notes.length) out.push("## Notice notes", ...meta.notes.map(n => `- ${markdown(n)}`), "");
   if (meta.attention?.length) {
+    const summary = sourceReviewSummary(meta.attention, actions);
     out.push("## Source passages flagged for review", "", "These are context flags, not approved tasks. They may already have been addressed during your review. This list is not exhaustive.", "");
-    for (const item of meta.attention) out.push(`- ${markdown(item.reason)}`, `  - Source: “${markdown(item.evidence.quote)}”`);
+    out.push(`Identified flags: ${summary.addressed} addressed; ${summary.pending} still need attention. This is not a completeness check.`, "");
+    for (const item of meta.attention) out.push(`- ${markdown(item.reason)}`, `  - Source: “${markdown(item.evidence.quote)}”`, ...sourceDecisionLines(item, actions).map(line => `  - ${markdown(line)}`));
     out.push("");
   }
   return out.join("\n");
@@ -90,7 +93,7 @@ export function calendarText(actions: ReviewedAction[], meta: ReceiptMeta): stri
       ...a.evidence.map(e => `Action source: ${e.quote}`), ...a.dateEvidence.map(e => `Date source: ${e.quote}`),
       ...a.issues.map(i => `Original review flag: ${i}`),
       ...meta.notes.map(n => `Notice note: ${n}`),
-      ...(meta.attention?.length ? ["Other source passages flagged for review (context, not approved tasks; may already have been addressed):", ...meta.attention.map(item => `${item.reason}\nSource: ${item.evidence.quote}`)] : []),
+      ...(meta.attention?.length ? ["Other source passages flagged for review (context, not approved tasks; not a completeness check):", ...meta.attention.map(item => `${item.reason}\nSource: ${item.evidence.quote}\n${sourceDecisionLines(item, actions).join("\n")}`)] : []),
       "Quotation matching does not certify interpretation or completeness.",
     ].join("\n");
     lines.push("BEGIN:VEVENT", `UID:${meta.receiptId}-${a.id}@actionreceipt.local`, `DTSTAMP:${utcStamp(meta.createdAt)}`);

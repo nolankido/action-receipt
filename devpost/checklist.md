@@ -19,10 +19,12 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
   Commit: `Build source-linked notice review and approved exports`
 
 ## Hands-on Checkpoints
+- [ ] Formative trial with 3–5 students completed and observed issues addressed. Prepare a technical test guide and realistic synthetic notices; do not invent participant observations or results.
 - [ ] Early usable behavior explored, combined with final review for this small integrated build
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
+- [x] Guided source-review implementation mechanically verified: queue, source-backed repair, decision trail, backward-compatible local files, previews and exports. Actual learner/participant review remains open.
 - [x] Local-rule extraction checked on fresh synthetic source text; no API required
 - [ ] Final review complete: feedback resolved and learner confirms ready to ship
 
@@ -31,7 +33,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [ ] Optional edit and transfer reflection addressed
 - [x] `devpost/app-map.html` generated from finished code, checked and shown
 
-Activity and evidence: 75 automated tests, TypeScript and the production build pass. Five fresh notice checks cover abbreviated dates and weekday conflicts as well as the original cases. Initial implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
+Activity and evidence: 87 automated tests, TypeScript and the production build pass. Five fresh notice checks cover abbreviated dates and weekday conflicts as well as the original cases. Initial implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
 Route and stops: reference-only route in app-map.html: ActionCard, calendarEligible, calendarText. It has not been toured with the learner.
 Edit outcome: not yet offered.
 Reflection: not yet offered; private answer must stay in the ignored profile.
@@ -57,3 +59,5 @@ Activity mode: pending.
 - Final improvement pass: explicit local review save/open preserves source, edits, omissions and context with no autosave or upload. Strict bounded parsing re-matches evidence, recomputes cutoff protection independently of file metadata, rejects invalid files without replacing work, and resets approvals/date confirmations. Imported provenance stays unverified. Repeated cycles, forged trust fields, incomplete edits, duplicate IDs, cutoff bypass and condition-clock scope have regression coverage. Manual IDs avoid collisions after restore; disabling an optional cutoff clears its inactive fields. Fifty-seven automated tests pass; browser and learner checks remain pending.
 - Download-preview pass: the learner requested another improvement before submission. Added an optional read-only preview with included actions, format-specific exclusion reasons, source-context disclosure and exact serialized Markdown/iCalendar content. The download uses the displayed string. Shared eligibility rules now drive counts, preview and both exports. Regression checks cover mixed review states, missing calendar fields, subsequent edits, restored unapproved work, invalid confirmed dates and UTC conversion. Sixty-three tests pass; browser interaction and actual learner review remain pending.
 - Date-reading pass: reproduced sentence splitting at abbreviated months and an unchecked weekday/date contradiction. Added shared English calendar syntax, protected abbreviation boundaries while preserving original quotes, accepted explicit-year month abbreviations in either order and matching weekday prefixes, and left adjacent weekday contradictions unresolved with exact review flags. Common validation independently blocks contradicted proposals. Twelve new behavioral tests cover source fidelity, date ambiguity, condition scope, exports, manual resolution and review-file cutoff protection. No runtime service or dependency was added; actual learner review remains pending.
+
+- Guided source review: implemented the learner-approved queue, decision explanations, exact-source repair, existing-action links and pending/all filters. Linked decisions reopen after meaningful edits, omission or revoked approval. Imported choices remain unverified until rechecked. Previews/exports preserve the original flags and current decision trail. Source flag IDs are unique per reason, including multiple reasons on one passage. Version-2 review files retain version-1 read compatibility. A trial kit is prepared; no student sessions or feedback are claimed.

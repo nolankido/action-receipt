@@ -38,7 +38,7 @@ test("fabricated evidence, duplicate IDs and injected trust fields are rejected 
   assert.equal(JSON.stringify(original), before);
 });
 test("unsupported versions, unknown fields, invalid timestamps and hostile IDs fail with readable errors", () => {
-  for (const modify of [(f: any) => { f.version = 2; }, (f: any) => { f.unexpected = "secret detail"; }, (f: any) => { f.createdAt = "+010000-01-01T00:00:00.000Z"; }, (f: any) => { f.receiptId = "id\r\nBEGIN:VEVENT"; }]) {
+  for (const modify of [(f: any) => { f.version = 3; }, (f: any) => { f.unexpected = "secret detail"; }, (f: any) => { f.createdAt = "+010000-01-01T00:00:00.000Z"; }, (f: any) => { f.receiptId = "id\r\nBEGIN:VEVENT"; }]) {
     const f = file(); modify(f); assert.throws(() => openReviewFile(JSON.stringify(f)), error => error instanceof Error && /current review has not been changed/.test(error.message) && !error.message.includes("secret detail"));
   }
   assert.throws(() => openReviewFile("not json"), /supported Action Receipt/);

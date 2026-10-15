@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCheck, ChevronDown, CircleHelp, Download, Eye, FileText, FolderOpen, Info, LoaderCircle, LockKeyhole, Pencil, Plus, Quote, ReceiptText, RotateCcw, Save, ShieldCheck, Sparkles, TriangleAlert, X } from "lucide-react";
-import { samples } from "../lib/samples.ts";
+import { reviewScenario, samples } from "../lib/samples.ts";
 import { extractLocally } from "../lib/local-extraction.ts";
 import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, calendarEligible, canApprove, canConfirmDate, displayDate, editAction, manualAction, nextManualNumber, resultIsCurrent, validateExtraction, type Evidence, type ReviewedAction, type SourceReviewItem } from "../lib/receipt.ts";
 import { calendarText, checklistText, planExports, type ReceiptMeta } from "../lib/export.ts";
 import { MAX_REVIEW_BYTES, openReviewFile as parseReviewFile, saveReviewFile } from "../lib/review-file.ts";
 import ExportPreview from "./export-preview.tsx";
+import SourceReviewQueue, { type FlagActionInput } from "./source-review-queue.tsx";
+import { createActionFromFlag, recordSourceDecision, type DecisionInput } from "../lib/source-review.ts";
 
 function saveFile(text: string, type: string, name: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -58,14 +60,20 @@ function ManualActionForm({ source, disabled, selected, onAdd }: { source: strin
   </div>;
 }
 
-function ActionCard({ action, index, onChange, onEvidence }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void }) {
+function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0 }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void; focusSignal?: number }) {
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!focusSignal) return;
+    setOpen(true);
+    const timer = setTimeout(() => { document.getElementById(`action-card-${action.id}`)?.scrollIntoView({ block: "nearest", behavior: "instant" }); document.getElementById(`${action.id}-title`)?.focus({ preventScroll: true }); }, 0);
+    return () => clearTimeout(timer);
+  }, [focusSignal, action.id]);
   const eligible = action.dateConfirmed && canConfirmDate(action);
   const needsClarification = !canConfirmDate(action);
   const change = (patch: Parameters<typeof editAction>[1]) => onChange(editAction(action, patch));
   const prefix = action.id;
   return (
-    <article className={`action-card ${action.approved ? "is-approved" : ""} ${action.omitted ? "is-omitted" : ""}`}>
+    <article id={`action-card-${action.id}`} className={`action-card ${action.approved ? "is-approved" : ""} ${action.omitted ? "is-omitted" : ""}`}>
       <div className="action-top"><span className="action-number">{String(index + 1).padStart(2, "0")}</span><span className={`badge ${action.approved ? "green" : !action.evidenceValid ? "red" : needsClarification && !eligible ? "amber" : "neutral"}`}>
         {action.omitted ? "Omitted" : action.approved ? <><Check size={12} /> Approved</> : !action.evidenceValid ? "Evidence needs attention" : eligible ? "Date confirmed" : needsClarification ? "Needs clarification" : "Ready to review"}
       </span><button className="icon-button omit-button" aria-label={action.omitted ? `Restore ${action.title}` : `Omit ${action.title}`} onClick={() => change({ omitted: !action.omitted })}>{action.omitted ? <RotateCcw size={15} /> : <X size={15} />}</button></div>
@@ -117,6 +125,7 @@ export default function ReceiptWorkspace() {
   const [announcement, setAnnouncement] = useState("");
   const [methodOpen, setMethodOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [focusedAction, setFocusedAction] = useState({ id: "", signal: 0 });
   const [restoredReview, setRestoredReview] = useState(false);
   const [openingReview, setOpeningReview] = useState(false);
   const [fileError, setFileError] = useState("");
@@ -163,6 +172,12 @@ export default function ReceiptWorkspace() {
       if (resultIsCurrent(thisRequest, requestId.current, submitted, currentSource.current)) setError(e instanceof Error ? e.message : "The notice could not be processed. Your text is still here.");
     } finally { if (thisRequest === requestId.current) setBusy(false); }
   }
+  function tryGuidedReview() {
+    resetResults(reviewScenario.source); setTitle(reviewScenario.title); setEditing(false);
+    const result = extractLocally(reviewScenario.source, requestId.current);
+    setActions(result.actions); setNotes(result.notes); setAttention(result.attention); setMode("local");
+    setAnnouncement("Scanned an invented notice using the actual local rules. Review the flagged passages and add the missed consent action.");
+  }
   function highlight(evidence: Evidence) { setSelected(evidence); setEditing(false); setAnnouncement(`Highlighted ${evidence.starts.length} source match${evidence.starts.length === 1 ? "" : "es"}.`); }
   function addManual(title: string, quote: string, condition: string) {
     if (busy || actions.length >= 20) throw new Error("A receipt can hold up to 20 actions. Wait for processing to finish before adding one.");
@@ -170,6 +185,19 @@ export default function ReceiptWorkspace() {
     workspaceVersion.current++;
     if (!mode) { setMode("manual"); receiptId.current = crypto.randomUUID(); createdAt.current = new Date(); }
     setActions(old => [...old, action]); setAnnouncement("Added your action with its source passage. Review and approve it before exporting.");
+  }
+  function reviewLinkedAction(id: string) { setFocusedAction(old => ({ id, signal: old.signal + 1 })); }
+  function recordFlag(id: string, input: DecisionInput) {
+    const item = attention.find(item => item.id === id); if (!item) throw new Error("This flag is no longer in the current notice.");
+    const updated = recordSourceDecision(item, input, actions);
+    workspaceVersion.current++; setAttention(old => old.map(item => item.id === id ? updated : item));
+    setAnnouncement("Source decision recorded. Action approvals and date confirmations were not changed.");
+  }
+  function createFromFlag(id: string, input: FlagActionInput) {
+    const item = attention.find(item => item.id === id); if (!item || busy || openingReview) throw new Error("Wait for the current notice to finish loading.");
+    const result = createActionFromFlag(source, item, input, actions);
+    workspaceVersion.current++; setActions(old => [...old, result.action]); setAttention(old => old.map(item => item.id === id ? result.item : item));
+    reviewLinkedAction(result.action.id); setAnnouncement("Added a source-backed action and recorded your link. Review and approve the new action; its date starts unresolved.");
   }
   function saveReview() {
     try {
@@ -190,7 +218,7 @@ export default function ReceiptWorkspace() {
       if (version !== workspaceVersion.current) throw new Error("Your review changed while the file was opening. Open the file again if you want to replace it.");
       resetResults(loaded.source); setTitle(loaded.meta.title); setActions(loaded.actions); setNotes(loaded.meta.notes); setAttention(loaded.meta.attention ?? []); setMode(loaded.meta.mode); setRestoredReview(true); setEditing(false);
       receiptId.current = loaded.meta.receiptId; createdAt.current = loaded.meta.createdAt;
-      setFileMessage("Review opened. Edits and omissions were kept; action approvals and date confirmations were cleared.");
+      setFileMessage("Review opened. Edits, omissions and decision notes were kept. Approvals and date confirmations were cleared; loaded source decisions need rechecking.");
       setAnnouncement(`Opened ${loaded.actions.length} actions from a review file. Check and approve them again before export.`);
     } catch (e) { if (thisLoad === fileLoadId.current) setFileError(e instanceof Error ? e.message : "The file could not be opened. Your current review was kept."); }
     finally { if (thisLoad === fileLoadId.current) setOpeningReview(false); }
@@ -208,10 +236,11 @@ export default function ReceiptWorkspace() {
       <main>
         <section className="intro"><div><p className="eyebrow"><span /> FROM NOTICE TO NEXT STEP</p><h1>Know what’s next.<br /><em>Keep the proof.</em></h1><p className="intro-copy">Turn a tangled notice into a checklist you can check.<br className="desktop-break" /> Every action has a source. No accounts, API credits, or model downloads.</p></div><div className="intro-aside"><div className="mini-proof"><Quote size={19} /><div><strong>Less guessing.<br />More checking.</strong><p>Read. Review. Decide.</p></div></div><button className="own-notice-button" onClick={ownNotice}>Use your own notice <ArrowUpRight size={17} /></button></div></section>
         <section className="sample-section" aria-label="Synthetic sample notices"><div className="section-heading"><span>TAKE A QUICK LOOK</span><span>Three invented notices. Three useful checks.</span></div><div className="samples">{samples.map((sample, i) => <button className={`sample-choice ${sampleId === sample.id ? "selected" : ""}`} key={sample.id} onClick={() => loadSample(sample.id)}><span className="sample-index">0{i + 1}</span><span className="sample-copy"><strong>{sample.label}</strong><span>{sample.kind}</span></span><ArrowUpRight size={17} /></button>)}</div></section>
+        <div className="guided-review-example"><p><strong>Try the guided review.</strong> An invented notice has an instruction to repair and details to check. This runs the actual local rules.</p><button onClick={tryGuidedReview}>Try guided review (clears workspace)</button></div>
         <section id="workspace" className="workspace" aria-label="Notice review workspace">
           <div className="workspace-top"><div className="workspace-title"><span className="workspace-number">01</span><h2>Your notice, made clearer</h2></div><span className="privacy-label"><LockKeyhole size={13} /> Runs in your browser</span></div>
           <div className="review-file-toolbar"><div className="review-file-buttons"><button disabled={busy || openingReview || source.trim().length < MIN_NOTICE_LENGTH} onClick={saveReview}><Save size={14} /> Save review file</button><button disabled={busy || openingReview} onClick={() => reviewInput.current?.click()}>{openingReview ? <LoaderCircle size={14} className="spin" /> : <FolderOpen size={14} />} {openingReview ? "Opening review…" : "Open review file"}</button><input ref={reviewInput} className="sr-only" type="file" accept=".json,application/json" aria-label="Choose a saved Action Receipt review" disabled={busy || openingReview} onChange={e => { const file = e.currentTarget.files?.[0]; e.currentTarget.value = ""; if (file) void openReview(file); }} /></div><p>Save keeps the full notice and added actions, including unapproved items. Opening replaces this workspace and resets approvals and date confirmations. Unfinished form entries are not saved.</p>{fileMessage && <p className="review-file-message" role="status">{fileMessage}</p>}{fileError && <div className="error-message" role="alert"><TriangleAlert size={15} /> {fileError}</div>}</div>
-          {restoredReview && <div className="mode-banner"><FolderOpen size={16} /><p><strong>Loaded review file.</strong> Its labels and interpretation are unverified. Check the source again. Approvals and date confirmations were cleared when opened. The file describes its prior mode as {mode === "sample" ? "a synthetic sample" : mode === "local" ? "local text rules" : "manual review"}.</p></div>}
+          {restoredReview && <div className="mode-banner"><FolderOpen size={16} /><p><strong>Loaded review file.</strong> Its labels and interpretation are unverified. Check the source again. Approvals and date confirmations were cleared when opened. Loaded source decisions need rechecking. The file describes its prior mode as {mode === "sample" ? "a synthetic sample" : mode === "local" ? "local text rules" : "manual review"}.</p></div>}
           {mode === "sample" && !restoredReview && <div className="mode-banner"><Info size={16} /><p><strong>Synthetic sample walkthrough.</strong> These are saved example results, not a fresh scan of the text. Review, edit, and export them to explore the workflow.</p></div>}
           {mode === "local" && !restoredReview && <div className="mode-banner live"><FileText size={16} /><p><strong>Local text-rule proposals.</strong> These are English pattern matches, not AI interpretation. Read the complete notice and add anything the rules missed.</p></div>}
           {mode === "manual" && !restoredReview && <div className="mode-banner"><Pencil size={16} /><p><strong>Manual review.</strong> You added these actions from the source. No automatic extraction was used for this receipt.</p></div>}
@@ -225,11 +254,11 @@ export default function ReceiptWorkspace() {
             </section>
             <section className="actions-panel" aria-labelledby="actions-heading"><div className="panel-heading"><div><ReceiptText size={17} /><h2 id="actions-heading">Your action receipt</h2><span className="count-badge">{active.length}</span></div><span className="panel-caption">REVIEW BEFORE YOU EXPORT</span></div>
               <div className="review-summary"><span><span className="summary-dot green-dot" /> {approved.length} approved</span><span><span className="summary-dot amber-dot" /> {unclear} date{unclear === 1 ? "" : "s"} to confirm</span></div>
-              {attention.length > 0 && <details className="source-attention" open><summary><TriangleAlert size={15} /><span>Inspect {attention.length} source passage{attention.length === 1 ? "" : "s"}</span><ChevronDown size={14} /></summary><p>These passages contain details to inspect, including some that were not turned into actions. Check dates, qualifications and missed tasks. This is not a complete source review.</p><ol>{attention.map(item => <li key={item.id}><p>{item.reason}</p><button className="attention-quote" onClick={() => highlight(item.evidence)}><Quote size={13} /><span>{item.evidence.quote}</span><ArrowUpRight size={13} /></button></li>)}</ol><p>Use the quoted passage to inspect its source. The manual action form can reuse the highlighted words.</p></details>}
-              <div className="actions-list">{busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={highlight} />) : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "local" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "local" ? "Check the original notice yourself. The text rules may have missed something. Add actions from exact source passages." : "Scan a notice locally, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}</div>
+              {attention.length > 0 && <SourceReviewQueue key={requestId.current} items={attention} actions={actions} disabled={busy || openingReview} onEvidence={highlight} onAction={reviewLinkedAction} onRecord={recordFlag} onCreate={createFromFlag} />}
+              <div className="actions-list">{busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} focusSignal={focusedAction.id === a.id ? focusedAction.signal : 0} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={highlight} />) : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "local" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "local" ? "Check the original notice yourself. The text rules may have missed something. Add actions from exact source passages." : "Scan a notice locally, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}</div>
               {notes.length > 0 && <details className="notice-notes"><summary><Info size={14} /> Notice-level notes <ChevronDown size={13} /></summary><ul>{notes.map((note, i) => <li key={i}>{note}</li>)}</ul></details>}
-              {source.trim().length >= MIN_NOTICE_LENGTH && <ManualActionForm key={requestId.current} source={source} disabled={busy || actions.length >= 20} selected={selected} onAdd={addManual} />}
-              <div className="export-area"><div className="export-title"><span className="export-icon"><ShieldCheck size={18} /></span><div><h3>Your approval controls the tasks.</h3><p>Files also include source quotes, notes and flagged passages.</p></div></div><button className="preview-button" disabled={busy || openingReview || !actions.length} onClick={() => setPreviewOpen(true)}><Eye size={16} /> Preview downloads & see what is missing <ArrowUpRight size={14} /></button><div className="export-buttons"><button disabled={!approved.length} onClick={exportChecklist}><Download size={15} /> Checklist <span>{approved.length}</span></button><button disabled={!calendar.length} onClick={exportCalendar}><CalendarDays size={15} /> Calendar <span>{calendar.length}</span></button></div><p className="export-hint">{approved.length > calendar.length ? `${approved.length - calendar.length} approved item${approved.length - calendar.length === 1 ? " stays" : "s stay"} in the checklist only. Confirm complete dates in Review details to include them in the calendar.` : "Downloads a Markdown checklist or .ics file. Nothing is added to your calendar automatically."}</p></div>
+              {source.trim().length >= MIN_NOTICE_LENGTH && <ManualActionForm key={requestId.current} source={source} disabled={busy || openingReview || actions.length >= 20} selected={selected} onAdd={addManual} />}
+              <div className="export-area"><div className="export-title"><span className="export-icon"><ShieldCheck size={18} /></span><div><h3>Your approval controls the tasks.</h3><p>Files also include source quotes, decision notes and flagged passages.</p></div></div><button className="preview-button" disabled={busy || openingReview || !actions.length} onClick={() => setPreviewOpen(true)}><Eye size={16} /> Preview downloads & see what is missing <ArrowUpRight size={14} /></button><div className="export-buttons"><button disabled={!approved.length} onClick={exportChecklist}><Download size={15} /> Checklist <span>{approved.length}</span></button><button disabled={!calendar.length} onClick={exportCalendar}><CalendarDays size={15} /> Calendar <span>{calendar.length}</span></button></div><p className="export-hint">{approved.length > calendar.length ? `${approved.length - calendar.length} approved item${approved.length - calendar.length === 1 ? " stays" : "s stay"} in the checklist only. Confirm complete dates in Review details to include them in the calendar.` : "Downloads a Markdown checklist or .ics file. Nothing is added to your calendar automatically."}</p></div>
             </section>
           </div>
         </section>
@@ -238,7 +267,7 @@ export default function ReceiptWorkspace() {
       <footer><span className="footer-brand"><ReceiptText size={15} /> Action Receipt</span><p>Built with AI. Runs locally, without API fees.</p><a className="offline-download" href="./action-receipt.html" download="action-receipt.html"><Download size={12} /> Download offline app</a><button onClick={() => setMethodOpen(true)}>Method & privacy <ArrowUpRight size={12} /></button></footer>
       <div className="sr-only" role="status" aria-live="polite">{announcement}</div>
       {previewOpen && <ExportPreview actions={actions} meta={meta()} onClose={() => setPreviewOpen(false)} onDownload={downloadPreview} />}
-      <dialog ref={dialog} className="method-dialog" onCancel={() => setMethodOpen(false)} onClose={() => setMethodOpen(false)}><button className="dialog-close icon-button" onClick={() => setMethodOpen(false)} aria-label="Close method and privacy"><X size={20} /></button><span className="dialog-symbol"><ReceiptText size={27} /></span><p className="eyebrow">A RECEIPT, WITH REASONS</p><h2>Clear actions leave room<br />for your judgment.</h2><p>Action Receipt uses local English text rules to propose actions from one notice. It has no runtime AI model or API. It does not guarantee a correct or complete reading.</p><ol><li><strong>Find the source.</strong> Quotations are matched exactly against the pasted text. A match proves the quotation is present, not that the interpretation is right.</li><li><strong>Clarify the date.</strong> Relative wording, missing years and conflicting dates need your decision. Timed deadlines also need a confirmed UTC offset.</li><li><strong>Approve deliberately.</strong> Edits clear approval. Calendar downloads contain only approved actions with confirmed, complete dates. Original warnings stay in the files.</li></ol><h3>What happens to your notice?</h3><p>Your notice, pattern matching, review decisions and downloads stay in this browser. There are no model downloads, API calls, accounts, analytics or saved notice history. Refreshing clears your session. Save a review file explicitly if you want to reopen your work later; the app does not save it automatically. The downloadable app works offline; the hosted page needs a connection to load. Downloaded files contain source quotations, notice notes and flagged passages, including context that is not an approved task.</p><p className="dialog-note">Built with AI coding assistance using the Devpost Learn Skill Pack. The finished app runs with ordinary browser code. Saved samples, fresh local-rule proposals and your own additions remain distinguishable in downloads.</p><button className="primary-button" onClick={() => setMethodOpen(false)}>Back to the workspace <ArrowRight size={16} /></button></dialog>
+      <dialog ref={dialog} className="method-dialog" onCancel={() => setMethodOpen(false)} onClose={() => setMethodOpen(false)}><button className="dialog-close icon-button" onClick={() => setMethodOpen(false)} aria-label="Close method and privacy"><X size={20} /></button><span className="dialog-symbol"><ReceiptText size={27} /></span><p className="eyebrow">A RECEIPT, WITH REASONS</p><h2>Clear actions leave room<br />for your judgment.</h2><p>Action Receipt uses local English text rules to propose actions from one notice. It has no runtime AI model or API. It does not guarantee a correct or complete reading.</p><ol><li><strong>Find the source.</strong> Quotations are matched exactly against the pasted text. A match proves the quotation is present, not that the interpretation is right.</li><li><strong>Clarify the date.</strong> Relative wording, missing years and conflicting dates need your decision. Timed deadlines also need a confirmed UTC offset.</li><li><strong>Approve deliberately.</strong> Edits clear approval. Calendar downloads contain only approved actions with confirmed, complete dates. Original warnings stay in the files.</li></ol><h3>What happens to your notice?</h3><p>Your notice, pattern matching, review decisions and downloads stay in this browser. There are no model downloads, API calls, accounts, analytics or saved notice history. Refreshing clears your session. Save a review file explicitly if you want to reopen your work later; the app does not save it automatically. The downloadable app works offline; the hosted page needs a connection to load. Downloaded files contain source quotations, your recorded decision notes, notice notes and flagged passages, including context that is not an approved task.</p><p className="dialog-note">Built with AI coding assistance using the Devpost Learn Skill Pack. The finished app runs with ordinary browser code. Saved samples, fresh local-rule proposals and your own additions remain distinguishable in downloads.</p><button className="primary-button" onClick={() => setMethodOpen(false)}>Back to the workspace <ArrowRight size={16} /></button></dialog>
     </div>
   );
 }

@@ -1,4 +1,8 @@
 import type { Extraction, RawAction } from "./receipt.ts";
+export const reviewScenario = {
+  title: "Invented field trip notice",
+  source: "CAMPUS FIELD TRIP\nSynthetic practice notice, not an actual event.\n\nRegister for the museum trip by Nov. 5, 2032. Participants must attach a signed consent form.\n\nPay the transport deposit by Tuesday, Nov. 8, 2032. Bring your student ID on Nov. 12, 2032.\n\nYou do not need to pay a separate membership fee.\n\nIf you need accessible transport, email the coordinator by next Friday.",
+};
 function action(title: string, evidence: string, deadline: RawAction["deadline"], condition: string | null = null, issues: string[] = []): RawAction {
   return { title, condition, evidence: [evidence], deadline, issues };
 }

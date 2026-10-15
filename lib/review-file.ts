@@ -15,14 +15,20 @@ const savedAction = z.object({
   utcOffset: z.string().max(6), originalUtcOffset: z.string().max(6), requiresTime: z.boolean(), omitted: z.boolean(),
   origin: z.enum(["extracted", "rules", "user", "imported"]), issues: z.array(z.string().min(1).max(600)).max(24),
 }).strict();
-const reviewSchema = z.object({
-  format: z.literal("action-receipt-review"), version: z.literal(1),
+const decisionSchema = z.object({ kind: z.enum(["linked", "not_action", "clarify"]), note: z.string().trim().min(1).max(600), actionId: identifier.nullable() }).strict().refine(d => d.kind === "linked" ? d.actionId !== null : d.actionId === null);
+const reviewFields = {
+  format: z.literal("action-receipt-review"),
   source: z.string().max(MAX_NOTICE_LENGTH).refine(s => s.trim().length >= MIN_NOTICE_LENGTH),
   title: z.string().max(120), mode: z.enum(["sample", "local", "manual"]), receiptId: identifier,
   createdAt: z.string().regex(/^[1-9]\d{3}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/).refine(value => { try { return new Date(value).toISOString() === value; } catch { return false; } }),
   actions: z.array(savedAction).max(20), notes: z.array(z.string().min(1).max(600)).max(6),
-  attention: z.array(z.object({ quote: z.string().min(1).max(MAX_NOTICE_LENGTH), reason: z.string().min(1).max(600) }).strict()).max(80),
-}).strict().refine(file => new Set(file.actions.map(a => a.id)).size === file.actions.length);
+};
+const flagFields = { quote: z.string().min(1).max(MAX_NOTICE_LENGTH), reason: z.string().min(1).max(600) };
+const reviewSchema = z.discriminatedUnion("version", [
+  z.object({ ...reviewFields, version: z.literal(1), attention: z.array(z.object(flagFields).strict()).max(80) }).strict(),
+  z.object({ ...reviewFields, version: z.literal(2), attention: z.array(z.object({ ...flagFields, id: identifier, decision: decisionSchema.nullable() }).strict()).max(80) }).strict(),
+]).refine(file => new Set(file.actions.map(a => a.id)).size === file.actions.length)
+  .refine(file => file.version === 1 || (new Set(file.attention.map(i => i.id)).size === file.attention.length && file.attention.every(i => !i.decision?.actionId || file.actions.some(a => a.id === i.decision!.actionId))));
 export type SavedReview = { source: string; actions: ReviewedAction[]; meta: ReceiptMeta };
 const invalid = () => new Error("This is not a supported Action Receipt review file. Your current review has not been changed.");
 function checkSize(text: string) {
@@ -31,13 +37,13 @@ function checkSize(text: string) {
 export function saveReviewFile(review: SavedReview): string {
   const { source, actions, meta } = review;
   const data = reviewSchema.safeParse({
-    format: "action-receipt-review", version: 1, source, title: meta.title, mode: meta.mode, receiptId: meta.receiptId, createdAt: meta.createdAt.toISOString(),
+    format: "action-receipt-review", version: 2, source, title: meta.title, mode: meta.mode, receiptId: meta.receiptId, createdAt: meta.createdAt.toISOString(),
     actions: actions.map(a => ({
       id: a.id, title: a.title, originalTitle: a.originalTitle, condition: a.condition, originalCondition: a.originalCondition,
       evidence: a.evidence.map(e => e.quote), dateEvidence: a.dateEvidence.map(e => e.quote), deadlineText: a.deadlineText,
       date: a.date, originalDate: a.originalDate, time: a.time, originalTime: a.originalTime, utcOffset: a.utcOffset, originalUtcOffset: a.originalUtcOffset,
       requiresTime: a.requiresTime, omitted: a.omitted, origin: a.origin, issues: a.issues.filter(issue => issue !== importWarning),
-    })), notes: meta.notes, attention: (meta.attention ?? []).map(item => ({ quote: item.evidence.quote, reason: item.reason })),
+    })), notes: meta.notes, attention: (meta.attention ?? []).map(item => ({ id: item.id, quote: item.evidence.quote, reason: item.reason, decision: item.decision ? { kind: item.decision.kind, note: item.decision.note, actionId: item.decision.actionId } : null })),
   });
   if (!data.success) throw new Error("The review could not be saved. Check the notice and action field lengths first.");
   const text = JSON.stringify(data.data, null, 2) + "\n"; checkSize(text); return text;
@@ -46,7 +52,7 @@ export function openReviewFile(text: string): SavedReview {
   checkSize(text);
   let json: unknown;
   try { json = JSON.parse(text.replace(/^\uFEFF/, "")); } catch { throw invalid(); }
-  if (json && typeof json === "object" && "format" in json && json.format === "action-receipt-review" && "version" in json && json.version !== 1) throw new Error("This review file uses an unsupported version. Your current review has not been changed.");
+  if (json && typeof json === "object" && "format" in json && json.format === "action-receipt-review" && "version" in json && json.version !== 1 && json.version !== 2) throw new Error("This review file uses an unsupported version. Your current review has not been changed.");
   const parsed = reviewSchema.safeParse(json); if (!parsed.success) throw invalid();
   const file = parsed.data;
   if (new Set(file.actions.map(a => a.id)).size !== file.actions.length) throw invalid();
@@ -73,6 +79,8 @@ export function openReviewFile(text: string): SavedReview {
       issues: [...new Set([...item.issues, importWarning])],
     };
   });
-  const attention: SourceReviewItem[] = file.attention.map((item, i) => ({ id: `loaded-review-${i + 1}`, evidence: matched(item.quote), reason: item.reason }));
+  const attention: SourceReviewItem[] = file.attention.map((item, i) => ({ id: "id" in item ? item.id : `loaded-review-${i + 1}`, evidence: matched(item.quote), reason: item.reason,
+    ...("decision" in item && item.decision ? { decision: { ...item.decision, origin: "imported", confirmed: false, actionSnapshot: null } as const } : {}),
+  }));
   return { source: file.source, actions, meta: { mode: file.mode, title: file.title, receiptId: file.receiptId, createdAt: new Date(file.createdAt), notes: file.notes, attention, restored: true } };
 }

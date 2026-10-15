@@ -40,7 +40,7 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
   const attention: SourceReviewItem[] = []; let attentionOverflow = 0;
   function flag(index: number, quote: string, reason: string) {
     if (attention.length >= 80) { attentionOverflow++; return; }
-    attention.push({ id: `review-r${revision}-p${index + 1}`, evidence: locateEvidence(source, quote), reason });
+    attention.push({ id: `review-r${revision}-p${index + 1}-f${attention.length + 1}`, evidence: locateEvidence(source, quote), reason });
   }
   const unmatchedDates: string[] = [];
   let skippedLong = false; let skippedNegation = negated.test(source); let capped = false;

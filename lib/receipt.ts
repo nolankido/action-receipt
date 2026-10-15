@@ -25,7 +25,15 @@ export const extractionSchema = z.object({
 export type Extraction = z.infer<typeof extractionSchema>;
 export type RawAction = Extraction["actions"][number];
 export type Evidence = { quote: string; starts: number[] };
-export type SourceReviewItem = { id: string; evidence: Evidence; reason: string };
+export type SourceDecision = {
+  kind: "linked" | "not_action" | "clarify";
+  note: string;
+  actionId: string | null;
+  origin: "user" | "imported";
+  confirmed: boolean;
+  actionSnapshot: string | null;
+};
+export type SourceReviewItem = { id: string; evidence: Evidence; reason: string; decision?: SourceDecision };
 export type ReviewedAction = {
   id: string;
   originalTitle: string;

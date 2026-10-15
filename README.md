@@ -13,6 +13,7 @@ The optional hosted review site is https://action-receipt.huzzahoptimistically.c
 - Recognize a bounded set of English action words such as register, pay, submit, upload, bring and email.
 - Preserve exact supporting passages and visible conditions, including trailing waivers.
 - Show a source-linked review list for unlinked dates, unsupported obligations, cancellations and skipped passages. The manual form can reuse a highlighted quote. The list is bounded at 80 entries and reports overflow; it is not an exhaustive source review.
+- Guide review of each identified flag. Create a missed action from its exact passage, link an existing action, mark it as not an obligation, or record what needs clarification. Explanations and original flags stay in the receipt. Links need rechecking after action edits; approval and date checks remain separate.
 - Propose complete dates only from the actual action clause with a recognized temporal link. Dates/times inside conditions and separate clauses are not borrowed as deadlines. Conflicting clocks/offsets need manual clarification. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
 - Understand full or common abbreviated English month names with four-digit years, such as `Nov. 5, 2032` and `5 Nov 2032`. Keep exact source quotations and check immediately attached weekdays. A weekday/date contradiction stays unresolved with a source-linked flag.
 - Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
@@ -24,9 +25,11 @@ These are text patterns, not semantic AI. They can miss unfamiliar wording, impl
 
 Three synthetic walkthroughs have saved example results and are labeled accordingly. **Find actions locally** runs the actual rule engine on the current text, including edited or completely new notices. It never looks up sample results. Fresh rule proposals, saved examples and user additions remain distinct in exports. Rescanning explicitly clears the current review; edits also clear approvals.
 
+**Try guided review** scans an explicitly invented field-trip notice with the actual rules. It exposes a missed consent instruction, a weekday/date conflict and a cancelled fee so you can try the review queue. Source decisions never approve actions, assign dates or certify complete extraction. Counts cover identified flags only.
+
 ## Data handling
 
-Notices and review decisions stay in browser memory. Refreshing clears them. Use **Save review file** to download your work explicitly, then **Open review file** to resume. These JSON files contain the full notice and added actions, including unapproved and omitted items; unfinished manual-form entries are not saved. Opening a valid file replaces the current workspace and requires fresh approvals. No automatic save or cloud history exists. Files are limited to 1 MB; unsupported versions, invalid structures and unmatched quotations are rejected without replacing current work. Cutoff protection is recomputed from source independently of saved flags.
+Notices and review decisions stay in browser memory. Refreshing clears them. Use **Save review file** to download your work explicitly, then **Open review file** to resume. These JSON files contain the full notice, recorded decision explanations and added actions, including unapproved and omitted items; unfinished form entries are not saved. Opening a valid file replaces the current workspace, requires fresh approvals/date confirmation and marks loaded source decisions as unverified until rechecked. New files use version 2; version 1 remains readable. No automatic save or cloud history exists. Files are limited to 1 MB; unsupported versions, invalid structures and unmatched quotations are rejected without replacing current work. Cutoff protection is recomputed from source independently of saved flags.
 
 There is no notice database, analytics, account system or automatic calendar integration. The offline build blocks network connections with a content security policy. Checklist/calendar exports include source quotations, notice notes and flagged passages, including context that is not an approved task; they may contain personal information from a notice. The export panel discloses this content.
 
@@ -45,14 +48,15 @@ npm run build
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 75 automated tests, TypeScript and the static build pass. Five fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
+Current verification: 87 automated tests, TypeScript and the static build pass. Five fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding. The [student trial guide](devpost/usability/facilitator-guide.md), [synthetic notices](devpost/usability/participant-notices.md) and [blank observation template](devpost/usability/observation-template.md) are prepared. No participant sessions or findings are claimed.
 
 ## Project structure
 
 - `standalone/`, `vite.static.config.ts`: static React entry and configuration.
-- `app/receipt-workspace.tsx`, `app/export-preview.tsx`, `app/globals.css`: review interface and read-only download preview.
+- `app/receipt-workspace.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/globals.css`: guided review interface and read-only download preview.
 - `lib/local-extraction.ts`: bounded, network-free English text rules.
 - `lib/dates.ts`: shared English date patterns and adjacent weekday consistency checks.
+- `lib/source-review.ts`: source decisions, manual repair, progress and stale-link checks.
 - `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`: evidence, date/review rules, approved exports and explicit local review save/open.
 - `lib/samples.ts`: synthetic notices and saved walkthroughs.
 - `scripts/build-static.mjs`: self-contained HTML packaging and license preservation.
