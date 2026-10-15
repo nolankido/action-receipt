@@ -20,6 +20,7 @@ function calendarBlocker(a: ReviewedAction): string {
   if (!validDate(a.date)) return "Checklist only: supply a complete, valid date in Review details.";
   if (a.requiresTime && !validTime(a.time)) return "Checklist only: supply a valid cutoff time in Review details.";
   if (a.requiresTime && !validOffset(a.utcOffset)) return "Checklist only: supply a valid UTC offset for the cutoff date.";
+  if (a.requiresTime && !canConfirmDate(a)) return "Checklist only: this cutoff falls outside the supported calendar range after UTC conversion. Check the date, time and offset.";
   return "Checklist only: confirm the date" + (a.requiresTime ? ", time and UTC offset" : "") + " in Review details.";
 }
 export function planExports(actions: ReviewedAction[]) {

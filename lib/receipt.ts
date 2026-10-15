@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { explicitDates, validDate, weekdayConflicts } from "./dates.ts";
+import { cutoffFitsCalendar, mentionsTime, validOffset, validTime } from "./times.ts";
 export { explicitDates, validDate } from "./dates.ts";
+export { mentionsTime, validOffset, validTime } from "./times.ts";
 
 export const MAX_NOTICE_LENGTH = 15_000;
 export const MIN_NOTICE_LENGTH = 30;
@@ -60,17 +62,6 @@ export type ReviewedAction = {
   issues: string[];
 };
 
-export function validTime(value: string): boolean {
-  return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
-}
-
-export function validOffset(value: string): boolean {
-  if (!/^[+-]\d{2}:\d{2}$/.test(value)) return false;
-  if (value === "-00:00") return false;
-  const [h, m] = value.slice(1).split(":").map(Number);
-  return h <= 14 && m <= 59 && (h !== 14 || m === 0);
-}
-
 export function locateEvidence(source: string, quote: string): Evidence {
   const starts: number[] = [];
   let from = 0;
@@ -81,11 +72,6 @@ export function locateEvidence(source: string, quote: string): Evidence {
     from = index + quote.length;
   }
   return { quote, starts };
-}
-
-export function mentionsTime(text: string): boolean {
-  const withoutOffsets = text.replace(/\b(?:UTC|GMT)\s*[+-]\d{2}:\d{2}\b/gi, "");
-  return /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b|\b(?:[01]?\d|2[0-3]):[0-5]\d\b|\b(?:noon|midnight|end of day|close of business)\b/i.test(withoutOffsets);
 }
 
 export function validateExtraction(source: string, input: unknown, revision = 1): { actions: ReviewedAction[]; notes: string[] } {
@@ -129,7 +115,7 @@ export function validateExtraction(source: string, input: unknown, revision = 1)
 }
 
 export function canConfirmDate(action: ReviewedAction): boolean {
-  return validDate(action.date) && (!action.requiresTime || (validTime(action.time) && validOffset(action.utcOffset)));
+  return validDate(action.date) && (!action.requiresTime || cutoffFitsCalendar(action.date, action.time, action.utcOffset));
 }
 export function manualAction(source: string, title: string, quote: string, condition: string, id: number): ReviewedAction {
   title = title.trim(); quote = quote.trim(); condition = condition.trim();

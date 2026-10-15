@@ -25,7 +25,7 @@ export function clarificationCandidates(source: string, actions: ReviewedAction[
     // over a generic date prompt. Distinct user notes remain separate.
     if (recorded.some(item => a.evidence.some(e => e.quote === item.evidence.quote))) continue;
     const missing = [!validDate(a.date) ? "complete calendar date, including the year" : "", a.requiresTime && !validTime(a.time) ? "cutoff time" : "", a.requiresTime && !validOffset(a.utcOffset) ? "UTC offset on that date" : ""].filter(Boolean);
-    const question = `Does this instruction have a deadline? If so, please confirm the ${missing.join(" and ")}${validDate(a.date) ? " and the applicable calendar date" : ""}. If no deadline applies, please say so.`;
+    const question = missing.length ? `Does this instruction have a deadline? If so, please confirm the ${missing.join(" and ")}${validDate(a.date) ? " and the applicable calendar date" : ""}. If no deadline applies, please say so.` : "Please check the calendar date, cutoff time and UTC offset. Their UTC conversion falls outside the supported calendar range.";
     const data = { kind: "date" as const, context: a.title, condition: a.condition,
       detail: `Original deadline wording: ${a.deadlineText || "Not stated"}`, origin: origin(a), question,
       quotes: [...new Set([...a.evidence, ...a.dateEvidence].filter(e => matches(source, e.quote)).map(e => e.quote))] };

@@ -310,7 +310,7 @@
             "origin": "rules",
             "issues": [
               "Found by local English text rules. Check meaning, conditions and the complete notice.",
-              "A timed instruction needs a confirmed cutoff and UTC offset. Ambiguous clock wording must be resolved manually."
+              "A timed instruction needs a valid cutoff and UTC offset. Invalid, conflicting or unsupported clock wording must be clarified manually."
             ]
           },
           {
@@ -631,6 +631,167 @@
             "reason": "Weekday/date conflict: The written weekday Friday does not match 2032-09-06 (Monday). Clarify the deadline before confirming a date."
           }
         ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "24-hour-cutoff",
+      "source": "Upload the astronomy budget by April 2, 2032 at 17:00 UTC-10:00. Bring your photo ID on April 4, 2032.",
+      "expectedDates": [
+        "2032-04-02",
+        "2032-04-04"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Upload the astronomy budget",
+            "title": "Upload the astronomy budget",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Upload the astronomy budget by April 2, 2032 at 17:00 UTC-10:00.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Upload the astronomy budget by April 2, 2032 at 17:00 UTC-10:00.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Upload the astronomy budget by April 2, 2032 at 17:00 UTC-10:00.",
+            "originalDate": "2032-04-02",
+            "date": "2032-04-02",
+            "time": "17:00",
+            "utcOffset": "-10:00",
+            "originalTime": "17:00",
+            "originalUtcOffset": "-10:00",
+            "sourceRequiresTime": true,
+            "requiresTime": true,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          },
+          {
+            "id": "r1-a2",
+            "originalTitle": "Bring your photo ID on April 4, 2032",
+            "title": "Bring your photo ID on April 4, 2032",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Bring your photo ID on April 4, 2032.",
+                "starts": [
+                  65
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Bring your photo ID on April 4, 2032.",
+                "starts": [
+                  65
+                ]
+              }
+            ],
+            "deadlineText": "Bring your photo ID on April 4, 2032.",
+            "originalDate": "2032-04-04",
+            "date": "2032-04-04",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ],
+        "attention": []
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "invalid-cutoff",
+      "source": "Submit the astronomy budget by April 2, 2032 at 24:00 UTC-10:00.",
+      "expectedDates": [
+        "2032-04-02"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Submit the astronomy budget",
+            "title": "Submit the astronomy budget",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Submit the astronomy budget by April 2, 2032 at 24:00 UTC-10:00.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Submit the astronomy budget by April 2, 2032 at 24:00 UTC-10:00.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Submit the astronomy budget by April 2, 2032 at 24:00 UTC-10:00.",
+            "originalDate": "2032-04-02",
+            "date": "2032-04-02",
+            "time": "",
+            "utcOffset": "-10:00",
+            "originalTime": "",
+            "originalUtcOffset": "-10:00",
+            "sourceRequiresTime": true,
+            "requiresTime": true,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "A timed instruction needs a valid cutoff and UTC offset. Invalid, conflicting or unsupported clock wording must be clarified manually."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ],
+        "attention": []
       },
       "automatic_checks": "passed",
       "human_review": "not_reviewed"

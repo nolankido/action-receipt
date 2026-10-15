@@ -17,6 +17,7 @@ The optional hosted review site is https://action-receipt.huzzahoptimistically.c
 - Follow the next-step panel to the exact source flag or action that needs review, then to download preview. Recorded clarification requests stay unresolved while you continue reviewing other items. Calendar dates are optional; guidance never approves anything or asks you to guess a date.
 - Propose complete dates only from the actual action clause with a recognized temporal link. Dates/times inside conditions and separate clauses are not borrowed as deadlines. Conflicting clocks/offsets need manual clarification. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
 - Understand full or common abbreviated English month names with four-digit years, such as `Nov. 5, 2032` and `5 Nov 2032`. Keep exact source quotations and check immediately attached weekdays. A weekday/date contradiction stays unresolved with a source-linked flag.
+- Recognize explicit 24-hour `HH:MM` cutoffs as proposals, alongside AM/PM and noon. Keep malformed clock-like text timed and unresolved so it cannot silently become an all-day marker. Seconds, fractional precision, bare single-digit clocks, midnight wording and mixed/conflicting clock formats need clarification. Never infer a UTC offset.
 - Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
 - Prepare an optional clarification sheet from incomplete date/time details and source flags explicitly marked as needing clarification. Edit and check each question, inspect exact source quotes and download only selected questions with their context. Clear but unconfirmed dates stay in normal review. No question is sent, no date is inferred and no action is approved. Question edits and selections are discarded when the sheet closes and are not saved in review files.
 - Save a local review file and reopen it later with source, edits, omissions and context intact. Opening resets every action approval and date confirmation; imported interpretations stay visibly unverified.
@@ -50,7 +51,7 @@ npm run build
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 106 automated tests, TypeScript and the static build pass. Five fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding. The [student trial guide](devpost/usability/facilitator-guide.md), [synthetic notices](devpost/usability/participant-notices.md) and [blank observation template](devpost/usability/observation-template.md) are prepared. No participant sessions or findings are claimed.
+Current verification: 118 automated tests, TypeScript and the static build pass. Seven fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding. The [student trial guide](devpost/usability/facilitator-guide.md), [synthetic notices](devpost/usability/participant-notices.md) and [blank observation template](devpost/usability/observation-template.md) are prepared. No participant sessions or findings are claimed.
 
 ## Project structure
 
@@ -58,6 +59,7 @@ Current verification: 106 automated tests, TypeScript and the static build pass.
 - `app/receipt-workspace.tsx`, `app/review-guide.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/clarification-sheet.tsx`, `app/globals.css`: guided review interface and read-only download preview.
 - `lib/local-extraction.ts`: bounded, network-free English text rules.
 - `lib/dates.ts`: shared English date patterns and adjacent weekday consistency checks.
+- `lib/times.ts`: clock syntax, conservative cutoff detection, explicit offsets and supported UTC conversion range.
 - `lib/clarification.ts`: bounded optional question drafts, current-source/context checks and selected-only Markdown export.
 - `lib/review-guide.ts`: navigation derived from current review and export eligibility, with clarification kept pending.
 - `lib/source-review.ts`: source decisions, manual repair, progress and stale-link checks.

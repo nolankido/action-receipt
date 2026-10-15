@@ -51,3 +51,6 @@ The learner requested continued improvement. Added navigation based on actual re
 
 ## Clarification handoff improvement
 The learner requested continued improvement. Added an optional local question sheet that turns incomplete calendar details and current-user clarification notes into editable source-linked question drafts. Selection starts empty; editing clears selection, and full-source/context changes invalidate a checked draft. Only selected questions and their own supporting context enter the Markdown sheet. No question is sent and no approval, date or source decision changes. Eleven new behavioral checks cover these boundaries. This does not complete a learner activity, student trial, demo or submission.
+
+## Timed-cutoff reliability improvement
+The learner requested the next improvement. Reproduced malformed clocks silently losing timed-cutoff protection and an expanded UTC year entering iCalendar output. Fixed shared clock detection/validation, added bounded HH:MM proposals, preserved manual clarification for unsupported/mixed/invalid clocks, and blocked unrepresentable UTC conversions with specific reasons. Twelve new behavioral regressions and two additional fresh synthetic smoke cases cover this path. These are mechanical checks, not learner observations or student findings.

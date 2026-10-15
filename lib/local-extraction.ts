@@ -1,5 +1,6 @@
-import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, explicitDates, locateEvidence, mentionsTime, validateExtraction, validOffset, validTime, type Extraction, type RawAction, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
+import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, explicitDates, locateEvidence, mentionsTime, validateExtraction, type Extraction, type RawAction, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
 import { datedWeekdayPattern, protectDateAbbreviations, weekdayConflicts, weekdayPattern } from "./dates.ts";
+import { explicitOffset, parseClock } from "./times.ts";
 
 const verbs = "register|pay|bring|submit|upload|email|contact|complete|apply|return|sign|fill|send|book|reserve|confirm|check|download|print|prepare|attend|arrive|ask|use";
 const instruction = new RegExp(`^(?:(?:please|then|also)\\s+|(?:you\\s+)?(?:must|should|need to|are required to|have to|can|may)\\s+)?(${verbs})\\b`, "i");
@@ -14,25 +15,6 @@ function passages(source: string): string[] {
   const segmenter = new Intl.Segmenter("en", { granularity: "sentence" });
   return source.split(/\r?\n/).flatMap(line => [...segmenter.segment(protectDateAbbreviations(line))].map(s => line.slice(s.index, s.index + s.segment.length).trim())).filter(Boolean);
 }
-function clock(text: string): string | null {
-  const values = new Set<string>();
-  for (const twelve of text.matchAll(/\b(\d{1,2})(?::(\d{2}))?\s*(a\.?m\.?|p\.?m\.?)\b/gi)) {
-    const hour = Number(twelve[1]); if (hour < 1 || hour > 12) return null;
-    const value = `${String(hour % 12 + (/^p/i.test(twelve[3]) ? 12 : 0)).padStart(2, "0")}:${twelve[2] ?? "00"}`;
-    if (!validTime(value)) return null;
-    values.add(value);
-  }
-  if (/\bnoon\b/i.test(text)) values.add("12:00");
-  // Bare clocks and midnight remain manual; a second differently worded cutoff must not be ignored.
-  const remaining = text.replace(/\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b/gi, "").replace(/\b(?:UTC|GMT)\s*[+-]\d{2}:\d{2}\b/gi, "");
-  if (mentionsTime(remaining.replace(/\bnoon\b/gi, ""))) return null;
-  return values.size === 1 ? [...values][0] : null;
-}
-function offset(text: string): string | null {
-  const values = [...text.matchAll(/\b(?:UTC|GMT)\s*([+-]\d{2}:\d{2})\b/gi)].map(m => m[1]);
-  return values.length && values.every(validOffset) && new Set(values).size === 1 ? values[0] : null;
-}
-
 /** Deliberately bounded English pattern matching. No network, model, clock-date inference or saved-result lookup. */
 export function extractLocally(source: string, revision = 1): { actions: ReviewedAction[]; notes: string[]; attention: SourceReviewItem[] } {
   if (source.trim().length < MIN_NOTICE_LENGTH || source.length > MAX_NOTICE_LENGTH) throw new Error(`Paste ${MIN_NOTICE_LENGTH} to ${MAX_NOTICE_LENGTH.toLocaleString()} characters.`);
@@ -90,9 +72,9 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
     if (dates.length && !clearRole) issues.push("A date appears in the passage, but its role as this action's deadline is not established. Check it manually.");
     const timeTail = linkedDate ? actionContent.slice(linkedDate.index + linkedDate[0].length) : "";
     const linkedClock = !many && /^\s*,?\s*(?:at\s+)?(?:\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b|\d{1,2}:\d{2}\b|noon\b|midnight\b)/i.test(timeTail);
-    const time = linkedClock ? clock(timeTail) : null; const utcOffset = linkedClock ? offset(timeTail) : null;
+    const time = linkedClock ? parseClock(timeTail) : null; const utcOffset = linkedClock ? explicitOffset(timeTail) : null;
     if (mentionsTime(actionContent) && !linkedClock) issues.push("A time appears outside a recognized deadline clause. No cutoff was assigned; clarify its role and any required time manually.");
-    if (mentionsTime(actionContent) && (!time || !utcOffset)) issues.push("A timed instruction needs a confirmed cutoff and UTC offset. Ambiguous clock wording must be resolved manually.");
+    if (mentionsTime(actionContent) && (!time || !utcOffset)) issues.push("A timed instruction needs a valid cutoff and UTC offset. Invalid, conflicting or unsupported clock wording must be clarified manually.");
     let title = body.slice(match[0].length - match[1].length).replace(/[.!?]+$/, "").trim();
     const actionTitle = actionContent.slice(match[0].length - match[1].length);
     const cutoff = actionTitle.search(temporalDate);
