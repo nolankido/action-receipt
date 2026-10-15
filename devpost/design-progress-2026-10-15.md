@@ -110,3 +110,32 @@ The v0.18.0 application publication completed on October 15, 2026 at 12:04 UTC. 
 Private deployment `appgdep_6ad0c145d84081918bfb72164c126c6f` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_410d7c979db8819186c9b0b2a22f445f` at the existing preview URL. Application SHA-256: `1c8a049b2d70c59d3a3cc52a457f0dc36acea8889ee031e616170526fd9d64b6`. Portable archive SHA-256: `bc81fff6f9bb3c67f9d52102365c99e45bb426683d02fb6b1ee44ff8af26b8e3`. Post-publication read-only verification confirmed 34 archive members, all recorded member/source hashes, identical built and committed HTML, and a clean checkout.
 
 This receipt is a documentation-only follow-up to that returned publication. It does not alter the application, rehearsal inputs or portable archive. Its own source/public identities are in the corresponding commit metadata; the application identities above refer to the already verified feature publication.
+
+## Clear, actionable review-file feedback: v0.19.0
+
+Verified starting state: public main `bf3913fb60cda8cab98eb8ba60da480ab84d563d`, Sites source `ce43ceb6681fe3faad12ac521bd1d9966e96558d`, shared tree `653cb7ef2134ae9f56f138e5ca3ddc746db1674b`. The previous documentation follow-up was published privately as `appgdep_6ad0c1cf27a881919e4245b8646dd560` for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_4ca25010d94c819192a474ec925bbcbe`. Current main, recent commits, open PRs, repository instructions and actual local source were checked. There were no open PRs, AGENTS.md files, uncommitted changes or observable competing writer. The existing source was opened and synchronized through the Sites helper. The current audience is custom owner-only, with no additional visitors.
+
+### Reproduced source defect and change
+
+The existing save failure handler set only an error string and left the previous success message intact. Both could therefore render together after a failed save. A successful download message also continued to describe the current version after later edits, although that previous request could not include them. These state/render paths were reproduced by source inspection; no browser execution is claimed.
+
+One discriminated feedback state now represents a file error, a download request, an opened file or a recovered workspace. A new operation clears previous feedback, and a failure replaces it instead of leaving competing messages. A failed save attempt also clears the previous requested-download indicator without changing the saved-content baseline.
+
+The feedback panel uses explicit headings and preserved validation messages. An opening error offers Choose another review file and explains that the expected file is the app's review JSON, not its checklist or calendar. Saving errors offer Try download again when the existing save gates permit it. Continue reviewing moves to the action heading. Dismiss and retry handlers move focus to stable toolbar controls when the temporary feedback controls may disappear. Error copy uses an alert region and other copy uses a status region; the action buttons remain outside the live copy.
+
+A download request stores only an in-memory content comparison stamp. If notice content, actions, approvals or other committed review data change, its panel explicitly says the earlier request does not include these changes and offers Download current review. An exact return to the requested content is treated as current again. No browser save is claimed to have succeeded: the user must still confirm the file reached their device. Review-file exclusions, fresh-review gates and the separate recovery-copy boundary remain visible. The existing paper/forest design is preserved with restrained error and changed-content treatments, wrapping controls and print exclusion.
+
+No extraction, serializer, validation, approval, date, import trust or recovery trust logic changed. No runtime network request, browser persistence, dependency, account or submission work was added.
+
+### Executed checks and limits
+
+- All 180 automated tests passed, including two new behavioral checks for current versus changed-content requests, real title/approval/note edits, exact-content reversion, operation-specific recovery actions and unmodified validation messages.
+- TypeScript checking and `git diff --check` passed.
+- The supported static build, all 14 fresh synthetic notice scans and the source-hashed production-domain rehearsal passed. The rehearsal fingerprint includes the new feedback component and library helper.
+- Nine actual SSR markup states passed structural checks: initial workspace, open error, save error, current request, changed-content request, opened review, recovered workspace and both disabled retry variants. Checks included unique IDs, named controls, valid labels/descriptions, one appropriate live-copy region, retry presence/disabled states, no initial feedback, unchanged source text and initial unchecked approvals.
+- Three specified text/background pairs calculated at 7.40:1, 7.68:1 and 5.93:1 contrast. These are selected calculations, not a full accessibility audit.
+- The Sites skill requires skipping browser QA because the required control-browser skill remains unavailable. Actual viewport fit, focus restoration, live announcements, file selection and operating-system downloads remain unverified. No screenshots or user studies were fabricated.
+
+The portable archive is regenerated and its member hashes verified from the final checked source/build/rehearsal state. Publication receipts record returned identities separately; do not infer them from the preview URL. Submission and video work remain reserved for Nolan.
+
+Next useful task: when supported browser QA becomes available, test invalid review files, a failed download, editing after a requested download, retry/dismiss focus and mobile wrapping. Otherwise inspect the actual source-flag decision form's error and cancellation paths for a concrete usability issue. Keep notice review central and preserve the existing visual direction.

@@ -105,7 +105,17 @@ input[type=checkbox]:disabled { cursor: not-allowed; }
 .save-details summary { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; color: var(--green); cursor: pointer; font-size: 11px; list-style: none; }
 .save-details[open] summary svg { transform: rotate(180deg); }
 .save-details p { max-width: 660px; margin: 6px 0; padding-left: 11px; border-left: 2px solid #d7e0cf; }
-.file-feedback { padding: 12px 24px; border-bottom: 1px solid var(--line); margin: 0; font-size: 12px; line-height: 1.8; color: var(--green); overflow-wrap: anywhere; }
+.review-file-feedback { padding: 16px 24px; border-bottom: 1px solid #d2ddc9; background: #f6f8f1; color: #3e5835; overflow-wrap: anywhere; }
+.review-file-feedback.has-error { border-color: #e1c8b7; background: #fff6ef; color: #7d3d22; }
+.review-file-feedback.is-stale { border-color: #dfd0a9; background: #fcf7e9; color: #775b26; }
+.file-feedback-copy { display: flex; align-items: flex-start; gap: 10px; }
+.file-feedback-copy > svg { flex-shrink: 0; margin-top: 3px; }
+.file-feedback-copy h3 { font-size: 14px; font-weight: 650; line-height: 1.6; }
+.file-feedback-copy p { max-width: 850px; margin-top: 5px; font-size: 12px; line-height: 1.8; }
+.file-feedback-copy .file-feedback-hint { margin-top: 7px; }
+.file-feedback-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 11px; padding-left: 28px; }
+.file-feedback-retry { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 42px; padding: 9px 12px; border: 1px solid #bcccb0; border-radius: 7px; background: white; color: var(--green); font-size: 12px; font-weight: 600; line-height: 1.5; }
+.file-feedback-actions .icon-button { margin-left: auto; color: inherit; }
 .mode-banner { display: flex; align-items: flex-start; gap: 9px; padding: 12px 24px; color: #52644d; background: #f4f6f0; border-bottom: 1px solid var(--line); font-size: 12px; line-height: 1.7; }
 .mode-banner > svg { flex-shrink: 0; margin-top: 3px; }
 .mode-banner strong { color: #34553c; font-weight: 650; }
@@ -157,7 +167,6 @@ input[type=checkbox]:disabled { cursor: not-allowed; }
 .analyze-area > p.processing-disclosure { margin-top: 4px; }
 .error-message { display: flex; align-items: flex-start; gap: 8px; padding: 12px; border: 1px solid #ebc8bf; border-radius: 7px; margin-top: 12px; background: #fff3ef; color: var(--red); font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
 .error-message > svg { flex-shrink: 0; margin-top: 3px; }
-.error-message.file-feedback { border-radius: 0; margin: 0; padding: 12px 24px; }
 
 /* Guidance is distinct from the user's approval. */
 .review-guide { margin: 0 24px 22px; padding: 19px 20px; border: 1px solid #d1dfc9; border-radius: var(--radius); background: #edf4e9; }
@@ -562,7 +571,8 @@ footer button, .offline-download { display: inline-flex; align-items: center; ga
   .review-save-buttons button { padding-inline: 8px; min-height: 44px; font-size: 11px; }
   .review-save-copy p { font-size: 12px; }
   .save-details summary { font-size: 12px; min-height: 36px; }
-  .file-feedback, .error-message.file-feedback, .mode-banner { padding: 12px 16px; font-size: 12px; }
+  .review-file-feedback, .mode-banner { padding: 12px 16px; font-size: 12px; }
+  .file-feedback-actions { padding-left: 0; gap: 6px 12px; }
   .panel-heading { padding: 20px 16px 17px; }
   .panel-heading h2 { font-size: 15px; }
   .panel-caption { display: none; }
@@ -672,7 +682,7 @@ footer button, .offline-download { display: inline-flex; align-items: center; ga
   .action-view-controls { display: none; }
   body { background: white; }
   .app-shell { max-width: none; padding: 0; }
-  .intro, .practice-intro, .sample-section, .workspace-steps, .review-save-status, .guide-buttons, .export-area, .source-tabs, .source-inspection, .analyze-area, .action-tools, .omit-button, .manual-action-area, .recovery-buttons, .offline-download, .method-button, footer button { display: none; }
+  .intro, .practice-intro, .sample-section, .workspace-steps, .review-save-status, .review-file-feedback, .guide-buttons, .export-area, .source-tabs, .source-inspection, .analyze-area, .action-tools, .omit-button, .manual-action-area, .recovery-buttons, .offline-download, .method-button, footer button { display: none; }
   .workspace { box-shadow: none; border-color: #aaa; margin: 12px 0; }
   .workspace-grid { display: block; }
   .source-panel { position: static; max-height: none; overflow: visible; }
