@@ -33,3 +33,6 @@ Public source: https://github.com/nolankido/action-receipt. Initial complete sou
 
 ## Budget revision
 The learner required no API credits or new paid dependencies. The evidence/approval kernel remains; selected English patterns now propose actions in the browser, and source-backed manual repair handles omissions. A committed standalone HTML file runs without hosting. `zero-cost-plan.md` records the architecture, limitations and revised demo/submission mechanics. Three fresh local smoke cases passed; the actual learner review and learning wrap-up remain open.
+
+## Final improvement pass
+The learner requested another improvement pass before submission. Added explicit local review-file save/open within the one-notice workflow. No automatic storage, remote history or new dependency. Independent read-only review identified a cutoff-guard bypass through stripped imported metadata and incorrect current-user attribution for imported edits. Both were fixed with regression coverage. Fifty-seven automated tests, including review-file validation and recovery checks, pass. The actual learner exploration, video, answers and submission are still pending.

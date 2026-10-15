@@ -36,13 +36,16 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 ### Samples
 `lib/samples.ts` holds three synthetic notices and explicitly saved walkthrough results: multiple deadlines, ambiguity, and conflicting dates/conditional instructions. Always label this mode and its generated exports.
 
+### Local Review Files
+`lib/review-file.ts` implements `prd.md > Save and Resume a Review`. Serialize explicit version-1 JSON with bounded fields and full source, excluding approvals, date confirmations and derived quotation positions. Strict Zod schemas reject unknown trust fields, duplicate IDs and unsupported versions. Enforce a 1 MB UTF-8 byte limit before parsing. Re-match every quotation and independently derive cutoff protection from exact matching local-rule evidence; unfamiliar passages use a conservative clock check. Never trust a saved flag to disable a source cutoff. Imported interpretations, original-field metadata and prior mode remain unverified. Preserve edits, omissions, context and stable IDs, but reset approvals and date confirmations. Workspace revision checks discard stale file reads. No autosave, external file service or new dependency.
+
 ## Data Model
-An immutable source string and revision; proposal mode/origin; candidate actions with title, condition, action evidence, date evidence, literal deadline, proposed ISO date, time and offset, issues; reviewed actions with edited values, date confirmation, user-change provenance, action origin (extracted/user), approval and omission. Receipt mode distinguishes saved samples, live proposals and manual review. Everything lives in browser memory; no database. A new extraction resets approvals. All application state and processing are local. Refreshing clears session state.
+An immutable source string and revision; proposal mode/origin; candidate actions with title, condition, action evidence, date evidence, literal deadline, proposed ISO date, time and offset, issues; reviewed actions with edited values, date confirmation, user-change provenance, action origin (extracted/rules/user/imported), approval and omission. Receipt mode distinguishes saved samples, local proposals and manual review, with a restored flag for unverified imported metadata. Everything lives in browser memory; no database. A new extraction resets approvals. All application state and processing are local. Refreshing clears session state; explicit JSON review downloads allow continuation with fresh approval.
 
 ## File Structure
 - `standalone/`, `vite.static.config.ts`: static browser entry.
 - `app/receipt-workspace.tsx`, `app/globals.css`: review UI.
-- `lib/local-extraction.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/samples.ts`: rules, validation, downloads and examples.
+- `lib/local-extraction.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, validation, downloads, local review continuation and examples.
 - `scripts/build-static.mjs`: inlines JavaScript/styles/icons and license notices into the distribution, adds a network-blocking policy, rejects external runtime asset references.
 - `release/action-receipt.html`: committed standalone app.
 - `tests/`, `devpost/`: behavioral checks, Skill Pack evidence and technical plan.
@@ -56,12 +59,13 @@ No external runtime services. Development dependencies are listed in package/loc
 - Relative wording, multiple dates or incomplete clocks/offsets: retain uncertainty; calendar stays blocked until user clarification.
 - Negation and cancellations: local patterns cover only bounded forms, not complete cross-sentence semantics.
 - Source changes during scan: discard stale results and clear old approvals. Rescanning is explicitly labeled as replacing current review.
-- Refresh: clear memory; downloaded receipts remain with the user.
+- Refresh: clear memory; downloaded receipts and explicit review files remain with the user.
+- Invalid or stale review file: report the failure and keep the current workspace. Imported dates and interpretations require fresh review; no trust flags are restored.
 
 ## What Was Simplified and Why
 The learner explicitly required no new spending. A single-file ordinary browser app avoids API bills, model downloads, hardware-specific inference setup and hosting dependence. Manual source-backed repair covers bounded-parser omissions while preserving the original evidence/approval kernel.
 
 ## Decisions and Open Issues
-The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Forty-five automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
+The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Fifty-seven automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
 
 Date resolution retains original warnings. A confirmed user-supplied date can become calendar-eligible while original ambiguity remains in exports. Exact action evidence is always mandatory. Saved examples, local rules and user additions retain distinct provenance.

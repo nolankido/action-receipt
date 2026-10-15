@@ -42,11 +42,11 @@ export type ReviewedAction = {
   sourceRequiresTime: boolean;
   requiresTime: boolean;
   dateConfirmed: boolean;
-  dateOrigin: "source proposal" | "user supplied" | "unresolved";
+  dateOrigin: "source proposal" | "user supplied" | "review file" | "unresolved";
   evidenceValid: boolean;
   approved: boolean;
   omitted: boolean;
-  origin: "extracted" | "rules" | "user";
+  origin: "extracted" | "rules" | "user" | "imported";
   issues: string[];
 };
 
@@ -154,6 +154,12 @@ export function manualAction(source: string, title: string, quote: string, condi
   const result = validateExtraction(source, { actions: [{ title, condition: condition || null, evidence: [quote], deadline: { text: "", evidence: [quote], date: null, time: null, utcOffset: null, status: "ambiguous" }, issues: [] }], notes: [] }).actions[0];
   return { ...result, id: `manual-${id}`, origin: "user", dateOrigin: "unresolved", issues: ["Added by you from source text. Check its meaning, condition and any date or time before approving.", ...result.issues] };
 }
+export function nextManualNumber(actions: ReviewedAction[]): number {
+  const ids = new Set(actions.map(a => a.id));
+  let id = 1;
+  while (ids.has(`manual-${id}`)) id++;
+  return id;
+}
 export function calendarEligible(action: ReviewedAction): boolean {
   return action.approved && !action.omitted && action.evidenceValid && action.dateConfirmed && canConfirmDate(action) && Boolean(action.title.trim());
 }
@@ -162,8 +168,10 @@ export function canApprove(action: ReviewedAction): boolean {
 }
 export function editAction(action: ReviewedAction, patch: Partial<Pick<ReviewedAction, "title" | "condition" | "date" | "time" | "utcOffset" | "requiresTime" | "omitted">>): ReviewedAction {
   const dateChanged = ["date", "time", "utcOffset", "requiresTime"].some(key => key in patch && patch[key as keyof typeof patch] !== action[key as keyof ReviewedAction]);
+  const requiresTime = action.sourceRequiresTime || (patch.requiresTime ?? action.requiresTime);
   return {
-    ...action, ...patch, requiresTime: action.sourceRequiresTime || (patch.requiresTime ?? action.requiresTime), approved: false,
+    ...action, ...patch, requiresTime, approved: false,
+    ...(!requiresTime && patch.requiresTime === false ? { time: "", utcOffset: "" } : {}),
     dateConfirmed: dateChanged ? false : action.dateConfirmed,
     dateOrigin: dateChanged ? "user supplied" : action.dateOrigin,
   };

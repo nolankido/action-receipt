@@ -15,6 +15,7 @@ The optional hosted review site is https://action-receipt.huzzahoptimistically.c
 - Show a source-linked review list for unlinked dates, unsupported obligations, cancellations and skipped passages. The manual form can reuse a highlighted quote. The list is bounded at 80 entries and reports overflow; it is not an exhaustive source review.
 - Propose complete dates only from the actual action clause with a recognized temporal link. Dates/times inside conditions and separate clauses are not borrowed as deadlines. Conflicting clocks/offsets need manual clarification. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
 - Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
+- Save a local review file and reopen it later with source, edits, omissions and context intact. Opening resets every action approval and date confirmation; imported interpretations stay visibly unverified.
 - Export approved checklists and eligible calendar entries, retaining source quotations, warnings, notice-level notes, flagged source context, mode and user corrections. Source-review flags stay context; they do not create extra tasks or calendar events.
 
 These are text patterns, not semantic AI. They can miss unfamiliar wording, implicit instructions, cross-sentence context or cancellations. Read the complete source. Use **Add an action from the source** for omissions. A quotation match confirms presence, not interpretation or completeness. Twenty actions per receipt; 30 to 15,000 input characters.
@@ -23,7 +24,9 @@ Three synthetic walkthroughs have saved example results and are labeled accordin
 
 ## Data handling
 
-Notices and review decisions stay in browser memory. Refreshing clears them. There is no notice database, analytics, account system or automatic calendar integration. The offline build blocks network connections with a content security policy. Exported files include source quotations, notice notes and flagged passages, including context that is not an approved task; they may contain personal information from a notice. The export panel discloses this content.
+Notices and review decisions stay in browser memory. Refreshing clears them. Use **Save review file** to download your work explicitly, then **Open review file** to resume. These JSON files contain the full notice and added actions, including unapproved and omitted items; unfinished manual-form entries are not saved. Opening a valid file replaces the current workspace and requires fresh approvals. No automatic save or cloud history exists. Files are limited to 1 MB; unsupported versions, invalid structures and unmatched quotations are rejected without replacing current work. Cutoff protection is recomputed from source independently of saved flags.
+
+There is no notice database, analytics, account system or automatic calendar integration. The offline build blocks network connections with a content security policy. Checklist/calendar exports include source quotations, notice notes and flagged passages, including context that is not an approved task; they may contain personal information from a notice. The export panel discloses this content.
 
 ## Build and check
 
@@ -40,14 +43,14 @@ npm run build
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 45 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
+Current verification: 57 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
 
 ## Project structure
 
 - `standalone/`, `vite.static.config.ts`: static React entry and configuration.
 - `app/receipt-workspace.tsx`, `app/globals.css`: review interface.
 - `lib/local-extraction.ts`: bounded, network-free English text rules.
-- `lib/receipt.ts`, `lib/export.ts`: evidence, date/review rules and downloads.
+- `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`: evidence, date/review rules, approved exports and explicit local review save/open.
 - `lib/samples.ts`: synthetic notices and saved walkthroughs.
 - `scripts/build-static.mjs`: self-contained HTML packaging and license preservation.
 - `release/action-receipt.html`: runnable distribution.

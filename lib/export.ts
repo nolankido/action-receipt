@@ -1,12 +1,20 @@
 import { calendarEligible, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
 
-export type ReceiptMeta = { mode: "sample" | "local" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[]; attention?: SourceReviewItem[] };
-const modeDescription = (mode: ReceiptMeta["mode"]) => mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : mode === "manual" ? "Manual review; actions added by the user, no AI extraction" : "Local text rules; browser-only proposals, no AI model or API";
-const actionOrigin = (action: ReviewedAction) => action.origin === "user" ? "Added by user from source" : action.origin === "rules" ? "Local text rules" : "Saved sample proposal";
+export type ReceiptMeta = { mode: "sample" | "local" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[]; attention?: SourceReviewItem[]; restored?: boolean };
+const modeDescription = (mode: ReceiptMeta["mode"], restored = false) => (restored ? "Imported review file; declared prior mode (unverified): " : "") + (mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : mode === "manual" ? "Manual review; actions added by the user, no AI extraction" : "Local text rules; browser-only proposals, no AI model or API");
+const actionOrigin = (action: ReviewedAction) => action.origin === "imported" ? "Imported review file; verify its interpretation" : action.origin === "user" ? "Added by user from source" : action.origin === "rules" ? "Local text rules" : "Saved sample proposal";
 const textLine = (value: string) => value.replace(/[\r\n]+/g, " ").trim();
 const markdown = (value: string) => textLine(value).replace(/([\\`*_{}\[\]<>#|])/g, "\\$1");
+function corrections(a: ReviewedAction): string[] {
+  const imported = a.origin === "imported";
+  return [
+    ...(a.title !== a.originalTitle ? [`${imported ? "Prior action metadata (unverified)" : "Original proposed action"}: ${a.originalTitle}; ${imported ? "wording differs from file metadata" : "wording edited by user"}`] : []),
+    ...(a.condition !== a.originalCondition ? [`${imported ? "Prior condition metadata (unverified)" : "Original condition"}: ${a.originalCondition || "None proposed"}; ${imported ? "condition differs from file metadata" : "condition edited by user"}`] : []),
+    ...(a.time !== a.originalTime || a.utcOffset !== a.originalUtcOffset ? [`${imported ? "Prior time/offset metadata (unverified)" : "Original proposed time/offset"}: ${a.originalTime || "Not proposed"} / ${a.originalUtcOffset || "Not proposed"}; ${imported ? "time or offset differs from file metadata" : "time or offset edited by user"}`] : []),
+  ];
+}
 export function checklistText(actions: ReviewedAction[], meta: ReceiptMeta): string {
-  const out = [`# Action Receipt`, "", `Notice: ${markdown(meta.title)}`, `Created: ${meta.createdAt.toISOString()}`, `Mode: ${modeDescription(meta.mode)}`, "", "Source quotations show where text appeared. They do not certify correct interpretation or completeness.", ""];
+  const out = [`# Action Receipt`, "", `Notice: ${markdown(meta.title)}`, `Created: ${meta.createdAt.toISOString()}`, `Mode: ${modeDescription(meta.mode, meta.restored)}`, "", "Source quotations show where text appeared. They do not certify correct interpretation or completeness.", ""];
   const approved = actions.filter(a => a.approved && !a.omitted && a.evidenceValid && a.title.trim());
   for (const a of approved) {
     out.push(`- [ ] ${markdown(a.title)}`);
@@ -15,9 +23,7 @@ export function checklistText(actions: ReviewedAction[], meta: ReceiptMeta): str
     out.push(`  - Original deadline wording: ${markdown(a.deadlineText || "Not stated")}`);
     out.push(`  - Reviewed date: ${a.dateConfirmed ? a.date + (a.requiresTime ? ` ${a.time} UTC${a.utcOffset}` : " (day marker)") : "Unresolved / not confirmed; no calendar entry"}`);
     out.push(`  - Date provenance: ${a.dateOrigin}${a.dateConfirmed ? "; confirmed by user" : ""}`);
-    if (a.title !== a.originalTitle) out.push(`  - Original proposed action: ${markdown(a.originalTitle)}; wording edited by user`);
-    if (a.condition !== a.originalCondition) out.push(`  - Original condition: ${markdown(a.originalCondition || "None proposed")}; condition edited by user`);
-    if (a.time !== a.originalTime || a.utcOffset !== a.originalUtcOffset) out.push(`  - Original proposed time/offset: ${a.originalTime || "Not proposed"} / ${a.originalUtcOffset || "Not proposed"}; time or offset edited by user`);
+    for (const correction of corrections(a)) out.push(`  - ${markdown(correction)}`);
     for (const e of a.evidence) out.push(`  - Action source: “${markdown(e.quote)}”`);
     for (const e of a.dateEvidence) out.push(`  - Date source: “${markdown(e.quote)}”${e.starts.length ? "" : " (not matched)"}`);
     for (const issue of a.issues) out.push(`  - Original review flag: ${markdown(issue)}`);
@@ -51,15 +57,13 @@ export function calendarText(actions: ReviewedAction[], meta: ReceiptMeta): stri
   const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Action Receipt//Reviewed notices//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
   for (const a of actions.filter(calendarEligible)) {
     const description = [
-      meta.mode === "sample" ? "SYNTHETIC SAMPLE WALKTHROUGH. Saved example results, not live AI extraction." : modeDescription(meta.mode),
+      meta.mode === "sample" && !meta.restored ? "SYNTHETIC SAMPLE WALKTHROUGH. Saved example results, not live AI extraction." : modeDescription(meta.mode, meta.restored),
       `Action origin: ${actionOrigin(a)}.`,
       `Notice: ${textLine(meta.title)}`, `Original deadline: ${a.deadlineText || "Not stated"}`,
       `Date provenance: ${a.dateOrigin}; confirmed by user.`,
       a.requiresTime ? "This entry marks the deadline instant; no event duration or reminder is inferred." : "This is an all-day deadline marker; no exact cutoff time or reminder is inferred.",
       ...(a.condition ? [`Condition: ${a.condition}`] : []),
-      ...(a.title !== a.originalTitle ? [`Original proposed action: ${a.originalTitle}; wording edited by user.`] : []),
-      ...(a.condition !== a.originalCondition ? [`Original condition: ${a.originalCondition || "None proposed"}; condition edited by user.`] : []),
-      ...(a.time !== a.originalTime || a.utcOffset !== a.originalUtcOffset ? [`Original proposed time/offset: ${a.originalTime || "Not proposed"} / ${a.originalUtcOffset || "Not proposed"}; time or offset edited by user.`] : []),
+      ...corrections(a),
       ...a.evidence.map(e => `Action source: ${e.quote}`), ...a.dateEvidence.map(e => `Date source: ${e.quote}`),
       ...a.issues.map(i => `Original review flag: ${i}`),
       ...meta.notes.map(n => `Notice note: ${n}`),

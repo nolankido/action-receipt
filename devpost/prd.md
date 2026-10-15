@@ -37,6 +37,9 @@ Each action can be edited, omitted or approved. A missed action can be added fro
 ### Export
 Export an evidence-bearing Markdown checklist and an iCalendar file from the current reviewed state. Buttons show eligible counts and are disabled when empty. Calendar export explicitly reports omitted approved-but-unresolved items. Include evidence, user corrections, notice-level notes and source-review context in both formats. Context flags never become extra checklist tasks or calendar events. Export performs no network write or automatic calendar insertion.
 
+### Save and Resume a Review
+Explicitly download a JSON review file containing the full source, action edits, omissions, evidence, notes and flagged context, including unapproved items. No autosave or remote history. Unfinished manual-form entries are not included. Opening replaces the current workspace only after validating the file; a failure keeps current work. Limit files to 1 MB and preserve existing source/action bounds. Recompute quotation positions and cutoff safeguards from source. Reset all approvals and date confirmations, and label imported interpretation and metadata as unverified. Do not attribute imported changes to the current reviewer. Preserve receipt/action IDs for stable calendar UIDs. Changes made while a file is being read must not be overwritten by its late result.
+
 ## States and Boundaries
 - Empty: actionable guidance and synthetic samples.
 - Processing: progress label and disabled duplicate submissions; source remains editable.
@@ -44,7 +47,7 @@ Export an evidence-bearing Markdown checklist and an iCalendar file from the cur
 - Unsupported wording: explain the rule engine's limited coverage and offer manual source-backed additions.
 - Invalid input/schema/evidence checks: report failure without fabricating success or silently using samples.
 - New source: previous approvals and results cleared.
-- Refresh/close: session text and actions disappear. No provider processing exists in this version.
+- Refresh/close: session text and actions disappear unless explicitly downloaded as a review file first. No provider processing exists in this version.
 
 ## Product Decisions
 The learner accepted the narrow text workflow, evidence links, explicit ambiguity, manual approval and exports in the displayed proposal. They authorized routine implementation decisions. Test samples, a method explanation, responsive layout and button labels implement those choices. Actual user feedback and broad language coverage remain unestablished.

@@ -31,7 +31,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [ ] Optional edit and transfer reflection addressed
 - [x] `devpost/app-map.html` generated from finished code, checked and shown
 
-Activity and evidence: 45 automated tests, TypeScript and the production build pass. Implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
+Activity and evidence: 57 automated tests, TypeScript and the production build pass. Initial implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
 Route and stops: reference-only route in app-map.html: ActionCard, calendarEligible, calendarText. It has not been toured with the learner.
 Edit outcome: not yet offered.
 Reflection: not yet offered; private answer must stay in the ignored profile.
@@ -54,3 +54,4 @@ Activity mode: pending.
 
 - Pre-submission pass: added visible source-linked review entries for skipped/unlinked passages, manual reuse of highlighted evidence, and explicit list overflow. Both exports retain notice notes and flagged-source context without creating extra tasks/events.
 - Regression review narrowed date/time association to the action clause, preserved conditions containing dates, refused conflicting clocks/offsets, retained compound wording and corrected collapsed-card timing. Prefix-condition parsing now handles commas inside full dates. Forty-five automated tests and fresh local smoke cases pass; browser and learner checks remain pending.
+- Final improvement pass: explicit local review save/open preserves source, edits, omissions and context with no autosave or upload. Strict bounded parsing re-matches evidence, recomputes cutoff protection independently of file metadata, rejects invalid files without replacing work, and resets approvals/date confirmations. Imported provenance stays unverified. Repeated cycles, forged trust fields, incomplete edits, duplicate IDs, cutoff bypass and condition-clock scope have regression coverage. Manual IDs avoid collisions after restore; disabling an optional cutoff clears its inactive fields. Fifty-seven automated tests pass; browser and learner checks remain pending.
