@@ -19,7 +19,7 @@ export default function ClarificationSheet({ source, actions, meta, onClose, onD
   if (count) { try { text = clarificationText(source, actions, meta, drafts); } catch (e) { error = e instanceof Error ? e.message : "Reopen the sheet and check the questions again."; } }
   return <dialog ref={dialog} className="export-preview clarification-sheet" aria-labelledby="clarification-heading" aria-describedby="clarification-description" onCancel={onClose} onClose={onClose}>
     <div className="preview-header"><div><p className="eyebrow">WHEN THE NOTICE LEAVES A QUESTION</p><h2 id="clarification-heading">Ask with the source.</h2></div><button className="icon-button" onClick={onClose} aria-label="Close clarification sheet"><X size={21} /></button></div>
-    <p id="clarification-description">Choose what you actually need to ask. Edit each draft, check its source, then include it in your sheet. Nothing is selected or sent automatically.</p>
+    <div className="preview-body"><p id="clarification-description">Choose what you actually need to ask. Edit each draft, check its source, then include it in your sheet. Nothing is selected or sent automatically.</p>
     <p className="question-session-note">Closing discards question edits and selections. Download your sheet before closing; review files do not save question drafts.</p>
     <div className="question-guidance"><MessageCircleQuestion size={19} /><p>Undated checklist items can stay undated. These optional questions cover incomplete date details and source flags you marked as needing clarification. Complete dates that only need your confirmation belong in Review details.</p></div>
     <p className="question-count" role="status">{count} of {candidates.length} question drafts selected.</p>
@@ -39,7 +39,7 @@ export default function ClarificationSheet({ source, actions, meta, onClose, onD
     {!candidates.length && <p className="preview-empty">No question drafts are available. Return to the review to check loaded decisions or record what needs clarification.</p>}
     <div className="question-disclosure"><p>The sheet includes only selected questions, their conditions and source quotations. Read it before sharing. Question selection does not approve an action, confirm a date or clear a flag. Closing discards these question edits and selections; review files do not save them.</p></div>
     {error && <p className="error-message" role="alert">{error}</p>}
-    {text && <details className="preview-file"><summary>Inspect exact clarification sheet (.md)</summary><pre tabIndex={0} aria-label="Exact clarification sheet download text">{text}</pre></details>}
+    {text && <details className="preview-file"><summary>Inspect exact clarification sheet (.md)</summary><pre tabIndex={0} aria-label="Exact clarification sheet download text">{text}</pre></details>}</div>
     <div className="preview-footer"><button className="text-button" onClick={onClose}><ArrowLeft size={15} /> Return to review</button><button className="primary-button" disabled={!text || !!error} onClick={() => onDownload(text, count)}><Download size={15} /> Download questions ({count})</button></div>
   </dialog>;
 }

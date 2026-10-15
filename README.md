@@ -8,7 +8,9 @@ Open the [finished app file](https://github.com/nolankido/action-receipt/blob/ma
 
 The file contains its JavaScript, styles, icons and dependency license notices. It runs from a local file without a server, network connection, account, API key, credits or model download. No paid hosting is required. The [judge guide](devpost/judge-guide.md) gives exact review steps and expected exports.
 
-On launch, the actual local rules scan a short, explicitly invented notice. Review three proposals, repair the missed consent instruction from its exact quotation, and keep an ambiguous date unresolved. Nothing starts approved. Extra saved walkthroughs and a harder fresh-rule notice are behind **More practice**. **Download review file** is visible above the workspace. Use **Open a saved review** to reopen a file.
+On launch, the actual local rules scan a short, explicitly invented notice. Review three proposals, repair the missed consent instruction from its exact quotation, and keep an ambiguous date unresolved. Nothing starts approved. Extra saved walkthroughs and a harder fresh-rule notice are behind **More practice** below the workspace. **Download review file** and **Open review file** are together above the source and actions.
+
+The v0.16 interface keeps the paper-and-forest visual direction with a consistent type scale, stronger text contrast and quieter status surfaces. Three section controls move to the original notice, action review or download preview without approving anything. Action approval and optional calendar readiness have separate labels. Actions use the page scroll; the source stays within reach in its own bounded pane on wide screens, with a single-column layout on smaller screens. Download and clarification dialogs keep their header and footer outside the scrolling contents. These are implemented layouts; actual browser rendering and interaction still need verification.
 
 The optional hosted review site is https://action-receipt.huzzahoptimistically.chatgpt.site. It retains the owner's existing private audience. The downloadable app in this public repository is the judge-access route and does not depend on that site.
 
