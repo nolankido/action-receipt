@@ -41,8 +41,10 @@
   "deadline_utc": "2026-10-26T21:00:00Z",
   "deadline_honolulu": "2026-10-26T11:00:00-10:00",
   "technical_video_created": true,
-  "technical_video_duration_seconds": 120.0,
-  "technical_video_sha256": "8423b1bf42e03ce02ae631644c1cada469453dcc3b6e7e4799c05a6a9136a8ac",
-  "technical_video_kind": "Captioned real domain-output walkthrough; scripted synthetic checks; browser interface not shown",
-  "submission_demo_complete": false
+  "technical_video_duration_seconds": 162.0,
+  "technical_video_sha256": "71b63b562564934893962708ac94b8789b3d24182259520b6852344b06cfd236",
+  "technical_video_kind": "Narrated real domain-output walkthrough; scripted synthetic checks; browser interface not shown",
+  "submission_demo_complete": false,
+  "technical_video_audio": "Offline computer-generated English voice; not the entrant's voice",
+  "technical_video_caption_file": "technical-video-captions.srt"
 }

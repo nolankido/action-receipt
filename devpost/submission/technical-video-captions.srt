@@ -1,51 +1,148 @@
 1
-00:00:00,000 --> 00:00:07,000
-One notice. Source-linked actions. Dates that need a deliberate check.
+00:00:00,350 --> 00:00:04,065
+Action Receipt turns one notice into actions you can check.
 
 2
-00:00:07,000 --> 00:00:21,000
-An invented practice notice supplies the input for every result shown here.
+00:00:04,065 --> 00:00:09,600
+This walkthrough shows real program outputs, not a recording of the
+browser interface.
 
 3
-00:00:21,000 --> 00:00:29,000
-The local English text rules run on the source, with no model or API request.
+00:00:11,350 --> 00:00:15,325
+This invented school notice separates registration from payment.
 
 4
-00:00:29,000 --> 00:00:37,000
-Exact quotations establish where words occurred, not whether the interpretation is right.
+00:00:15,325 --> 00:00:21,995
+It also includes a consent form, a conditional transport request,
+and a fee that is explicitly waived.
 
 5
-00:00:37,000 --> 00:00:46,000
-The real repair function creates a separate action from the exact flagged passage.
+00:00:25,350 --> 00:00:29,360
+The local rules propose three actions and flag two passages.
 
 6
-00:00:46,000 --> 00:00:53,000
-The scripted source decision records its reason and preserves the original flag.
+00:00:29,360 --> 00:00:31,700
+Nothing is approved automatically.
 
 7
-00:00:53,000 --> 00:01:01,000
-The program does not turn next Friday into a guessed calendar date.
+00:00:31,700 --> 00:00:35,750
+At this point, neither download includes any tasks or events.
 
 8
-00:01:01,000 --> 00:01:10,000
-These are scripted contract checks, not a claim that a person reviewed the notice.
+00:00:37,350 --> 00:00:42,690
+Registration and the bus deposit keep their own deadlines and exact
+source quotations.
 
 9
-00:01:10,000 --> 00:01:24,000
-This is an excerpt from the actual Markdown serializer output.
+00:00:42,690 --> 00:00:47,350
+The words are traceable, but a person must still check their
+interpretation.
 
 10
-00:01:24,000 --> 00:01:35,000
-The timed cutoff is converted to the same instant in UTC, with no inferred reminder.
+00:00:48,350 --> 00:00:51,260
+The rules missed the consent instruction.
 
 11
-00:01:35,000 --> 00:01:43,000
-The capture also exercised edit invalidation and the real saved-review parser.
+00:00:51,260 --> 00:00:55,605
+The repair function uses the flagged passage to create a separate
+action.
 
 12
-00:01:43,000 --> 00:01:51,000
-Codex used the Devpost Learn Skill Pack; generated planning documents are public.
+00:00:55,605 --> 00:00:59,185
+Its date stays unresolved and its approval stays unchecked.
 
 13
-00:01:51,000 --> 00:02:00,000
-Public source and the runnable offline file: github.com/nolankido/action-receipt
+00:01:00,350 --> 00:01:03,995
+The waived membership fee is marked as not an obligation.
+
+14
+00:01:03,995 --> 00:01:09,375
+That decision preserves its reason without creating another task or
+calendar event.
+
+15
+00:01:10,350 --> 00:01:13,555
+Accessible transport applies only if needed.
+
+16
+00:01:13,555 --> 00:01:16,525
+The phrase next Friday stays unresolved.
+
+17
+00:01:16,525 --> 00:01:20,665
+The program does not invent a calendar date or remove the condition.
+
+18
+00:01:22,350 --> 00:01:24,970
+These review choices are scripted checks.
+
+19
+00:01:24,970 --> 00:01:30,320
+Approving four actions produces four checklist tasks, but zero
+calendar entries.
+
+20
+00:01:30,320 --> 00:01:34,410
+Confirming the two complete dates then enables two calendar entries.
+
+21
+00:01:35,350 --> 00:01:38,680
+This excerpt comes from the actual checklist file.
+
+22
+00:01:38,680 --> 00:01:42,290
+Each approved action keeps its source quotation.
+
+23
+00:01:42,290 --> 00:01:47,555
+The consent form and conditional email remain checklist tasks
+without calendar dates.
+
+24
+00:01:49,350 --> 00:01:52,345
+The calendar file contains only two entries.
+
+25
+00:01:52,345 --> 00:01:54,760
+Registration is an all day marker.
+
+26
+00:01:54,760 --> 00:02:00,745
+The deposit cutoff converts from five P M, U T C minus ten, to the
+same instant in U T C.
+
+27
+00:02:02,350 --> 00:02:06,555
+Editing the reviewed cutoff clears approval and date confirmation.
+
+28
+00:02:06,555 --> 00:02:10,050
+Opening a saved review also requires fresh checks.
+
+29
+00:02:10,050 --> 00:02:13,720
+Earlier decisions never silently authorize a new download.
+
+30
+00:02:15,350 --> 00:02:21,530
+Codex used the Devpost Learn Skill Pack, with generated planning
+documents in the public repository.
+
+31
+00:02:21,530 --> 00:02:27,405
+The finished app runs local rules, without model downloads,
+accounts, or A P I credits.
+
+32
+00:02:28,350 --> 00:02:33,625
+Source and the offline browser app are on GitHub under nolankido,
+action receipt.
+
+33
+00:02:33,625 --> 00:02:35,860
+This supporting walkthrough is complete.
+
+34
+00:02:35,860 --> 00:02:40,785
+Actual browser footage and a public video link are still needed for
+the submission demo.

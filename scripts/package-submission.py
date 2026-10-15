@@ -63,6 +63,7 @@ files = [
     "devpost/submission/action-receipt-cover.png", "devpost/submission/action-receipt-cover.svg",
     "devpost/demo/technical-video-domain-data.json", "devpost/submission/technical-video-manifest.json",
     "devpost/submission/technical-video-captions.srt",
+    "devpost/submission/technical-video-narration.json",
 ]
 contents = {name: (ROOT / name).read_bytes() for name in files}
 story = html.escape((ASSETS / "project-description.md").read_text())

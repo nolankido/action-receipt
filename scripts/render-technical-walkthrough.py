@@ -1,4 +1,4 @@
-"""Render a captioned video from real domain outputs, with its limits on every scene.
+"""Render a narrated video from real domain outputs, with its limits on every scene.
 
 Requires local Pillow and FFmpeg. Does not control a browser, create simulated
 app screenshots, upload a video, or claim a completed hackathon demonstration.
@@ -13,6 +13,9 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "outputs/video"
 DATA = json.loads((OUT / "domain-capture.json").read_text())
+NARRATION_PATH = ROOT / "devpost/submission/technical-video-narration.json"
+NARRATION = json.loads(NARRATION_PATH.read_text())
+assert NARRATION["browser_footage"] is False
 assert DATA["synthetic"] and DATA["all_review_choices_scripted"] and not DATA["human_review"]
 W, H = 1600, 900
 BG, INK, GREEN, MUTED = "#f6f5ef", "#24382e", "#245846", "#596b53"
@@ -65,11 +68,11 @@ def scene(title, duration, caption, blocks, eyebrow="ACTUAL DOMAIN OUTPUTS"):
         draw.rounded_rectangle((62, y, 1538, y + height), 13, fill=block.get("background", "white"), outline="#d8dfd0", width=2)
         text(draw, (84, y + 15), block["text"], face, fill=block.get("color", INK), width=1392)
         y += height + 15
-    draw.rounded_rectangle((60, 759, 1540, 820), 10, fill=GREEN)
+    draw.rounded_rectangle((60, 759, 1540, 837), 10, fill=GREEN)
     caption_lines = wrap(caption, F["small"], 1420)
     assert len(caption_lines) == 1, title + " caption too long"
-    draw.text((82, 776), caption, font=F["small"], fill="white")
-    draw.text((62, 847), "SCRIPTED SYNTHETIC CHECK  |  BROWSER INTERFACE NOT SHOWN", font=font(18, True), fill=MUTED)
+    # The encoder burns the spoken captions here using measured audio timing.
+    draw.text((62, 847), "SCRIPTED SYNTHETIC CHECK  |  COMPUTER VOICE  |  BROWSER INTERFACE NOT SHOWN", font=font(18, True), fill=MUTED)
     draw.text((1538, 847), f"{len(SCENES)+1:02d}", font=font(18), fill=MUTED, anchor="ra")
     path = OUT / f"scene-{len(SCENES):02d}.png"; image.save(path)
     SCENES.append({"path": path.name, "title": title, "duration_seconds": duration, "caption": caption,
@@ -150,29 +153,109 @@ scene("Try the actual browser app.", 9,
     {"text": "This technical walkthrough is complete.\nBrowser-interface footage and a public YouTube/Vimeo link remain necessary for the finished hackathon demo.", "font": "small"},
 ], "HONEST EVIDENCE, VISIBLE LIMITS")
 
+assert len(NARRATION["scenes"]) == len(SCENES)
+audio_paths = []
+for i, (s, narration) in enumerate(zip(SCENES, NARRATION["scenes"])):
+    # Synthesize short caption units independently so their start/end timestamps
+    # come from measured audio, rather than guesses about the reading speed.
+    units = []
+    for sentence in re.split(r"(?<=[.!?]) +", narration):
+        line = ""
+        for word in sentence.split():
+            candidate = (line + " " + word).strip()
+            if len(candidate) > 124 and line:
+                units.append(line); line = word
+            else:
+                line = candidate
+        units.append(line)
+    sentence_paths = []; measured = []; speech_duration = 0.0
+    for j, unit in enumerate(units):
+        # Text is passed as a file, never interpolated into a shell command.
+        text_path = OUT / f"narration-{i:02d}-{j:02d}.txt"
+        text_path.write_text(unit + "\n")
+        sentence_path = OUT / f"speech-{i:02d}-{j:02d}.wav"
+        subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "lavfi", "-i",
+                        f"flite=textfile={text_path}:voice={NARRATION['voice']}",
+                        "-af", "apad=pad_dur=0.10", "-ar", "48000", "-ac", "1", str(sentence_path)], check=True)
+        unit_probe = json.loads(subprocess.check_output(["ffprobe", "-v", "error", "-show_format", "-of", "json", str(sentence_path)]))
+        unit_duration = float(unit_probe["format"]["duration"])
+        measured.append({"text": unit, "start_seconds": speech_duration, "duration_seconds": unit_duration})
+        speech_duration += unit_duration
+        sentence_paths.append(sentence_path)
+    sentence_concat = OUT / f"speech-{i:02d}.ffconcat"
+    sentence_concat.write_text("ffconcat version 1.0\n" + "".join(f"file '{p.name}'\n" for p in sentence_paths))
+    speech_path = OUT / f"speech-{i:02d}.wav"
+    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-safe", "1", "-f", "concat", "-i", str(sentence_concat),
+                    "-ar", "48000", "-ac", "1", str(speech_path)], check=True)
+    # Readable scenes are never shortened. Leave a breath before and after each voice cue.
+    s["duration_seconds"] = max(s["duration_seconds"], int(speech_duration + 1.8))
+    s["narration"] = narration
+    s["speech_duration_seconds"] = speech_duration
+    s["speech_start_seconds"] = 0.35
+    s["spoken_captions"] = measured
+    padded_path = OUT / f"narrated-{i:02d}.wav"
+    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(speech_path),
+                    "-af", "adelay=350,apad", "-t", str(s["duration_seconds"]),
+                    "-ar", "48000", "-ac", "1", str(padded_path)], check=True)
+    audio_paths.append(padded_path)
 duration = sum(s["duration_seconds"] for s in SCENES)
-assert duration < 180
+assert duration < 180, f"Narrated video exceeds the three-minute limit: {duration}"
+audio_concat = OUT / "narration.ffconcat"
+audio_concat.write_text("ffconcat version 1.0\n" + "".join(f"file '{p.name}'\n" for p in audio_paths))
+audio_track = OUT / "narration.wav"
+subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-safe", "1", "-f", "concat", "-i", str(audio_concat),
+                "-af", "loudnorm=I=-18:TP=-2:LRA=7", "-ar", "48000", "-ac", "1", str(audio_track)], check=True)
 concat = OUT / "scenes.ffconcat"
 concat.write_text("ffconcat version 1.0\n" + "".join(f"file '{s['path']}'\nduration {s['duration_seconds']}\n" for s in SCENES) + f"file '{SCENES[-1]['path']}'\n")
+def cue_stamp(value):
+    ms = round(value * 1000)
+    return f"{ms//3600000:02d}:{ms//60000%60:02d}:{ms//1000%60:02d},{ms%1000:03d}"
+def ass_stamp(value):
+    cs = round(value * 100)
+    return f"{cs//360000}:{cs//6000%60:02d}:{cs//100%60:02d}.{cs%100:02d}"
+position = 0; cues = []; dialogue = []
+for s in SCENES:
+    for unit in s["spoken_captions"]:
+        start = position + s["speech_start_seconds"] + unit["start_seconds"]
+        end = start + unit["duration_seconds"]
+        assert end < position + s["duration_seconds"]
+        words = unit["text"].split(); lines = []; line = ""
+        for word in words:
+            candidate = (line + " " + word).strip()
+            if len(candidate) > 68 and line:
+                lines.append(line); line = word
+            else:
+                line = candidate
+        lines.append(line)
+        assert len(lines) <= 2
+        assert all(font(24).getlength(line) < 1400 for line in lines)
+        cues.append(f"{len(cues)+1}\n{cue_stamp(start)} --> {cue_stamp(end)}\n" + "\n".join(lines) + "\n")
+        dialogue.append(f"Dialogue: 0,{ass_stamp(start)},{ass_stamp(end)},Default,,0,0,0,," + r"{\an8\pos(800,771)}" + r"\N".join(lines))
+    position += s["duration_seconds"]
+(OUT / "technical-walkthrough.srt").write_text("\n".join(cues))
+ass_path = OUT / "technical-walkthrough.ass"
+ass_path.write_text("[Script Info]\nScriptType: v4.00+\nPlayResX: 1600\nPlayResY: 900\nWrapStyle: 2\n\n"
+    "[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
+    "Style: Default,DejaVu Sans,24,&H00FFFFFF,&H00FFFFFF,&H00245846,&H00245846,0,0,0,0,100,100,0,0,1,0,0,8,70,70,0,1\n\n"
+    "[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n" + "\n".join(dialogue) + "\n")
 movie = ROOT / "outputs/action-receipt-technical-walkthrough.mp4"
 subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-safe", "1", "-f", "concat", "-i", str(concat),
-                "-t", str(duration), "-vf", "fps=24", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
+                "-i", str(audio_track), "-map", "0:v:0", "-map", "1:a:0",
+                "-t", str(duration), "-vf", f"fps=24,subtitles={ass_path}:fontsdir={FONT_ROOT}", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
+                "-c:a", "aac", "-b:a", "128k", "-ar", "48000",
                 "-movflags", "+faststart", "-metadata", "title=Action Receipt | Technical walkthrough",
-                "-metadata", "comment=Real domain outputs; scripted synthetic choices; browser interface not shown; not a completed hackathon demo.", str(movie)], check=True)
+                "-metadata", "comment=Real domain outputs; offline computer-generated narration; scripted synthetic choices; browser interface not shown; not a completed hackathon demo.", str(movie)], check=True)
 probe = json.loads(subprocess.check_output(["ffprobe", "-v", "error", "-show_format", "-show_streams", "-of", "json", str(movie)]))
 assert float(probe["format"]["duration"]) < 180
 video = next(s for s in probe["streams"] if s["codec_type"] == "video")
 assert (video["width"], video["height"], video["codec_name"], video["pix_fmt"]) == (W, H, "h264", "yuv420p")
-def stamp(seconds):
-    return f"{seconds//3600:02d}:{seconds//60%60:02d}:{seconds%60:02d},000"
-position = 0; cues = []
-for i, s in enumerate(SCENES, 1):
-    cues.append(f"{i}\n{stamp(position)} --> {stamp(position+s['duration_seconds'])}\n{s['caption']}\n")
-    position += s["duration_seconds"]
-(OUT / "technical-walkthrough.srt").write_text("\n".join(cues))
-manifest = {"kind": "Captioned technical walkthrough of real domain outputs", "browser_footage": False,
+audio = next(s for s in probe["streams"] if s["codec_type"] == "audio")
+assert audio["codec_name"] == "aac" and audio["channels"] == 1 and audio["sample_rate"] == "48000"
+manifest = {"kind": "Narrated technical walkthrough of real domain outputs", "browser_footage": False,
             "hackathon_demo_complete": False, "review_choices": "scripted synthetic contract checks", "duration_seconds": float(probe["format"]["duration"]),
-            "resolution": [W, H], "codec": "H.264", "audio": "none; captions are visible in every scene",
+            "resolution": [W, H], "codec": "H.264", "audio": "AAC mono; offline FFmpeg libflite computer-generated voice slt; no impersonation",
+            "narration_sha256": hashlib.sha256(NARRATION_PATH.read_bytes()).hexdigest(),
+            "caption_alignment": "Measured synthesis-clip boundaries; full spoken captions burned into video and included as SRT",
             "movie_sha256": hashlib.sha256(movie.read_bytes()).hexdigest(), "scenes": SCENES,
             "input_capture_sha256": hashlib.sha256((OUT / "domain-capture.json").read_bytes()).hexdigest(),
             "render_script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}

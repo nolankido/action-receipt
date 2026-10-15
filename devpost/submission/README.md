@@ -4,11 +4,11 @@ These files reduce submission work. They do not constitute a submitted entry.
 
 ## Technical video created
 
-A **2:00 captioned technical walkthrough** has been created and provided separately as `action-receipt-technical-walkthrough.mp4`. It presents real production-domain outputs captured from the notice, repair, decision, approval/date, export and reopen functions. Its input data is in `../demo/technical-video-domain-data.json`; captions and a scene/hash manifest are included here. Every scene identifies scripted synthetic choices and states that the browser interface is not shown.
+A **2:42 narrated technical walkthrough** has been created and provided separately as `action-receipt-technical-walkthrough.mp4`. It presents real production-domain outputs captured from the notice, repair, decision, approval/date, export and reopen functions. Its input data is in `../demo/technical-video-domain-data.json`; the narration script, full spoken captions and a scene/hash manifest are included here. The voice is computer-generated offline using FFmpeg libflite, not the entrant's voice. No voice cloning, paid service or API request was used. Every scene identifies scripted synthetic choices and states that the browser interface is not shown.
 
 This video is not the finished hackathon demonstration. Browser policy blocked opening the local HTML file and expressly prohibited workarounds. No browser recording, screenshot-based imitation of the interface, human review or participant session is claimed. A proper recording of the actual browser interface and a public YouTube/Vimeo link remain open. Do not submit the technical walkthrough as if those requirements had been completed.
 
-Reproduction in a local environment with Node 22.13+, Python/Pillow, DejaVu fonts at `/usr/share/fonts/truetype/dejavu`, and FFmpeg:
+Reproduction in a local environment with Node 22.13+, Python/Pillow, DejaVu fonts at `/usr/share/fonts/truetype/dejavu`, and FFmpeg with the libflite and subtitles filters:
 
 ```sh
 npm run rehearse:demo
@@ -16,12 +16,12 @@ node --experimental-strip-types scripts/capture-technical-walkthrough.mjs
 python scripts/render-technical-walkthrough.py
 ```
 
-The encoder produces H.264, 1600 by 900, 24 fps, 120 seconds, with visible captions and no audio. Full decode and image-layout checks passed. The video file is provided separately; the small ZIP contains its provenance and captions.
+The encoder produces H.264, 1600 by 900, 24 fps, 162 seconds, with AAC mono narration and visible spoken captions. Each caption uses the measured boundary of its synthesis clip, with 34 cues in the accompanying SRT. Full decode and image-layout checks passed. The video file is provided separately; the small ZIP contains its provenance, narration text and captions.
 
 - `project-description.md`: AI-assisted factual draft and Skill Pack-use material prepared under the entrant's explicit delegation. It is not learner-written copy and contains no invented personal reflection.
 - `entry-data.json`: name, tagline, technology tags, public links, platform and unfilled fields. `null` means genuinely missing. These are not verified authenticated form fields.
 - `action-receipt-cover.png`: original 1200 by 800 project illustration for the gallery. It is not a screenshot. The matching SVG preserves editable source.
-- `planned-captions.srt`: 2:35 planned captions. They must be aligned to the actual screen recording before use; no video has been produced. A captioned silent demo can show the required functioning software without a face or voice recording.
+- `planned-captions.srt`: 2:35 planned captions. They must be aligned to the actual screen recording before use; no browser-interface footage has been produced. A captioned silent demo can show the required functioning software without a face or voice recording.
 - `package-manifest.json`: SHA-256 hashes for the files in the portable submission-preparation archive. This binds the assets and runnable app, not a submission or a human review.
 
 The generated archive is `release/action-receipt-submission.zip`. It includes the finished offline app, license/notices, factual draft, cover, planned captions, generated planning documents, judge instructions and explicitly labeled automated reference checks. Extract it and open `START-HERE.html` for the entry state and links.

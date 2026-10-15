@@ -1,27 +1,44 @@
 {
-  "kind": "Captioned technical walkthrough of real domain outputs",
+  "kind": "Narrated technical walkthrough of real domain outputs",
   "browser_footage": false,
   "hackathon_demo_complete": false,
   "review_choices": "scripted synthetic contract checks",
-  "duration_seconds": 120.0,
+  "duration_seconds": 162.0,
   "resolution": [
     1600,
     900
   ],
   "codec": "H.264",
-  "audio": "none; captions are visible in every scene",
-  "movie_sha256": "8423b1bf42e03ce02ae631644c1cada469453dcc3b6e7e4799c05a6a9136a8ac",
+  "audio": "AAC mono; offline FFmpeg libflite computer-generated voice slt; no impersonation",
+  "narration_sha256": "1ccc733e48acdcbe55d8cae1d95113a8989b55fd53d428c26742daad8900e5ae",
+  "caption_alignment": "Measured synthesis-clip boundaries; full spoken captions burned into video and included as SRT",
+  "movie_sha256": "71b63b562564934893962708ac94b8789b3d24182259520b6852344b06cfd236",
   "scenes": [
     {
       "path": "scene-00.png",
       "title": "Know what is next. Keep the proof.",
-      "duration_seconds": 7,
+      "duration_seconds": 11,
       "caption": "One notice. Source-linked actions. Dates that need a deliberate check.",
       "content": [
         "A narrow tool for students reviewing school, club and administrative notices.",
         "This video presents real rule-engine outputs and export checks.\nIt is not a recording of the browser interface."
       ],
-      "sha256": "d09bc1ba687b202be674c08d741a31cdab158adb0c9e11043d60ca44f39dd5a9"
+      "sha256": "363219d3813ea47b6d0b3528d49cd43c5cac857ca7546dadd1f3d0edfb2ca1f1",
+      "narration": "Action Receipt turns one notice into actions you can check. This walkthrough shows real program outputs, not a recording of the browser interface.",
+      "speech_duration_seconds": 9.25,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "Action Receipt turns one notice into actions you can check.",
+          "start_seconds": 0.0,
+          "duration_seconds": 3.715
+        },
+        {
+          "text": "This walkthrough shows real program outputs, not a recording of the browser interface.",
+          "start_seconds": 3.715,
+          "duration_seconds": 5.535
+        }
+      ]
     },
     {
       "path": "scene-01.png",
@@ -31,73 +48,198 @@
       "content": [
         "CAMPUS FIELD TRIP\nSynthetic practice notice, not an actual event.\n\nRegister for the architecture trip by Nov. 5, 2032.\nPay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.\nParticipants must attach a signed consent form.\n\nIf you need accessible transport, email the coordinator by next Friday.\nYou do not need to pay a separate membership fee."
       ],
-      "sha256": "5c37b039d80b0536773d71272263cec3450454a5a483930a6b068c7bdcf9b97a"
+      "sha256": "2748a96c1a465d189e6b9635eaed3ee36dbf0af5a7c3b4bcdc83f450c0b1dc47",
+      "narration": "This invented school notice separates registration from payment. It also includes a consent form, a conditional transport request, and a fee that is explicitly waived.",
+      "speech_duration_seconds": 10.645,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "This invented school notice separates registration from payment.",
+          "start_seconds": 0.0,
+          "duration_seconds": 3.975
+        },
+        {
+          "text": "It also includes a consent form, a conditional transport request, and a fee that is explicitly waived.",
+          "start_seconds": 3.975,
+          "duration_seconds": 6.67
+        }
+      ]
     },
     {
       "path": "scene-02.png",
       "title": "Three proposals. No automatic approval.",
-      "duration_seconds": 8,
+      "duration_seconds": 12,
       "caption": "The local English text rules run on the source, with no model or API request.",
       "content": [
         "1. Register for the architecture trip\n    Proposed date: 2032-11-05\n2. Pay the bus deposit\n    Proposed date: 2032-11-08\n3. email the coordinator by next Friday\n    Proposed date: unresolved",
         "2 passages flagged. Initial downloads: 0 checklist tasks, 0 calendar entries."
       ],
-      "sha256": "7d2a9b1a19e4b5c8c2b4f351b6fb62c447e74e8730cb76222759b13378eb6924"
+      "sha256": "dbcf88aa784b95c6eaa22208d3e82463283329dab5f0fb7b6b739bdc2aee9582",
+      "narration": "The local rules propose three actions and flag two passages. Nothing is approved automatically. At this point, neither download includes any tasks or events.",
+      "speech_duration_seconds": 10.399999999999999,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "The local rules propose three actions and flag two passages.",
+          "start_seconds": 0.0,
+          "duration_seconds": 4.01
+        },
+        {
+          "text": "Nothing is approved automatically.",
+          "start_seconds": 4.01,
+          "duration_seconds": 2.34
+        },
+        {
+          "text": "At this point, neither download includes any tasks or events.",
+          "start_seconds": 6.35,
+          "duration_seconds": 4.05
+        }
+      ]
     },
     {
       "path": "scene-03.png",
       "title": "Different tasks, different deadlines.",
-      "duration_seconds": 8,
+      "duration_seconds": 11,
       "caption": "Exact quotations establish where words occurred, not whether the interpretation is right.",
       "content": [
         "Register for the architecture trip by Nov. 5, 2032.",
         "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00."
       ],
-      "sha256": "f80ea6753e1ac71bcbeedabe665f28f2b917d38c0f8215c83edbee12c94362e8"
+      "sha256": "838a892c568f4428a42e41d275117c431acf93000b84b4aece2c8a8aea9374bd",
+      "narration": "Registration and the bus deposit keep their own deadlines and exact source quotations. The words are traceable, but a person must still check their interpretation.",
+      "speech_duration_seconds": 10.0,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "Registration and the bus deposit keep their own deadlines and exact source quotations.",
+          "start_seconds": 0.0,
+          "duration_seconds": 5.34
+        },
+        {
+          "text": "The words are traceable, but a person must still check their interpretation.",
+          "start_seconds": 5.34,
+          "duration_seconds": 4.66
+        }
+      ]
     },
     {
       "path": "scene-04.png",
       "title": "Repair an instruction the rules missed.",
-      "duration_seconds": 9,
+      "duration_seconds": 12,
       "caption": "The real repair function creates a separate action from the exact flagged passage.",
       "content": [
         "Participants must attach a signed consent form.",
         "New action: Attach a signed consent form\nDate: unresolved. Approval: unchecked."
       ],
-      "sha256": "b6174b8d1faa6c515a3cd5db1739588002396a8e1bba18ef0e7b089981efbc8e"
+      "sha256": "79cf5b0f55eb96585fe07ca6099dfcbf812d58852cdda72abb9d4efdf7dff330",
+      "narration": "The rules missed the consent instruction. The repair function uses the flagged passage to create a separate action. Its date stays unresolved and its approval stays unchecked.",
+      "speech_duration_seconds": 10.835,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "The rules missed the consent instruction.",
+          "start_seconds": 0.0,
+          "duration_seconds": 2.91
+        },
+        {
+          "text": "The repair function uses the flagged passage to create a separate action.",
+          "start_seconds": 2.91,
+          "duration_seconds": 4.345
+        },
+        {
+          "text": "Its date stays unresolved and its approval stays unchecked.",
+          "start_seconds": 7.255,
+          "duration_seconds": 3.58
+        }
+      ]
     },
     {
       "path": "scene-05.png",
       "title": "A waived fee stays out of the tasks.",
-      "duration_seconds": 7,
+      "duration_seconds": 10,
       "caption": "The scripted source decision records its reason and preserves the original flag.",
       "content": [
         "You do not need to pay a separate membership fee.",
         "Decision: not an obligation.\nNo separate membership-fee task or event is created."
       ],
-      "sha256": "dd7e8b0e4a84e5102fed384fdbc5ea367d51ff780c956dd9891deafb59590d83"
+      "sha256": "fd40023c49982294e1c0d0c89af807fff13cb039a5115d8083a188f17c91a2ad",
+      "narration": "The waived membership fee is marked as not an obligation. That decision preserves its reason without creating another task or calendar event.",
+      "speech_duration_seconds": 9.025,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "The waived membership fee is marked as not an obligation.",
+          "start_seconds": 0.0,
+          "duration_seconds": 3.645
+        },
+        {
+          "text": "That decision preserves its reason without creating another task or calendar event.",
+          "start_seconds": 3.645,
+          "duration_seconds": 5.38
+        }
+      ]
     },
     {
       "path": "scene-06.png",
       "title": "Keep the condition. Keep the uncertainty.",
-      "duration_seconds": 8,
+      "duration_seconds": 12,
       "caption": "The program does not turn next Friday into a guessed calendar date.",
       "content": [
         "If you need accessible transport, email the coordinator by next Friday.",
         "Condition: If you need accessible transport\nDate: unresolved. Calendar: excluded."
       ],
-      "sha256": "795fe12fe45839d0a85f7e5dea0fdafe11027a3f4120dda7ddd78afa94b6c9a2"
+      "sha256": "2e15d5ba9b43b04ef96812a713283d2380816ba8b71d3de15d28f689c208da6f",
+      "narration": "Accessible transport applies only if needed. The phrase next Friday stays unresolved. The program does not invent a calendar date or remove the condition.",
+      "speech_duration_seconds": 10.315000000000001,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "Accessible transport applies only if needed.",
+          "start_seconds": 0.0,
+          "duration_seconds": 3.205
+        },
+        {
+          "text": "The phrase next Friday stays unresolved.",
+          "start_seconds": 3.205,
+          "duration_seconds": 2.97
+        },
+        {
+          "text": "The program does not invent a calendar date or remove the condition.",
+          "start_seconds": 6.175000000000001,
+          "duration_seconds": 4.14
+        }
+      ]
     },
     {
       "path": "scene-07.png",
       "title": "Approval and date confirmation are separate.",
-      "duration_seconds": 9,
+      "duration_seconds": 13,
       "caption": "These are scripted contract checks, not a claim that a person reviewed the notice.",
       "content": [
         "Fresh scan: 0 checklist tasks, 0 calendar entries.\nAfter action checks: 4 checklist tasks, 0 calendar entries.\nAfter complete date checks: 4 checklist tasks, 2 calendar entries.",
         "The undated consent form and conditional email remain checklist-only."
       ],
-      "sha256": "1ed73ff6748e9ab9bc7e152a45307197b445f888c8edb42433a2354fd350981c"
+      "sha256": "bf5550c884d177a4047565e0544becb0dfae3b0adbb2a91353f82a98a01b2025",
+      "narration": "These review choices are scripted checks. Approving four actions produces four checklist tasks, but zero calendar entries. Confirming the two complete dates then enables two calendar entries.",
+      "speech_duration_seconds": 12.059999999999999,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "These review choices are scripted checks.",
+          "start_seconds": 0.0,
+          "duration_seconds": 2.62
+        },
+        {
+          "text": "Approving four actions produces four checklist tasks, but zero calendar entries.",
+          "start_seconds": 2.62,
+          "duration_seconds": 5.35
+        },
+        {
+          "text": "Confirming the two complete dates then enables two calendar entries.",
+          "start_seconds": 7.97,
+          "duration_seconds": 4.09
+        }
+      ]
     },
     {
       "path": "scene-08.png",
@@ -107,53 +249,148 @@
       "content": [
         "Notice: AUTOMATED TECHNICAL WALKTHROUGH: Invented architecture trip\n\n- [ ] Register for the architecture trip\n  - Reviewed date: 2032-11-05 (day marker)\n  - Action source: \u201cRegister for the architecture trip by Nov. 5, 2032.\u201d\n- [ ] Pay the bus deposit\n  - Reviewed date: 2032-11-08 17:00 UTC-10:00\n  - Action source: \u201cPay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.\u201d"
       ],
-      "sha256": "b4a752bae75309df22bdfe7be4cf46dee76abdba9b82ea860162d1de80be61a5"
+      "sha256": "c14d4b8f357b0aecbcf48e4a224529a113edbfddab5a68f3bd427d64fab8a62c",
+      "narration": "This excerpt comes from the actual checklist file. Each approved action keeps its source quotation. The consent form and conditional email remain checklist tasks without calendar dates.",
+      "speech_duration_seconds": 12.204999999999998,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "This excerpt comes from the actual checklist file.",
+          "start_seconds": 0.0,
+          "duration_seconds": 3.33
+        },
+        {
+          "text": "Each approved action keeps its source quotation.",
+          "start_seconds": 3.33,
+          "duration_seconds": 3.61
+        },
+        {
+          "text": "The consent form and conditional email remain checklist tasks without calendar dates.",
+          "start_seconds": 6.9399999999999995,
+          "duration_seconds": 5.265
+        }
+      ]
     },
     {
       "path": "scene-09.png",
       "title": "Only two dates enter the calendar.",
-      "duration_seconds": 11,
+      "duration_seconds": 13,
       "caption": "The timed cutoff is converted to the same instant in UTC, with no inferred reminder.",
       "content": [
         "BEGIN:VEVENT\nDTSTART;VALUE=DATE:20321105\nDTEND;VALUE=DATE:20321106\nSUMMARY:Register for the architecture trip\nEND:VEVENT\nBEGIN:VEVENT\nDTSTART:20321109T030000Z\nSUMMARY:Pay the bus deposit\nEND:VEVENT",
         "Selected properties shown. Complete files also retain quotations, warnings and context."
       ],
-      "sha256": "158aa5733a4f99fbcf86e4fa004aacede9075f3e5de87fe69bf08a10682f0758"
+      "sha256": "fb1d45d00c413195b96f2b860edf2d1d8b4412d55d66424a5707a130af293750",
+      "narration": "The calendar file contains only two entries. Registration is an all day marker. The deposit cutoff converts from five P M, U T C minus ten, to the same instant in U T C.",
+      "speech_duration_seconds": 11.395,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "The calendar file contains only two entries.",
+          "start_seconds": 0.0,
+          "duration_seconds": 2.995
+        },
+        {
+          "text": "Registration is an all day marker.",
+          "start_seconds": 2.995,
+          "duration_seconds": 2.415
+        },
+        {
+          "text": "The deposit cutoff converts from five P M, U T C minus ten, to the same instant in U T C.",
+          "start_seconds": 5.41,
+          "duration_seconds": 5.985
+        }
+      ]
     },
     {
       "path": "scene-10.png",
       "title": "Changed data needs fresh review.",
-      "duration_seconds": 8,
+      "duration_seconds": 13,
       "caption": "The capture also exercised edit invalidation and the real saved-review parser.",
       "content": [
         "Edit a reviewed cutoff:\nAction approval cleared. Date confirmation cleared.",
         "Reopen a saved review:\n0 checklist tasks and 0 calendar entries until checked again."
       ],
-      "sha256": "a7bb6ade2fb7444fa8f30c1fff04558c2496f2947d2453cee190a5f2e746e802"
+      "sha256": "eb9005f36613f132b97a18311371f683b2257eef24f1843f5cac4a773f72f9c7",
+      "narration": "Editing the reviewed cutoff clears approval and date confirmation. Opening a saved review also requires fresh checks. Earlier decisions never silently authorize a new download.",
+      "speech_duration_seconds": 11.370000000000001,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "Editing the reviewed cutoff clears approval and date confirmation.",
+          "start_seconds": 0.0,
+          "duration_seconds": 4.205
+        },
+        {
+          "text": "Opening a saved review also requires fresh checks.",
+          "start_seconds": 4.205,
+          "duration_seconds": 3.495
+        },
+        {
+          "text": "Earlier decisions never silently authorize a new download.",
+          "start_seconds": 7.7,
+          "duration_seconds": 3.67
+        }
+      ]
     },
     {
       "path": "scene-11.png",
       "title": "Built with AI. Runs without an AI bill.",
-      "duration_seconds": 8,
+      "duration_seconds": 13,
       "caption": "Codex used the Devpost Learn Skill Pack; generated planning documents are public.",
       "content": [
         "Runtime: local English text rules, React and TypeScript.\nOne self-contained browser file. No account, model download or API credits.",
         "Automated checks are not student feedback or proof of complete language understanding."
       ],
-      "sha256": "25bc65476a6954d4ca34c225c86a2a64c6654ee82f1e0d8fd9c348affe4ec495"
+      "sha256": "2056a1b1937698546ca3b7b18baccd9eed3d97113cca9d7d472cc2911ce1163f",
+      "narration": "Codex used the Devpost Learn Skill Pack, with generated planning documents in the public repository. The finished app runs local rules, without model downloads, accounts, or A P I credits.",
+      "speech_duration_seconds": 12.055,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "Codex used the Devpost Learn Skill Pack, with generated planning documents in the public repository.",
+          "start_seconds": 0.0,
+          "duration_seconds": 6.18
+        },
+        {
+          "text": "The finished app runs local rules, without model downloads, accounts, or A P I credits.",
+          "start_seconds": 6.18,
+          "duration_seconds": 5.875
+        }
+      ]
     },
     {
       "path": "scene-12.png",
       "title": "Try the actual browser app.",
-      "duration_seconds": 9,
+      "duration_seconds": 14,
       "caption": "Public source and the runnable offline file: github.com/nolankido/action-receipt",
       "content": [
         "github.com/nolankido/action-receipt",
         "This technical walkthrough is complete.\nBrowser-interface footage and a public YouTube/Vimeo link remain necessary for the finished hackathon demo."
       ],
-      "sha256": "6ad390a8e9bfbf5760f236e5a72b9bb35ec171e8234a2e45340a2706a823e3ff"
+      "sha256": "1c769ec222b2649081cce0feef2cdf2f7b7e59013fd83ff9d6e038f5724a5e9a",
+      "narration": "Source and the offline browser app are on GitHub under nolankido, action receipt. This supporting walkthrough is complete. Actual browser footage and a public video link are still needed for the submission demo.",
+      "speech_duration_seconds": 12.434999999999999,
+      "speech_start_seconds": 0.35,
+      "spoken_captions": [
+        {
+          "text": "Source and the offline browser app are on GitHub under nolankido, action receipt.",
+          "start_seconds": 0.0,
+          "duration_seconds": 5.275
+        },
+        {
+          "text": "This supporting walkthrough is complete.",
+          "start_seconds": 5.275,
+          "duration_seconds": 2.235
+        },
+        {
+          "text": "Actual browser footage and a public video link are still needed for the submission demo.",
+          "start_seconds": 7.51,
+          "duration_seconds": 4.925
+        }
+      ]
     }
   ],
   "input_capture_sha256": "db5b356d1d21437fbf6d62f0238ec7f43ed503b3da7305511b964db554fbcfcc",
-  "render_script_sha256": "796a23be5c052d1debd73044bcc618aa3e3f0961413051f2fd70dfb061af8c63"
+  "render_script_sha256": "378f9f588845cca335e0c498bc5026042a19954b44d65f2dcd1136b3f0f90dde"
 }
