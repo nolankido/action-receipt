@@ -344,12 +344,12 @@ export default function ReceiptWorkspace() {
   function exportCalendar() { saveFile(calendarText(actions, meta()), "text/calendar;charset=utf-8", "action-receipt.ics"); setAnnouncement(`Downloaded ${calendar.length} calendar entries. ${approved.length - calendar.length} approved items omitted because their dates are unresolved.`); }
   function downloadPreview(kind: "checklist" | "calendar", text: string, count: number) {
     saveFile(text, kind === "checklist" ? "text/markdown;charset=utf-8" : "text/calendar;charset=utf-8", kind === "checklist" ? "action-receipt.md" : "action-receipt.ics");
-    setAnnouncement(`Downloaded the previewed ${kind} with ${count} ${kind === "checklist" ? "tasks" : "entries"}.`);
+    setAnnouncement(`Requested the previewed ${kind} download with ${count} ${kind === "checklist" ? "tasks" : "entries"}. Confirm the file saved.`);
   }
   function openQuestions() { if (busy || openingReview || !questionCount) return; setPreviewOpen(false); setQuestionsOpen(true); }
   function downloadQuestions(text: string, count: number) {
     saveFile(text, "text/markdown;charset=utf-8", "action-receipt-questions.md");
-    setAnnouncement(`Downloaded ${count} checked clarification questions. No questions were sent and no approvals or dates changed.`);
+    setAnnouncement(`Requested a download of ${count} checked clarification questions. Confirm the file saved. No questions were sent and no approvals or dates changed.`);
   }
   function visitPanel(id: "source-heading" | "actions-heading") {
     const heading = document.getElementById(id);

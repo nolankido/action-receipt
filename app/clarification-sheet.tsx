@@ -5,6 +5,8 @@ import { ArrowLeft, ChevronDown, Download, MessageCircleQuestion, Quote, X } fro
 import { clarificationCandidates, clarificationText, editQuestionDraft, MAX_QUESTION_LENGTH, questionDraft, type QuestionDraft } from "../lib/clarification.ts";
 import type { ReceiptMeta } from "../lib/export.ts";
 import type { ReviewedAction } from "../lib/receipt.ts";
+import DownloadFeedback from "./download-feedback.tsx";
+import { requestDownload, type DownloadRequest } from "../lib/download-request.ts";
 
 export default function ClarificationSheet({ source, actions, meta, onClose, onDownload }: {
   source: string; actions: ReviewedAction[]; meta: ReceiptMeta; onClose: () => void; onDownload: (text: string, count: number) => void;
@@ -12,11 +14,13 @@ export default function ClarificationSheet({ source, actions, meta, onClose, onD
   const dialog = useRef<HTMLDialogElement>(null);
   const candidates = clarificationCandidates(source, actions, meta.attention ?? []);
   const [drafts, setDrafts] = useState<QuestionDraft[]>(() => candidates.map(questionDraft));
+  const [downloadRequest, setDownloadRequest] = useState<DownloadRequest | null>(null);
   useEffect(() => { const element = dialog.current; element?.showModal(); return () => element?.close(); }, []);
   const update = (id: string, edit: (draft: QuestionDraft) => QuestionDraft) => setDrafts(old => old.map(d => d.id === id ? edit(d) : d));
   const count = drafts.filter(d => d.checked).length;
   let text = "", error = "";
   if (count) { try { text = clarificationText(source, actions, meta, drafts); } catch (e) { error = e instanceof Error ? e.message : "Reopen the sheet and check the questions again."; } }
+  const output = { format: "questions" as const, text, count };
   return <dialog ref={dialog} className="export-preview clarification-sheet" aria-labelledby="clarification-heading" aria-describedby="clarification-description" onCancel={onClose} onClose={onClose}>
     <div className="preview-header"><div><p className="eyebrow">WHEN THE NOTICE LEAVES A QUESTION</p><h2 id="clarification-heading">Ask with the source.</h2></div><button className="icon-button" onClick={onClose} aria-label="Close clarification sheet"><X size={21} /></button></div>
     <div className="preview-body"><p id="clarification-description">Choose what you actually need to ask. Edit each draft, check its source, then include it in your sheet. Nothing is selected or sent automatically.</p>
@@ -39,7 +43,8 @@ export default function ClarificationSheet({ source, actions, meta, onClose, onD
     {!candidates.length && <p className="preview-empty">No question drafts are available. Return to the review to check loaded decisions or record what needs clarification.</p>}
     <div className="question-disclosure"><p>The sheet includes only selected questions, their conditions and source quotations. Read it before sharing. Question selection does not approve an action, confirm a date or clear a flag. Closing discards these question edits and selections; review files do not save them.</p></div>
     {error && <p className="error-message" role="alert">{error}</p>}
-    {text && <details className="preview-file"><summary>Inspect exact clarification sheet (.md)</summary><pre tabIndex={0} aria-label="Exact clarification sheet download text">{text}</pre></details>}</div>
-    <div className="preview-footer"><button className="text-button" onClick={onClose}><ArrowLeft size={15} /> Return to review</button><button className="primary-button" disabled={!text || !!error} onClick={() => onDownload(text, count)}><Download size={15} /> Download questions ({count})</button></div>
+    {text && <details className="preview-file"><summary>Inspect exact clarification sheet (.md)</summary><pre tabIndex={0} aria-label="Exact clarification sheet download text">{text}</pre></details>}
+    <DownloadFeedback request={downloadRequest} current={output} /></div>
+    <div className="preview-footer"><button className="text-button" onClick={onClose}><ArrowLeft size={15} /> Return to review</button><button className="primary-button" disabled={!text || !!error} onClick={() => setDownloadRequest(requestDownload(output, () => onDownload(text, count)))}><Download size={15} /> Download questions ({count})</button></div>
   </dialog>;
 }

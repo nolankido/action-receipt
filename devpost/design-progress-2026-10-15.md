@@ -182,3 +182,30 @@ The v0.20.0 application publication completed on October 15, 2026 at 14:02 UTC. 
 Private deployment `appgdep_6ad0dcec9a3c819193e4ad28254cd3ae` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_d1def61d08d48191b810bc10578ea01a` at the existing preview URL. Application SHA-256: `5770d78c43ecf4d1d8e751b7c124cf157eb9b2f4631bffd74ea3b31b84176008`. Portable archive SHA-256: `f0ef7c5bc9289890d8b3b2ef7106b6d6f287be59d0bed00b76f22718597ebfc0`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal fingerprints and all 34 archive members.
 
 This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
+
+## In-dialog download feedback: v0.21.0
+
+Verified starting state: public main `6d5d9c704ab4e2187b5007c64fc0852b02dac8c1`, Sites source `24b5941525fe846e5756ac59fe803a85b39f26c2`, shared tree `06ccdd0fa645ecf071a7160f9bc2f81f2872cf13`. The previous documentation follow-up succeeded privately as deployment `appgdep_6ad0dd55f66c8191aec16f5aa633640d` for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_65b8992cbf7c8191a7d22a8760bb0dda`. Current main, recent commits, open PRs, repository instructions, this record and actual source were read. No AGENTS.md file, open PR, dirty checkout or observable concurrent writer was found. Source was opened and synchronized through the Sites helper. Audience remains custom owner-only with no additional visitors.
+
+### Source-inspected problem and change
+
+The checklist/calendar preview and clarification dialog requested downloads through callbacks that updated a workspace announcement outside the open modal. Neither dialog showed a local request result, and exceptions from the browser-download callback were not caught there. The workspace wording also said Downloaded although a browser request cannot verify a filesystem save. These paths were identified from actual source, not from browser execution.
+
+Both dialogs now use a small shared request boundary and an in-dialog feedback region. It reports a browser download request, names the requested task/entry/question count and explicitly asks the user to confirm the file saved. Browser callback exceptions produce local, preserved error details with a retry instruction. Review data and question drafts remain available. Empty content or nonpositive counts are rejected before invoking the callback, supplementing the existing disabled-button gates without changing export eligibility.
+
+The request captures exact format, serialized content and count. If the format or question content/selection changes later, feedback says the earlier request covers a different preview and asks for a fresh check and request. Returning to exactly the requested output restores the current-request message. The component keeps an initially empty live region within the modal body, with atomic status/error copy. A request scrolls that region into view without moving focus away from the retained Download control. Actual scrolling and announcements still require browser verification.
+
+The fixed dialog header/footer and existing source/context disclosures remain. Request feedback is transient modal state, not part of review files, recovery data or save tracking. The serializers, source evidence, approval/date gates, question selection and offline download mechanism are unchanged. No network access, dependency, persistence, account or submission work was added.
+
+### Executed checks and limits
+
+- All 186 automated tests passed. Three new behavioral tests verify exact serialized-content forwarding once, isolated request snapshots, preserved action trust, caught callback exceptions, empty-selection rejection and stale-output detection across format/content/count changes and exact reversion.
+- TypeScript and `git diff --check` passed.
+- The supported static build, all 14 fresh synthetic scans and the source-hashed production-domain rehearsal passed. The rehearsal fingerprints include the new feedback component and request helper.
+- Ten actual SSR markup states passed structural checks: approved/unapproved preview, unselected clarification sheet, empty feedback, three format-specific requested states, request error, changed format and changed questions. Checks covered unique IDs, valid labels/descriptions, named controls, live regions inside the actual dialog body, retained disabled-download gates, unselected initial questions, local error/retry copy and request-versus-save wording. Requested feedback states were synthetic, not actual browser downloads.
+- Existing paper/forest status, changed-content and error colors were reused from previously calculated contrast pairs. No visual rendering or complete accessibility audit is claimed.
+- The Sites skill requires skipping browser QA because the required control-browser skill remains unavailable. Native downloads, dialog scrolling/focus, screen-reader announcements and actual viewport fit remain unverified. No screenshots or user tests were fabricated.
+
+The portable archive is regenerated and verified against the final source, standalone HTML and rehearsal hashes. Returned publication identities are recorded in the publication receipt. Submission and video work remain untouched.
+
+Next useful task: use supported browser QA when available to test request/error announcements and scroll positioning inside both dialogs, unchanged download-button focus and edited-question stale feedback. Without that capability, inspect actual first-use, manual-action and empty-source paths for a concrete defect rather than adding more interface sections.

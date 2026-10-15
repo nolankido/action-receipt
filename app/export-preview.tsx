@@ -5,6 +5,8 @@ import { ArrowLeft, ArrowUpRight, CalendarDays, Check, Download, FileText, Messa
 import { calendarText, checklistText, modeDescription, planExports, reviewedDateText, type ReceiptMeta } from "../lib/export.ts";
 import { checklistEligible, type ReviewedAction } from "../lib/receipt.ts";
 import { sourceDecisionLines, sourceReviewSummary } from "../lib/source-review.ts";
+import DownloadFeedback from "./download-feedback.tsx";
+import { requestDownload, type DownloadRequest } from "../lib/download-request.ts";
 
 export default function ExportPreview({ actions, meta, onClose, onDownload, onReviewAction, questionCount, onQuestions }: {
   actions: ReviewedAction[]; meta: ReceiptMeta; onClose: () => void;
@@ -14,6 +16,7 @@ export default function ExportPreview({ actions, meta, onClose, onDownload, onRe
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [kind, setKind] = useState<"checklist" | "calendar">("checklist");
+  const [downloadRequest, setDownloadRequest] = useState<DownloadRequest | null>(null);
   useEffect(() => {
     const element = dialog.current;
     element?.showModal();
@@ -25,6 +28,7 @@ export default function ExportPreview({ actions, meta, onClose, onDownload, onRe
   const excluded = kind === "checklist" ? plan.notInChecklist : plan.notInCalendar;
   const text = kind === "checklist" ? checklistText(actions, meta) : calendarText(actions, meta);
   const flags = sourceReviewSummary(meta.attention ?? [], actions);
+  const output = { format: kind, text, count: included.length };
   return <dialog ref={dialog} className="export-preview" aria-labelledby="export-preview-title" aria-describedby="export-preview-description" onCancel={onClose} onClose={onClose}>
     <div className="preview-header"><div><p className="eyebrow">BEFORE YOU DOWNLOAD</p><h2 id="export-preview-title">Check your receipt.</h2></div><button className="icon-button" onClick={onClose} aria-label="Close download preview"><X size={21} /></button></div>
     <div className="preview-body"><p id="export-preview-description">See the included actions and exact file content. Opening this preview does not approve or change anything.</p>
@@ -38,7 +42,8 @@ export default function ExportPreview({ actions, meta, onClose, onDownload, onRe
     {flags.total > 0 && <details className="preview-decisions"><summary>Source decisions: {flags.addressed} addressed, {flags.pending} need attention</summary><p>Counts cover identified flags only. Decisions do not certify completeness or confirm dates.</p><ul>{meta.attention!.map(item => <li key={item.id}><strong>{item.reason}</strong>{sourceDecisionLines(item, actions).map((line, i) => <p key={i}>{line}</p>)}</li>)}</ul></details>}
     {questionCount > 0 && <button className="preview-button question-open" onClick={onQuestions}><MessageCircleQuestion size={16} /> Prepare questions about unresolved details ({questionCount})<ArrowUpRight size={14} /></button>}
     <div className="preview-disclosure"><ShieldCheck size={18} /><p>Downloads include supporting quotations, original warnings, recorded decision notes, {meta.notes.length} notice {meta.notes.length === 1 ? "note" : "notes"} and {meta.attention?.length ?? 0} flagged source {meta.attention?.length === 1 ? "passage" : "passages"}. Context can mention unapproved instructions. Inspect the exact text below before sharing. A calendar download adds nothing to a calendar automatically.</p></div>
-    <details className="preview-file" key={kind}><summary>Inspect exact {kind === "checklist" ? "Markdown" : "iCalendar"} file content</summary><pre tabIndex={0} aria-label={`Exact ${kind} download text`}>{text}</pre></details></div>
-    <div className="preview-footer"><button className="text-button" onClick={onClose}><ArrowLeft size={15} /> Return to review</button><button className="primary-button" disabled={!included.length} onClick={() => onDownload(kind, text, included.length)}><Download size={15} /> Download {kind === "checklist" ? "checklist" : "calendar"}</button></div>
+    <details className="preview-file" key={kind}><summary>Inspect exact {kind === "checklist" ? "Markdown" : "iCalendar"} file content</summary><pre tabIndex={0} aria-label={`Exact ${kind} download text`}>{text}</pre></details>
+    <DownloadFeedback request={downloadRequest} current={output} /></div>
+    <div className="preview-footer"><button className="text-button" onClick={onClose}><ArrowLeft size={15} /> Return to review</button><button className="primary-button" disabled={!included.length} onClick={() => setDownloadRequest(requestDownload(output, () => onDownload(kind, text, included.length)))}><Download size={15} /> Download {kind === "checklist" ? "checklist" : "calendar"}</button></div>
   </dialog>;
 }
