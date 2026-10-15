@@ -14,6 +14,10 @@ const cases = [
   { id: "invalid-offset", source: "Pay the astronomy deposit by April 2, 2032 at 17:00 UTC-10:00:30 and GMT+09.", expectedDates: ["2032-04-02"] },
   { id: "invalid-calendar", source: "Submit the astronomy form by February 30, 2032 for the event on March 1, 2032.", expectedDates: [""] },
   { id: "mixed-numeric-calendar", source: "Pay the astronomy deposit by April 2, 2032 (printed deadline 04/03/2032).", expectedDates: [""] },
+  { id: "except-if-waiver", source: "Pay the astronomy deposit by April 2, 2032 except if you have a waiver.", expectedDates: ["2032-04-02"] },
+  { id: "adviser-prerequisite", source: "Submit the astronomy form by April 2, 2032 only after your adviser approves it.", expectedDates: ["2032-04-02"] },
+  { id: "alternative-instruction", source: "Register by April 2, 2032 or pay the astronomy fee at the door.", expectedDates: [""] },
+  { id: "joined-instructions", source: "Register by April 2, 2032 & pay the astronomy fee at the desk.", expectedDates: [""] },
 ];
 const observations = cases.map(c => {
   const result = extractLocally(c.source);
@@ -26,6 +30,9 @@ const observations = cases.map(c => {
   if (c.id === "invalid-cutoff") { assert.equal(result.actions[0].time, ""); assert.equal(result.actions[0].sourceRequiresTime, true); assert.equal(canConfirmDate(result.actions[0]), false); assert.equal(calendarEligible({ ...result.actions[0], approved: true, dateConfirmed: true }), false); }
   if (c.id === "invalid-offset") { assert.equal(result.actions[0].time, "17:00"); assert.equal(result.actions[0].utcOffset, ""); assert.equal(result.actions[0].sourceRequiresTime, true); assert.equal(canConfirmDate(result.actions[0]), false); assert.equal(calendarEligible({ ...result.actions[0], approved: true, dateConfirmed: true }), false); }
   if (c.id === "invalid-calendar" || c.id === "mixed-numeric-calendar") { assert.ok(result.attention.some(f => /Date needs clarification/.test(f.reason))); assert.equal(result.actions[0].date, ""); assert.equal(calendarEligible({ ...result.actions[0], approved: true, dateConfirmed: true }), false); }
+  if (c.id === "except-if-waiver") assert.equal(result.actions[0].condition, "except if you have a waiver");
+  if (c.id === "adviser-prerequisite") assert.equal(result.actions[0].condition, "only after your adviser approves it");
+  if (c.id === "alternative-instruction" || c.id === "joined-instructions") { assert.match(result.actions[0].title, /pay the astronomy fee/); assert.ok(result.attention.some(f => /Several actions or alternatives/.test(f.reason))); }
   return { ...c, actual: result, automatic_checks: "passed", human_review: "not_reviewed" };
 });
 const report = { engine: "local English text rules, no AI model", runtime_network_calls: 0, interpretation: "Fresh synthetic notice contract checks, not a usability study or proof of complete language understanding.", cases: observations };

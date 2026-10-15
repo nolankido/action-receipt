@@ -1,15 +1,15 @@
 {
   "format_version": 1,
   "purpose": "Submission preparation, not a completed entry",
-  "application_version": "0.14.0",
-  "application_sha256": "d82402895ec69fd102bcc1a4323128b5f58e3d27380187923d4f098d87f0fbd8",
+  "application_version": "0.15.0",
+  "application_sha256": "3ddb4e75101f6c89b557553a80cb96a5ca7bdaa5e69c336e8eae4b569f032e4b",
   "caption_duration_seconds": 155,
   "caption_status": "Planned text only; no footage recorded",
   "entry_submitted": false,
   "video_recorded": false,
   "files_sha256": {
     "LICENSE": "04d277b1cd52093fd10dcf701192bb4655c6bdcd9d3c3bf1c3f1df57bc45b489",
-    "README.md": "86a655fba90a0cd2fda3ecb14ea6a9861a07eaf8b64d3fdb70b35d81ff7f98ca",
+    "README.md": "2727889c4ec0407513d964badaedb551d1613000a209782e0255f87e1d591e35",
     "START-HERE.html": "6c8c8c6222e8c0c91aa9877c3e7699dacb61a61c18e61dbf8d072bbe213c7a67",
     "THIRD_PARTY_NOTICES.md": "4f2a0d62a0271b1328da13690992420c445ba33340090d7e5466440565b4c458",
     "devpost/checklist.md": "a94f99bc258d381748768fa1737e4893c7f9726cefd3d4f1c43f582c70ea449d",
@@ -17,14 +17,14 @@
     "devpost/demo/automated-calendar.ics": "e67b393297eedf738ea8dfcd83c567ca6418d6003189ad49ae7fe554910c805b",
     "devpost/demo/automated-checklist.md": "d8936ea08ccf07ea84a5215a0b4603b2da48235dfece34c695eb00a8c988729b",
     "devpost/demo/recording-guide.md": "8a961b317c6b6780e02170bbc5175d36d2fe73afbc96930bed178c519d1353c8",
-    "devpost/demo/rehearsal.json": "7fdd1794093019b2bf693801ae445877e4ac3ac90fbfc0b09e47a881294d6e7a",
+    "devpost/demo/rehearsal.json": "70245ea0c7950a79d2704e49cc4a75532bcaca41dbe5fa375b8ac1d96179a670",
     "devpost/demo/technical-video-domain-data.json": "db5b356d1d21437fbf6d62f0238ec7f43ed503b3da7305511b964db554fbcfcc",
     "devpost/judge-guide.md": "c9324a34b8c20d607327c6006a2feca987aa06a540cfe623167bda5b106bf33a",
-    "devpost/local-smoke.json": "43e1f3113cf478b580c3216cad5fe4320559f6ac49365d052c7c98379c642a44",
-    "devpost/prd.md": "338c249631e950e18fb943ac14cdf7d617911a57568c302e2969c5514699d908",
+    "devpost/local-smoke.json": "a7568e18956ce4dfbe1005134bf31099fb9aba21a0abf88d9bfc9298534240a7",
+    "devpost/prd.md": "f0aeeb15a747c4acd0d5c08b3eca30793c6b55a83e7e414712e9cc072c3e9701",
     "devpost/scope.md": "ee8e4266ee3c2e24d9aaea262833b35d95c15f98ee9b6a86565a8f023d28c912",
     "devpost/skill-pack-evidence.json": "95bc2df70c1014e53ec03c784693b9f59103a8d7e6961ce124f42b894aecaa66",
-    "devpost/spec.md": "2c94159ffd4e89d7032106bf0dd60a26365c81d2a2c350a6e36b9ad0544b155d",
+    "devpost/spec.md": "43fdca973d321eaa7c8876edf55a3e0fab0a46138ab47d36843de793ad18790b",
     "devpost/submission-checklist.md": "91e8df0a94d9d741d7ee23de079295ec53090df9c8cab7a852b9632ad13456f1",
     "devpost/submission/README.md": "0d693ee35d129582046c94a34cc080f57295e46e6ecc12f494cc5694d1daff77",
     "devpost/submission/action-receipt-cover.png": "1333be8adb243575e2debb0ee3deb1b1a078f3e9dacdd4a9b8536908eb15a351",
@@ -38,8 +38,8 @@
     "devpost/usability/facilitator-guide.md": "d5d664ffc8afbc9c1b6e304a1f1e52e8b2ed34b5fc75f1f07565b85dffb84587",
     "devpost/usability/observation-template.md": "0525449ccbd9bf379dfde8e4bf56cfb5356a098c54decc4c33b7d6846af60444",
     "devpost/usability/participant-notices.md": "3810c13f7fe3210f1623f85ed882e0925167b6e072780ed6d081fdef2af7a187",
-    "devpost/workflow.md": "e9a5d24090a0db5fb759ee3bac9e3f548665f3d1b07eb501cd4614a3dedd41c0",
+    "devpost/workflow.md": "f1af66c22e187d5dd3de61263684862ae72ed1c1ce7cce3d45c57f2e1921f80b",
     "devpost/zero-cost-plan.md": "b17d14e1baed3bd1bd8ba0751fd05e83859b7852c510f103c4b847912578ff60",
-    "release/action-receipt.html": "d82402895ec69fd102bcc1a4323128b5f58e3d27380187923d4f098d87f0fbd8"
+    "release/action-receipt.html": "3ddb4e75101f6c89b557553a80cb96a5ca7bdaa5e69c336e8eae4b569f032e4b"
   }
 }

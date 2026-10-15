@@ -3,11 +3,17 @@ import { dateProblems, datedWeekdayPattern, protectDateAbbreviations, weekdayCon
 import { explicitOffset, parseClock } from "./times.ts";
 
 const verbs = "register|pay|bring|submit|upload|email|contact|complete|apply|return|sign|fill|send|book|reserve|confirm|check|download|print|prepare|attend|arrive|ask|use";
-const instruction = new RegExp(`^(?:(?:please|then|also)\\s+|(?:you\\s+)?(?:must|should|need to|are required to|have to|can|may)\\s+)?(${verbs})\\b`, "i");
+const instructionPrefix = "(?:(?:please|then|also)\\s+|(?:you\\s+)?(?:must|should|need to|are required to|have to|can|may)\\s+)?";
+const instruction = new RegExp(`^${instructionPrefix}(${verbs})\\b`, "i");
+// Preserve the complete exception marker. Starting at an inner "if" would
+// reverse "except if"; dropping "only after" would remove a prerequisite.
+const qualification = "except(?:\\s+(?:if|when|for))?|excluding|other than|even if|only (?:if|when|after|for|once)|unless|if|when|provided that|as long as|subject to|depending on";
+const prefixCondition = new RegExp(`^(?:${qualification}|for those who)\\b`, "i");
+const trailingQualification = new RegExp(`\\b(?:${qualification})\\b.+$`, "i");
 const negated = /\b(?:do not|don't|does not|doesn't|must not|should not|no longer|not required|not necessary|need not|no need to|not need to|withdrawn|cancelled|canceled|waived)\b/i;
 const relative = new RegExp(`\\b(?:next|this|coming)\\s+(?:${weekdayPattern}|week|month)\\b|\\b(?:today|tomorrow|tonight|yesterday)|\\bwithin\\b|\\bin\\s+(?:\\d+|one|two|three|four|five|six|seven|ten)\\s+(?:days?|weeks?)\\b`, "i");
 const deadlineMarker = /\b(?:by|before|within|no later than|due|deadline|cutoff|until)\b/i;
-const multipleInstructions = new RegExp(`(?:\\band\\b|\\bthen\\b|;)\\s+(?:please\\s+)?(?:${verbs})\\b`, "i");
+const multipleInstructions = new RegExp(`(?:\\b(?:and|or|then|otherwise|alternatively|also)\\b|[;&])\\s*,?\\s*${instructionPrefix}(?:${verbs})\\b`, "i");
 const temporalDate = new RegExp(`\\b(?:by|before|no later than|on or before|due(?:\\s+on)?|until)\\s+(?:the\\s+)?${datedWeekdayPattern}\\b`, "i");
 const scheduledDate = new RegExp(`\\bon\\s+${datedWeekdayPattern}\\b`, "i");
 
@@ -31,7 +37,7 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
   for (const [index, quote] of segments.entries()) {
     const clean = quote.replace(/^(?:[-*•]|\d+[.)])\s+/, "");
     let body = clean; let condition: string | null = null;
-    if (/^(?:only if|if|unless|when|for those who)\b/i.test(clean)) {
+    if (prefixCondition.test(clean)) {
       for (const comma of clean.matchAll(/,\s*/g)) {
         const remainder = clean.slice(comma.index + comma[0].length);
         if (instruction.test(remainder) || /^optional\s*:/i.test(remainder)) { condition = clean.slice(0, comma.index); body = remainder; break; }
@@ -39,7 +45,7 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
     }
     const optional = body.match(/^(optional\s*:\s*)(.+)$/i);
     if (optional) { condition = [condition, optional[1].trim()].filter(Boolean).join("; "); body = optional[2]; }
-    const trailingMatch = body.match(/\b(?:only if|unless|if|provided that|as long as)\b.+$/i);
+    const trailingMatch = body.match(trailingQualification);
     const trailingCondition = trailingMatch?.[0].replace(/[.!?]+$/, "");
     if (trailingCondition) condition = [condition, trailingCondition].filter(Boolean).join("; ");
     const actionContent = body.slice(0, trailingMatch?.index ?? body.length).split(";")[0].trim();
@@ -49,7 +55,7 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
       else if (dateProblems(quote).length) flag(index, quote, "Date needs clarification: " + dateProblems(quote).slice(0, 2).join(" "));
       else if (explicitDates(quote).length || relative.test(quote) || deadlineMarker.test(quote) || mentionsTime(quote)) {
         unmatchedDates.push(quote); flag(index, quote, "Date or cutoff not linked to an action. Decide what it applies to; no cross-sentence date was assigned.");
-      } else if (/\b(?:must|shall|need(?:s)? to|required|mandatory|obligatory|responsible for|please|optional|recommended)\b/i.test(quote)) flag(index, quote, "Possible instruction or qualification outside the supported patterns. Inspect it and add an action manually if needed.");
+      } else if (prefixCondition.test(quote) || /\b(?:must|shall|need(?:s)? to|required|mandatory|obligatory|responsible for|please|optional|recommended)\b/i.test(quote)) flag(index, quote, "Possible instruction or qualification outside the supported patterns. Inspect it and add an action manually if needed.");
       continue;
     }
     if (negated.test(quote)) { skippedNegation = true; flag(index, quote, "Negation or cancellation: no action was created. Check whether any positive instruction still applies."); continue; }
@@ -74,8 +80,10 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
     if (dateIssues.length) flag(index, quote, "Date needs clarification: " + dateIssues.slice(0, 2).join(" "));
     if (condition && dateProblems(condition).length) flag(index, quote, "Date in a condition needs clarification: " + dateProblems(condition).slice(0, 2).join(" "));
     if (condition && (explicitDates(condition).length || relative.test(condition) || mentionsTime(condition))) issues.push("A date or time appears in the condition. It was kept as a qualification, not used as this action's deadline.");
-    if (body.includes(";")) flag(index, quote, "This passage has several clauses. Details after the semicolon were not linked as a deadline; inspect any additional instructions manually.");
-    if (many) issues.push("This passage may contain several actions. Split or correct it manually before approval; no date is assigned automatically.");
+    if (many) {
+      issues.push("This passage may contain several actions or alternatives. Split or correct it manually before approval; no date is assigned automatically.");
+      flag(index, quote, "Several actions or alternatives share this passage. Check which instructions apply and preserve their conditions when splitting them; no deadline was assigned automatically.");
+    } else if (body.includes(";")) flag(index, quote, "This passage has several clauses. Details after the semicolon were not linked as a deadline; inspect any additional instructions manually.");
     if (dates.length && !clearRole) issues.push("A date appears in the passage, but its role as this action's deadline is not established. Check it manually.");
     const timeTail = linkedDate ? actionContent.slice(linkedDate.index + linkedDate[0].length) : "";
     const linkedClock = !many && /^\s*,?\s*(?:at\s+)?(?:\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b|\d{1,2}:\d{2}\b|noon\b|midnight\b)/i.test(timeTail);

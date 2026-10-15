@@ -1003,6 +1003,270 @@
       },
       "automatic_checks": "passed",
       "human_review": "not_reviewed"
+    },
+    {
+      "id": "except-if-waiver",
+      "source": "Pay the astronomy deposit by April 2, 2032 except if you have a waiver.",
+      "expectedDates": [
+        "2032-04-02"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Pay the astronomy deposit",
+            "title": "Pay the astronomy deposit",
+            "originalCondition": "except if you have a waiver",
+            "condition": "except if you have a waiver",
+            "evidence": [
+              {
+                "quote": "Pay the astronomy deposit by April 2, 2032 except if you have a waiver.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Pay the astronomy deposit by April 2, 2032",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Pay the astronomy deposit by April 2, 2032",
+            "originalDate": "2032-04-02",
+            "date": "2032-04-02",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ],
+        "attention": []
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "adviser-prerequisite",
+      "source": "Submit the astronomy form by April 2, 2032 only after your adviser approves it.",
+      "expectedDates": [
+        "2032-04-02"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Submit the astronomy form",
+            "title": "Submit the astronomy form",
+            "originalCondition": "only after your adviser approves it",
+            "condition": "only after your adviser approves it",
+            "evidence": [
+              {
+                "quote": "Submit the astronomy form by April 2, 2032 only after your adviser approves it.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Submit the astronomy form by April 2, 2032",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Submit the astronomy form by April 2, 2032",
+            "originalDate": "2032-04-02",
+            "date": "2032-04-02",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ],
+        "attention": []
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "alternative-instruction",
+      "source": "Register by April 2, 2032 or pay the astronomy fee at the door.",
+      "expectedDates": [
+        ""
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Register by April 2, 2032 or pay the astronomy fee at the door",
+            "title": "Register by April 2, 2032 or pay the astronomy fee at the door",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Register by April 2, 2032 or pay the astronomy fee at the door.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Register by April 2, 2032 or pay the astronomy fee at the door.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Register by April 2, 2032 or pay the astronomy fee at the door.",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "This passage may contain several actions or alternatives. Split or correct it manually before approval; no date is assigned automatically.",
+              "The deadline is ambiguous. A date needs your clarification."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "Source passages flagged for review: 1. This list is not exhaustive."
+        ],
+        "attention": [
+          {
+            "id": "review-r1-p1-f1",
+            "evidence": {
+              "quote": "Register by April 2, 2032 or pay the astronomy fee at the door.",
+              "starts": [
+                0
+              ]
+            },
+            "reason": "Several actions or alternatives share this passage. Check which instructions apply and preserve their conditions when splitting them; no deadline was assigned automatically."
+          }
+        ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "joined-instructions",
+      "source": "Register by April 2, 2032 & pay the astronomy fee at the desk.",
+      "expectedDates": [
+        ""
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Register by April 2, 2032 & pay the astronomy fee at the desk",
+            "title": "Register by April 2, 2032 & pay the astronomy fee at the desk",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Register by April 2, 2032 & pay the astronomy fee at the desk.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Register by April 2, 2032 & pay the astronomy fee at the desk.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Register by April 2, 2032 & pay the astronomy fee at the desk.",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "This passage may contain several actions or alternatives. Split or correct it manually before approval; no date is assigned automatically.",
+              "The deadline is ambiguous. A date needs your clarification."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "Source passages flagged for review: 1. This list is not exhaustive."
+        ],
+        "attention": [
+          {
+            "id": "review-r1-p1-f1",
+            "evidence": {
+              "quote": "Register by April 2, 2032 & pay the astronomy fee at the desk.",
+              "starts": [
+                0
+              ]
+            },
+            "reason": "Several actions or alternatives share this passage. Check which instructions apply and preserve their conditions when splitting them; no deadline was assigned automatically."
+          }
+        ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
     }
   ]
 }
