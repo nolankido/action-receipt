@@ -139,3 +139,11 @@ No extraction, serializer, validation, approval, date, import trust or recovery 
 The portable archive is regenerated and its member hashes verified from the final checked source/build/rehearsal state. Publication receipts record returned identities separately; do not infer them from the preview URL. Submission and video work remain reserved for Nolan.
 
 Next useful task: when supported browser QA becomes available, test invalid review files, a failed download, editing after a requested download, retry/dismiss focus and mobile wrapping. Otherwise inspect the actual source-flag decision form's error and cancellation paths for a concrete usability issue. Keep notice review central and preserve the existing visual direction.
+
+### Verified publication receipt
+
+The v0.19.0 application publication completed on October 15, 2026 at 13:07 UTC. Public main was advanced without force from its expected head and reread as `9b516725a8638c41f468cdea0895763b608139f2`. All 14 changed blobs and the complete 209-file tree `2d276e2a2b4656b253334b23f05d6e04871b7797` were hash-matched to Sites source `e544b11e8c294672928d39bd06b382c433240d78` before main advanced.
+
+Private deployment `appgdep_6ad0d0078d408191af3ba6a6b5a52a4b` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_57caa8fad2c48191843b5ca6edd67f68` at the existing preview URL. Application SHA-256: `a79b82288c15324fd0c5aa859044adc677499643484bd7c6679810f466b4f809`. Portable archive SHA-256: `762565010c9fe65a7d354280b43d9b4c0dddcb26041bc3363a3455424d226c6d`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal source fingerprints and all 34 archive members.
+
+This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
