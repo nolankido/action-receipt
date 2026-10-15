@@ -1,0 +1,159 @@
+{
+  "kind": "Captioned technical walkthrough of real domain outputs",
+  "browser_footage": false,
+  "hackathon_demo_complete": false,
+  "review_choices": "scripted synthetic contract checks",
+  "duration_seconds": 120.0,
+  "resolution": [
+    1600,
+    900
+  ],
+  "codec": "H.264",
+  "audio": "none; captions are visible in every scene",
+  "movie_sha256": "8423b1bf42e03ce02ae631644c1cada469453dcc3b6e7e4799c05a6a9136a8ac",
+  "scenes": [
+    {
+      "path": "scene-00.png",
+      "title": "Know what is next. Keep the proof.",
+      "duration_seconds": 7,
+      "caption": "One notice. Source-linked actions. Dates that need a deliberate check.",
+      "content": [
+        "A narrow tool for students reviewing school, club and administrative notices.",
+        "This video presents real rule-engine outputs and export checks.\nIt is not a recording of the browser interface."
+      ],
+      "sha256": "d09bc1ba687b202be674c08d741a31cdab158adb0c9e11043d60ca44f39dd5a9"
+    },
+    {
+      "path": "scene-01.png",
+      "title": "Start with the original notice.",
+      "duration_seconds": 14,
+      "caption": "An invented practice notice supplies the input for every result shown here.",
+      "content": [
+        "CAMPUS FIELD TRIP\nSynthetic practice notice, not an actual event.\n\nRegister for the architecture trip by Nov. 5, 2032.\nPay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.\nParticipants must attach a signed consent form.\n\nIf you need accessible transport, email the coordinator by next Friday.\nYou do not need to pay a separate membership fee."
+      ],
+      "sha256": "5c37b039d80b0536773d71272263cec3450454a5a483930a6b068c7bdcf9b97a"
+    },
+    {
+      "path": "scene-02.png",
+      "title": "Three proposals. No automatic approval.",
+      "duration_seconds": 8,
+      "caption": "The local English text rules run on the source, with no model or API request.",
+      "content": [
+        "1. Register for the architecture trip\n    Proposed date: 2032-11-05\n2. Pay the bus deposit\n    Proposed date: 2032-11-08\n3. email the coordinator by next Friday\n    Proposed date: unresolved",
+        "2 passages flagged. Initial downloads: 0 checklist tasks, 0 calendar entries."
+      ],
+      "sha256": "7d2a9b1a19e4b5c8c2b4f351b6fb62c447e74e8730cb76222759b13378eb6924"
+    },
+    {
+      "path": "scene-03.png",
+      "title": "Different tasks, different deadlines.",
+      "duration_seconds": 8,
+      "caption": "Exact quotations establish where words occurred, not whether the interpretation is right.",
+      "content": [
+        "Register for the architecture trip by Nov. 5, 2032.",
+        "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00."
+      ],
+      "sha256": "f80ea6753e1ac71bcbeedabe665f28f2b917d38c0f8215c83edbee12c94362e8"
+    },
+    {
+      "path": "scene-04.png",
+      "title": "Repair an instruction the rules missed.",
+      "duration_seconds": 9,
+      "caption": "The real repair function creates a separate action from the exact flagged passage.",
+      "content": [
+        "Participants must attach a signed consent form.",
+        "New action: Attach a signed consent form\nDate: unresolved. Approval: unchecked."
+      ],
+      "sha256": "b6174b8d1faa6c515a3cd5db1739588002396a8e1bba18ef0e7b089981efbc8e"
+    },
+    {
+      "path": "scene-05.png",
+      "title": "A waived fee stays out of the tasks.",
+      "duration_seconds": 7,
+      "caption": "The scripted source decision records its reason and preserves the original flag.",
+      "content": [
+        "You do not need to pay a separate membership fee.",
+        "Decision: not an obligation.\nNo separate membership-fee task or event is created."
+      ],
+      "sha256": "dd7e8b0e4a84e5102fed384fdbc5ea367d51ff780c956dd9891deafb59590d83"
+    },
+    {
+      "path": "scene-06.png",
+      "title": "Keep the condition. Keep the uncertainty.",
+      "duration_seconds": 8,
+      "caption": "The program does not turn next Friday into a guessed calendar date.",
+      "content": [
+        "If you need accessible transport, email the coordinator by next Friday.",
+        "Condition: If you need accessible transport\nDate: unresolved. Calendar: excluded."
+      ],
+      "sha256": "795fe12fe45839d0a85f7e5dea0fdafe11027a3f4120dda7ddd78afa94b6c9a2"
+    },
+    {
+      "path": "scene-07.png",
+      "title": "Approval and date confirmation are separate.",
+      "duration_seconds": 9,
+      "caption": "These are scripted contract checks, not a claim that a person reviewed the notice.",
+      "content": [
+        "Fresh scan: 0 checklist tasks, 0 calendar entries.\nAfter action checks: 4 checklist tasks, 0 calendar entries.\nAfter complete date checks: 4 checklist tasks, 2 calendar entries.",
+        "The undated consent form and conditional email remain checklist-only."
+      ],
+      "sha256": "1ed73ff6748e9ab9bc7e152a45307197b445f888c8edb42433a2354fd350981c"
+    },
+    {
+      "path": "scene-08.png",
+      "title": "The checklist keeps its evidence.",
+      "duration_seconds": 14,
+      "caption": "This is an excerpt from the actual Markdown serializer output.",
+      "content": [
+        "Notice: AUTOMATED TECHNICAL WALKTHROUGH: Invented architecture trip\n\n- [ ] Register for the architecture trip\n  - Reviewed date: 2032-11-05 (day marker)\n  - Action source: \u201cRegister for the architecture trip by Nov. 5, 2032.\u201d\n- [ ] Pay the bus deposit\n  - Reviewed date: 2032-11-08 17:00 UTC-10:00\n  - Action source: \u201cPay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.\u201d"
+      ],
+      "sha256": "b4a752bae75309df22bdfe7be4cf46dee76abdba9b82ea860162d1de80be61a5"
+    },
+    {
+      "path": "scene-09.png",
+      "title": "Only two dates enter the calendar.",
+      "duration_seconds": 11,
+      "caption": "The timed cutoff is converted to the same instant in UTC, with no inferred reminder.",
+      "content": [
+        "BEGIN:VEVENT\nDTSTART;VALUE=DATE:20321105\nDTEND;VALUE=DATE:20321106\nSUMMARY:Register for the architecture trip\nEND:VEVENT\nBEGIN:VEVENT\nDTSTART:20321109T030000Z\nSUMMARY:Pay the bus deposit\nEND:VEVENT",
+        "Selected properties shown. Complete files also retain quotations, warnings and context."
+      ],
+      "sha256": "158aa5733a4f99fbcf86e4fa004aacede9075f3e5de87fe69bf08a10682f0758"
+    },
+    {
+      "path": "scene-10.png",
+      "title": "Changed data needs fresh review.",
+      "duration_seconds": 8,
+      "caption": "The capture also exercised edit invalidation and the real saved-review parser.",
+      "content": [
+        "Edit a reviewed cutoff:\nAction approval cleared. Date confirmation cleared.",
+        "Reopen a saved review:\n0 checklist tasks and 0 calendar entries until checked again."
+      ],
+      "sha256": "a7bb6ade2fb7444fa8f30c1fff04558c2496f2947d2453cee190a5f2e746e802"
+    },
+    {
+      "path": "scene-11.png",
+      "title": "Built with AI. Runs without an AI bill.",
+      "duration_seconds": 8,
+      "caption": "Codex used the Devpost Learn Skill Pack; generated planning documents are public.",
+      "content": [
+        "Runtime: local English text rules, React and TypeScript.\nOne self-contained browser file. No account, model download or API credits.",
+        "Automated checks are not student feedback or proof of complete language understanding."
+      ],
+      "sha256": "25bc65476a6954d4ca34c225c86a2a64c6654ee82f1e0d8fd9c348affe4ec495"
+    },
+    {
+      "path": "scene-12.png",
+      "title": "Try the actual browser app.",
+      "duration_seconds": 9,
+      "caption": "Public source and the runnable offline file: github.com/nolankido/action-receipt",
+      "content": [
+        "github.com/nolankido/action-receipt",
+        "This technical walkthrough is complete.\nBrowser-interface footage and a public YouTube/Vimeo link remain necessary for the finished hackathon demo."
+      ],
+      "sha256": "6ad390a8e9bfbf5760f236e5a72b9bb35ec171e8234a2e45340a2706a823e3ff"
+    }
+  ],
+  "input_capture_sha256": "db5b356d1d21437fbf6d62f0238ec7f43ed503b3da7305511b964db554fbcfcc",
+  "render_script_sha256": "796a23be5c052d1debd73044bcc618aa3e3f0961413051f2fd70dfb061af8c63"
+}

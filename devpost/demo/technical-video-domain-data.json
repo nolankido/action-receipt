@@ -1,0 +1,589 @@
+{
+  "type": "Actual production-domain outputs, presented as a technical video; no browser interface footage",
+  "synthetic": true,
+  "all_review_choices_scripted": true,
+  "human_review": false,
+  "source": "CAMPUS FIELD TRIP\nSynthetic practice notice, not an actual event.\n\nRegister for the architecture trip by Nov. 5, 2032.\nPay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.\nParticipants must attach a signed consent form.\n\nIf you need accessible transport, email the coordinator by next Friday.\nYou do not need to pay a separate membership fee.",
+  "initial": {
+    "actions": [
+      {
+        "id": "r1-a1",
+        "originalTitle": "Register for the architecture trip",
+        "title": "Register for the architecture trip",
+        "originalCondition": "",
+        "condition": "",
+        "evidence": [
+          {
+            "quote": "Register for the architecture trip by Nov. 5, 2032.",
+            "starts": [
+              67
+            ]
+          }
+        ],
+        "dateEvidence": [
+          {
+            "quote": "Register for the architecture trip by Nov. 5, 2032.",
+            "starts": [
+              67
+            ]
+          }
+        ],
+        "deadlineText": "Register for the architecture trip by Nov. 5, 2032.",
+        "originalDate": "2032-11-05",
+        "date": "2032-11-05",
+        "time": "",
+        "utcOffset": "",
+        "originalTime": "",
+        "originalUtcOffset": "",
+        "sourceRequiresTime": false,
+        "requiresTime": false,
+        "dateConfirmed": false,
+        "dateOrigin": "source proposal",
+        "evidenceValid": true,
+        "approved": false,
+        "omitted": false,
+        "origin": "rules",
+        "issues": [
+          "Found by local English text rules. Check meaning, conditions and the complete notice."
+        ]
+      },
+      {
+        "id": "r1-a2",
+        "originalTitle": "Pay the bus deposit",
+        "title": "Pay the bus deposit",
+        "originalCondition": "",
+        "condition": "",
+        "evidence": [
+          {
+            "quote": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+            "starts": [
+              119
+            ]
+          }
+        ],
+        "dateEvidence": [
+          {
+            "quote": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+            "starts": [
+              119
+            ]
+          }
+        ],
+        "deadlineText": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+        "originalDate": "2032-11-08",
+        "date": "2032-11-08",
+        "time": "17:00",
+        "utcOffset": "-10:00",
+        "originalTime": "17:00",
+        "originalUtcOffset": "-10:00",
+        "sourceRequiresTime": true,
+        "requiresTime": true,
+        "dateConfirmed": false,
+        "dateOrigin": "source proposal",
+        "evidenceValid": true,
+        "approved": false,
+        "omitted": false,
+        "origin": "rules",
+        "issues": [
+          "Found by local English text rules. Check meaning, conditions and the complete notice."
+        ]
+      },
+      {
+        "id": "r1-a3",
+        "originalTitle": "email the coordinator by next Friday",
+        "title": "email the coordinator by next Friday",
+        "originalCondition": "If you need accessible transport",
+        "condition": "If you need accessible transport",
+        "evidence": [
+          {
+            "quote": "If you need accessible transport, email the coordinator by next Friday.",
+            "starts": [
+              224
+            ]
+          }
+        ],
+        "dateEvidence": [
+          {
+            "quote": "email the coordinator by next Friday.",
+            "starts": [
+              258
+            ]
+          }
+        ],
+        "deadlineText": "email the coordinator by next Friday.",
+        "originalDate": "",
+        "date": "",
+        "time": "",
+        "utcOffset": "",
+        "originalTime": "",
+        "originalUtcOffset": "",
+        "sourceRequiresTime": false,
+        "requiresTime": false,
+        "dateConfirmed": false,
+        "dateOrigin": "unresolved",
+        "evidenceValid": true,
+        "approved": false,
+        "omitted": false,
+        "origin": "rules",
+        "issues": [
+          "Found by local English text rules. Check meaning, conditions and the complete notice.",
+          "The deadline is ambiguous. A date needs your clarification."
+        ]
+      }
+    ],
+    "notes": [
+      "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+      "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+      "Source passages flagged for review: 2. This list is not exhaustive.",
+      "The notice contains negation or cancellation. Local rules skip negated passages and instructions immediately followed by an explicit withdrawal referring back. Check other cross-sentence changes and qualifications manually."
+    ],
+    "attention": [
+      {
+        "id": "review-r1-p5-f1",
+        "evidence": {
+          "quote": "Participants must attach a signed consent form.",
+          "starts": [
+            175
+          ]
+        },
+        "reason": "Possible instruction or qualification outside the supported patterns. Inspect it and add an action manually if needed."
+      },
+      {
+        "id": "review-r1-p7-f2",
+        "evidence": {
+          "quote": "You do not need to pay a separate membership fee.",
+          "starts": [
+            296
+          ]
+        },
+        "reason": "Negation or cancellation: no action was created. Check its scope and any changes to other instructions."
+      }
+    ]
+  },
+  "repaired": {
+    "actions": [
+      {
+        "id": "r1-a1",
+        "originalTitle": "Register for the architecture trip",
+        "title": "Register for the architecture trip",
+        "originalCondition": "",
+        "condition": "",
+        "evidence": [
+          {
+            "quote": "Register for the architecture trip by Nov. 5, 2032.",
+            "starts": [
+              67
+            ]
+          }
+        ],
+        "dateEvidence": [
+          {
+            "quote": "Register for the architecture trip by Nov. 5, 2032.",
+            "starts": [
+              67
+            ]
+          }
+        ],
+        "deadlineText": "Register for the architecture trip by Nov. 5, 2032.",
+        "originalDate": "2032-11-05",
+        "date": "2032-11-05",
+        "time": "",
+        "utcOffset": "",
+        "originalTime": "",
+        "originalUtcOffset": "",
+        "sourceRequiresTime": false,
+        "requiresTime": false,
+        "dateConfirmed": false,
+        "dateOrigin": "source proposal",
+        "evidenceValid": true,
+        "approved": false,
+        "omitted": false,
+        "origin": "rules",
+        "issues": [
+          "Found by local English text rules. Check meaning, conditions and the complete notice."
+        ]
+      },
+      {
+        "id": "r1-a2",
+        "originalTitle": "Pay the bus deposit",
+        "title": "Pay the bus deposit",
+        "originalCondition": "",
+        "condition": "",
+        "evidence": [
+          {
+            "quote": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+            "starts": [
+              119
+            ]
+          }
+        ],
+        "dateEvidence": [
+          {
+            "quote": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+            "starts": [
+              119
+            ]
+          }
+        ],
+        "deadlineText": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+        "originalDate": "2032-11-08",
+        "date": "2032-11-08",
+        "time": "17:00",
+        "utcOffset": "-10:00",
+        "originalTime": "17:00",
+        "originalUtcOffset": "-10:00",
+        "sourceRequiresTime": true,
+        "requiresTime": true,
+        "dateConfirmed": false,
+        "dateOrigin": "source proposal",
+        "evidenceValid": true,
+        "approved": false,
+        "omitted": false,
+        "origin": "rules",
+        "issues": [
+          "Found by local English text rules. Check meaning, conditions and the complete notice."
+        ]
+      },
+      {
+        "id": "r1-a3",
+        "originalTitle": "email the coordinator by next Friday",
+        "title": "email the coordinator by next Friday",
+        "originalCondition": "If you need accessible transport",
+        "condition": "If you need accessible transport",
+        "evidence": [
+          {
+            "quote": "If you need accessible transport, email the coordinator by next Friday.",
+            "starts": [
+              224
+            ]
+          }
+        ],
+        "dateEvidence": [
+          {
+            "quote": "email the coordinator by next Friday.",
+            "starts": [
+              258
+            ]
+          }
+        ],
+        "deadlineText": "email the coordinator by next Friday.",
+        "originalDate": "",
+        "date": "",
+        "time": "",
+        "utcOffset": "",
+        "originalTime": "",
+        "originalUtcOffset": "",
+        "sourceRequiresTime": false,
+        "requiresTime": false,
+        "dateConfirmed": false,
+        "dateOrigin": "unresolved",
+        "evidenceValid": true,
+        "approved": false,
+        "omitted": false,
+        "origin": "rules",
+        "issues": [
+          "Found by local English text rules. Check meaning, conditions and the complete notice.",
+          "The deadline is ambiguous. A date needs your clarification."
+        ]
+      },
+      {
+        "id": "manual-1",
+        "originalTitle": "Attach a signed consent form",
+        "title": "Attach a signed consent form",
+        "originalCondition": "",
+        "condition": "",
+        "evidence": [
+          {
+            "quote": "Participants must attach a signed consent form.",
+            "starts": [
+              175
+            ]
+          }
+        ],
+        "dateEvidence": [
+          {
+            "quote": "Participants must attach a signed consent form.",
+            "starts": [
+              175
+            ]
+          }
+        ],
+        "deadlineText": "Participants must attach a signed consent form.",
+        "originalDate": "",
+        "date": "",
+        "time": "",
+        "utcOffset": "",
+        "originalTime": "",
+        "originalUtcOffset": "",
+        "sourceRequiresTime": false,
+        "requiresTime": false,
+        "dateConfirmed": false,
+        "dateOrigin": "unresolved",
+        "evidenceValid": true,
+        "approved": false,
+        "omitted": false,
+        "origin": "user",
+        "issues": [
+          "Added by you from source text. Check its meaning, condition and any date or time before approving.",
+          "The deadline is ambiguous. A date needs your clarification."
+        ]
+      }
+    ],
+    "attention": [
+      {
+        "id": "review-r1-p5-f1",
+        "evidence": {
+          "quote": "Participants must attach a signed consent form.",
+          "starts": [
+            175
+          ]
+        },
+        "reason": "Possible instruction or qualification outside the supported patterns. Inspect it and add an action manually if needed.",
+        "decision": {
+          "kind": "linked",
+          "note": "Automated technical walkthrough: separate required document, with no stated deadline.",
+          "actionId": "manual-1",
+          "origin": "user",
+          "confirmed": true,
+          "actionSnapshot": "[\"Attach a signed consent form\",\"\",\"\",\"\",\"\",false,[\"Participants must attach a signed consent form.\"],[\"Participants must attach a signed consent form.\"]]"
+        }
+      },
+      {
+        "id": "review-r1-p7-f2",
+        "evidence": {
+          "quote": "You do not need to pay a separate membership fee.",
+          "starts": [
+            296
+          ]
+        },
+        "reason": "Negation or cancellation: no action was created. Check its scope and any changes to other instructions.",
+        "decision": {
+          "kind": "not_action",
+          "note": "Automated technical walkthrough: the notice explicitly waives this separate fee.",
+          "actionId": null,
+          "origin": "user",
+          "confirmed": true,
+          "actionSnapshot": null
+        }
+      }
+    ]
+  },
+  "actionCheckedCounts": {
+    "checklist": 4,
+    "calendar": 0
+  },
+  "finalCounts": {
+    "checklist": 4,
+    "calendar": 2
+  },
+  "finalActions": [
+    {
+      "id": "r1-a1",
+      "originalTitle": "Register for the architecture trip",
+      "title": "Register for the architecture trip",
+      "originalCondition": "",
+      "condition": "",
+      "evidence": [
+        {
+          "quote": "Register for the architecture trip by Nov. 5, 2032.",
+          "starts": [
+            67
+          ]
+        }
+      ],
+      "dateEvidence": [
+        {
+          "quote": "Register for the architecture trip by Nov. 5, 2032.",
+          "starts": [
+            67
+          ]
+        }
+      ],
+      "deadlineText": "Register for the architecture trip by Nov. 5, 2032.",
+      "originalDate": "2032-11-05",
+      "date": "2032-11-05",
+      "time": "",
+      "utcOffset": "",
+      "originalTime": "",
+      "originalUtcOffset": "",
+      "sourceRequiresTime": false,
+      "requiresTime": false,
+      "dateConfirmed": true,
+      "dateOrigin": "source proposal",
+      "evidenceValid": true,
+      "approved": true,
+      "omitted": false,
+      "origin": "rules",
+      "issues": [
+        "Found by local English text rules. Check meaning, conditions and the complete notice."
+      ]
+    },
+    {
+      "id": "r1-a2",
+      "originalTitle": "Pay the bus deposit",
+      "title": "Pay the bus deposit",
+      "originalCondition": "",
+      "condition": "",
+      "evidence": [
+        {
+          "quote": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+          "starts": [
+            119
+          ]
+        }
+      ],
+      "dateEvidence": [
+        {
+          "quote": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+          "starts": [
+            119
+          ]
+        }
+      ],
+      "deadlineText": "Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.",
+      "originalDate": "2032-11-08",
+      "date": "2032-11-08",
+      "time": "17:00",
+      "utcOffset": "-10:00",
+      "originalTime": "17:00",
+      "originalUtcOffset": "-10:00",
+      "sourceRequiresTime": true,
+      "requiresTime": true,
+      "dateConfirmed": true,
+      "dateOrigin": "source proposal",
+      "evidenceValid": true,
+      "approved": true,
+      "omitted": false,
+      "origin": "rules",
+      "issues": [
+        "Found by local English text rules. Check meaning, conditions and the complete notice."
+      ]
+    },
+    {
+      "id": "r1-a3",
+      "originalTitle": "email the coordinator by next Friday",
+      "title": "email the coordinator by next Friday",
+      "originalCondition": "If you need accessible transport",
+      "condition": "If you need accessible transport",
+      "evidence": [
+        {
+          "quote": "If you need accessible transport, email the coordinator by next Friday.",
+          "starts": [
+            224
+          ]
+        }
+      ],
+      "dateEvidence": [
+        {
+          "quote": "email the coordinator by next Friday.",
+          "starts": [
+            258
+          ]
+        }
+      ],
+      "deadlineText": "email the coordinator by next Friday.",
+      "originalDate": "",
+      "date": "",
+      "time": "",
+      "utcOffset": "",
+      "originalTime": "",
+      "originalUtcOffset": "",
+      "sourceRequiresTime": false,
+      "requiresTime": false,
+      "dateConfirmed": false,
+      "dateOrigin": "unresolved",
+      "evidenceValid": true,
+      "approved": true,
+      "omitted": false,
+      "origin": "rules",
+      "issues": [
+        "Found by local English text rules. Check meaning, conditions and the complete notice.",
+        "The deadline is ambiguous. A date needs your clarification."
+      ]
+    },
+    {
+      "id": "manual-1",
+      "originalTitle": "Attach a signed consent form",
+      "title": "Attach a signed consent form",
+      "originalCondition": "",
+      "condition": "",
+      "evidence": [
+        {
+          "quote": "Participants must attach a signed consent form.",
+          "starts": [
+            175
+          ]
+        }
+      ],
+      "dateEvidence": [
+        {
+          "quote": "Participants must attach a signed consent form.",
+          "starts": [
+            175
+          ]
+        }
+      ],
+      "deadlineText": "Participants must attach a signed consent form.",
+      "originalDate": "",
+      "date": "",
+      "time": "",
+      "utcOffset": "",
+      "originalTime": "",
+      "originalUtcOffset": "",
+      "sourceRequiresTime": false,
+      "requiresTime": false,
+      "dateConfirmed": false,
+      "dateOrigin": "unresolved",
+      "evidenceValid": true,
+      "approved": true,
+      "omitted": false,
+      "origin": "user",
+      "issues": [
+        "Added by you from source text. Check its meaning, condition and any date or time before approving.",
+        "The deadline is ambiguous. A date needs your clarification."
+      ]
+    }
+  ],
+  "markdown": "# Action Receipt\n\nNotice: AUTOMATED TECHNICAL WALKTHROUGH: Invented architecture trip\nCreated: 2026-10-15T00:00:00.000Z\nMode: Local text rules; browser-only proposals, no AI model or API\n\nSource quotations show where text appeared. They do not certify correct interpretation or completeness.\n\n- [ ] Register for the architecture trip\n  - Action origin: Local text rules\n  - Original deadline wording: Register for the architecture trip by Nov. 5, 2032.\n  - Reviewed date: 2032-11-05 (day marker)\n  - Date provenance: source proposal; confirmed by user\n  - Action source: “Register for the architecture trip by Nov. 5, 2032.”\n  - Date source: “Register for the architecture trip by Nov. 5, 2032.”\n  - Original review flag: Found by local English text rules. Check meaning, conditions and the complete notice.\n\n- [ ] Pay the bus deposit\n  - Action origin: Local text rules\n  - Original deadline wording: Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.\n  - Reviewed date: 2032-11-08 17:00 UTC-10:00\n  - Date provenance: source proposal; confirmed by user\n  - Action source: “Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.”\n  - Date source: “Pay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.”\n  - Original review flag: Found by local English text rules. Check meaning, conditions and the complete notice.\n\n- [ ] email the coordinator by next Friday\n  - Action origin: Local text rules\n  - Condition: If you need accessible transport\n  - Original deadline wording: email the coordinator by next Friday.\n  - Reviewed date: Unresolved / not confirmed; no calendar entry\n  - Date provenance: unresolved\n  - Action source: “If you need accessible transport, email the coordinator by next Friday.”\n  - Date source: “email the coordinator by next Friday.”\n  - Original review flag: Found by local English text rules. Check meaning, conditions and the complete notice.\n  - Original review flag: The deadline is ambiguous. A date needs your clarification.\n\n- [ ] Attach a signed consent form\n  - Action origin: Added by user from source\n  - Original deadline wording: Participants must attach a signed consent form.\n  - Reviewed date: Unresolved / not confirmed; no calendar entry\n  - Date provenance: unresolved\n  - Action source: “Participants must attach a signed consent form.”\n  - Date source: “Participants must attach a signed consent form.”\n  - Original review flag: Added by you from source text. Check its meaning, condition and any date or time before approving.\n  - Original review flag: The deadline is ambiguous. A date needs your clarification.\n\n## Notice notes\n- SCRIPTED SYNTHETIC CHECK. Approvals and date checks are automated, not a human review.\n- Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.\n- Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.\n- Source passages flagged for review: 2. This list is not exhaustive.\n- The notice contains negation or cancellation. Local rules skip negated passages and instructions immediately followed by an explicit withdrawal referring back. Check other cross-sentence changes and qualifications manually.\n\n## Source passages flagged for review\n\nThese are context flags, not approved tasks. They may already have been addressed during your review. This list is not exhaustive.\n\nIdentified flags: 2 addressed; 0 still need attention. This is not a completeness check.\n\n- Possible instruction or qualification outside the supported patterns. Inspect it and add an action manually if needed.\n  - Source: “Participants must attach a signed consent form.”\n  - Review status: Linked to approved checklist item; date unconfirmed\n  - Decision origin: Recorded by user\n  - Decision: Link to an action\n  - Decision note: Automated technical walkthrough: separate required document, with no stated deadline.\n  - Linked action: Attach a signed consent form; association supplied by user, not an inferred deadline\n  - This source decision does not approve an action or confirm a date.\n- Negation or cancellation: no action was created. Check its scope and any changes to other instructions.\n  - Source: “You do not need to pay a separate membership fee.”\n  - Review status: Reviewed: not an obligation\n  - Decision origin: Recorded by user\n  - Decision: Not an obligation\n  - Decision note: Automated technical walkthrough: the notice explicitly waives this separate fee.\n  - This source decision does not approve an action or confirm a date.\n",
+  "calendar": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Action Receipt//Reviewed notices//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nBEGIN:VEVENT\r\nUID:automated-technical-walkthrough-r1-a1@actionreceipt.local\r\nDTSTAMP:20261015T000000Z\r\nDTSTART;VALUE=DATE:20321105\r\nDTEND;VALUE=DATE:20321106\r\nSUMMARY:Register for the architecture trip\r\nDESCRIPTION:Local text rules\\; browser-only proposals\\, no AI model or API\\\r\n nAction origin: Local text rules.\\nNotice: AUTOMATED TECHNICAL WALKTHROUGH\r\n : Invented architecture trip\\nOriginal deadline: Register for the architec\r\n ture trip by Nov. 5\\, 2032.\\nDate provenance: source proposal\\; confirmed \r\n by user.\\nThis is an all-day deadline marker\\; no exact cutoff time or rem\r\n inder is inferred.\\nAction source: Register for the architecture trip by N\r\n ov. 5\\, 2032.\\nDate source: Register for the architecture trip by Nov. 5\\,\r\n  2032.\\nOriginal review flag: Found by local English text rules. Check mea\r\n ning\\, conditions and the complete notice.\\nNotice note: SCRIPTED SYNTHETI\r\n C CHECK. Approvals and date checks are automated\\, not a human review.\\nNo\r\n tice note: Local English text rules generated these proposals. They can mi\r\n ss instructions or misunderstand scope. Read every part of the notice and \r\n add missed actions manually.\\nNotice note: Dates are linked only within th\r\n e same passage. No dates are inferred from today's date or borrowed from a\r\n  different sentence.\\nNotice note: Source passages flagged for review: 2. \r\n This list is not exhaustive.\\nNotice note: The notice contains negation or\r\n  cancellation. Local rules skip negated passages and instructions immediat\r\n ely followed by an explicit withdrawal referring back. Check other cross-s\r\n entence changes and qualifications manually.\\nOther source passages flagge\r\n d for review (context\\, not approved tasks\\; not a completeness check):\\nP\r\n ossible instruction or qualification outside the supported patterns. Inspe\r\n ct it and add an action manually if needed.\\nSource: Participants must att\r\n ach a signed consent form.\\nReview status: Linked to approved checklist it\r\n em\\; date unconfirmed\\nDecision origin: Recorded by user\\nDecision: Link t\r\n o an action\\nDecision note: Automated technical walkthrough: separate requ\r\n ired document\\, with no stated deadline.\\nLinked action: Attach a signed c\r\n onsent form\\; association supplied by user\\, not an inferred deadline\\nThi\r\n s source decision does not approve an action or confirm a date.\\nNegation \r\n or cancellation: no action was created. Check its scope and any changes to\r\n  other instructions.\\nSource: You do not need to pay a separate membership\r\n  fee.\\nReview status: Reviewed: not an obligation\\nDecision origin: Record\r\n ed by user\\nDecision: Not an obligation\\nDecision note: Automated technica\r\n l walkthrough: the notice explicitly waives this separate fee.\\nThis sourc\r\n e decision does not approve an action or confirm a date.\\nQuotation matchi\r\n ng does not certify interpretation or completeness.\r\nTRANSP:TRANSPARENT\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:automated-technical-walkthrough-r1-a2@actionreceipt.local\r\nDTSTAMP:20261015T000000Z\r\nDTSTART:20321109T030000Z\r\nSUMMARY:Pay the bus deposit\r\nDESCRIPTION:Local text rules\\; browser-only proposals\\, no AI model or API\\\r\n nAction origin: Local text rules.\\nNotice: AUTOMATED TECHNICAL WALKTHROUGH\r\n : Invented architecture trip\\nOriginal deadline: Pay the bus deposit by No\r\n v. 8\\, 2032 at 17:00 UTC-10:00.\\nDate provenance: source proposal\\; confir\r\n med by user.\\nThis entry marks the deadline instant\\; no event duration or\r\n  reminder is inferred.\\nAction source: Pay the bus deposit by Nov. 8\\, 203\r\n 2 at 17:00 UTC-10:00.\\nDate source: Pay the bus deposit by Nov. 8\\, 2032 a\r\n t 17:00 UTC-10:00.\\nOriginal review flag: Found by local English text rule\r\n s. Check meaning\\, conditions and the complete notice.\\nNotice note: SCRIP\r\n TED SYNTHETIC CHECK. Approvals and date checks are automated\\, not a human\r\n  review.\\nNotice note: Local English text rules generated these proposals.\r\n  They can miss instructions or misunderstand scope. Read every part of the\r\n  notice and add missed actions manually.\\nNotice note: Dates are linked on\r\n ly within the same passage. No dates are inferred from today's date or bor\r\n rowed from a different sentence.\\nNotice note: Source passages flagged for\r\n  review: 2. This list is not exhaustive.\\nNotice note: The notice contains\r\n  negation or cancellation. Local rules skip negated passages and instructi\r\n ons immediately followed by an explicit withdrawal referring back. Check o\r\n ther cross-sentence changes and qualifications manually.\\nOther source pas\r\n sages flagged for review (context\\, not approved tasks\\; not a completenes\r\n s check):\\nPossible instruction or qualification outside the supported pat\r\n terns. Inspect it and add an action manually if needed.\\nSource: Participa\r\n nts must attach a signed consent form.\\nReview status: Linked to approved \r\n checklist item\\; date unconfirmed\\nDecision origin: Recorded by user\\nDeci\r\n sion: Link to an action\\nDecision note: Automated technical walkthrough: s\r\n eparate required document\\, with no stated deadline.\\nLinked action: Attac\r\n h a signed consent form\\; association supplied by user\\, not an inferred d\r\n eadline\\nThis source decision does not approve an action or confirm a date\r\n .\\nNegation or cancellation: no action was created. Check its scope and an\r\n y changes to other instructions.\\nSource: You do not need to pay a separat\r\n e membership fee.\\nReview status: Reviewed: not an obligation\\nDecision or\r\n igin: Recorded by user\\nDecision: Not an obligation\\nDecision note: Automa\r\n ted technical walkthrough: the notice explicitly waives this separate fee.\r\n \\nThis source decision does not approve an action or confirm a date.\\nQuot\r\n ation matching does not certify interpretation or completeness.\r\nTRANSP:TRANSPARENT\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n",
+  "editedCutoff": {
+    "approved": false,
+    "dateConfirmed": false
+  },
+  "reopenedCounts": {
+    "checklist": 0,
+    "calendar": 0
+  },
+  "source_files_sha256": {
+    "app/clarification-sheet.tsx": "99c337283b80d546b60f1fd90856c4600cf3bd4e1bd484eddbd967f592005648",
+    "app/export-preview.tsx": "db8fbfc07576dd36204afdbd57b7482c675202efd4a24a29c975bf4df79b3730",
+    "app/globals.css": "08485004bcea6387c037ab7660d1788372b2bc05ff54d43ee5d9db40b904e7f1",
+    "app/receipt-workspace.tsx": "22de35bfcba87a78b440af5f318a08b02e9044d7db6810205a8e925b9320f15a",
+    "app/recovery-banner.tsx": "9831e7aa5629e2e642ab35717bc999707faa4ee93c649dc7ea7ec381652079e6",
+    "app/review-guide.tsx": "b2db8c3f74725666169cc50e0914092cd2de5f4aef2b54987c6af90d510420e4",
+    "app/source-review-queue.tsx": "b12f93a77a87e4919238317740dd6bb4742e57ae62b2bccea97a9ac4d053314c",
+    "lib/clarification.ts": "a93304bbfcab7b87f8e845d863ca3f48cc322aec931e50775b28c184da3fde0d",
+    "lib/connector-context.ts": "bbddff68689cb0f6926fecd4b8b96f12f2054277c296e97b0df07d4ad5ece24e",
+    "lib/connector-preview.d.ts": "abd69a94f7f61f1359063bb557574faae35e8ff5a028cc4c04b9ee248ef52642",
+    "lib/connectors.ts": "1c93d747e384c8e17e3e3dd5361b24412babf5eba2a11d2ae7a75f4e0924112c",
+    "lib/dates.ts": "df5af3f7695c057ce39e3536531f7dae1ead77458d9cb90b7c091288dff13cbf",
+    "lib/demo-scenario.ts": "156e559ffc0f64a0b2674b14fee9224f26f8a3ecdde5553930d5a8a126d09cb2",
+    "lib/export.ts": "368ede329331fd68e86851e8785e3a0c8c8b20f98abb0b4a2a178093ab02f0c6",
+    "lib/local-extraction.ts": "c4016860c473304703e6f1d4d5c63ec427752f298cba1442639a999f48fc80c7",
+    "lib/receipt.ts": "9d27e23aeb191ad4c43cb26ecdba074b246740fa828dde86ee93e3d87b6f0af2",
+    "lib/review-file.ts": "05c658141f95c4425ff81fef242f53b26496197eec8054f77fdc6b71f54ff274",
+    "lib/review-guide.ts": "4163f963b3ac7d2c25fbce59733430e4b04284653aa8a8b1ed98ba4323c6028f",
+    "lib/samples.ts": "5f1d868dad8404bac17e520f4358f6a942a765453ca475a207886a4e70499a35",
+    "lib/source-review.ts": "428b5391e2cf4e6e0b1517b026ed901f6cb156fa5fec73af3df0c318ba92f857",
+    "lib/times.ts": "48de1c0360575021a4ba81acbfdb2e7d2f77f66fd8779916769b735edaaba9ea",
+    "lib/utils.ts": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68",
+    "lib/workspace-recovery.ts": "860e0bc86ae83d993133e42f7ee220686adfbc5cc6022afc89a169a1d18587e8",
+    "package.json": "3ea470f4af88f32125ee398e9105334cdf872babca5fd92a8322674d1f739485",
+    "pnpm-lock.yaml": "095ba6f301ba3997da2c251dfc4b805c220624bdf0921d905eaceee0d1fb29c9",
+    "scripts/build-static.mjs": "900499024204b337c728e5a1338a364938f5fdf0949ea7df362c8dce0258697e",
+    "scripts/rehearse-demo.ts": "7a50ba33efb1ebea80aa59a5b17dab2ea8e51caf34f4efb7b1bcde5d6a7f9769",
+    "standalone/main.tsx": "8318516a7897bd899ffab965a1c0ff4ca53792781b2a93285296ecd11553881d",
+    "vite.static.config.ts": "1b6481b96fbde556894e79dc741fd97300a4fb573922d938a0a0308ca40b7d6c"
+  },
+  "capture_script_sha256": "81a55bb78fd4d3383b0a61dbb170483ca0d281722b571f6a7a890f37f4671be2"
+}

@@ -10,6 +10,7 @@ This file is technical preparation, not ready-to-paste entrant submission copy.
 - [x] Audit the four equal judging criteria and document the evidence gaps in `competitive-readiness.md`.
 - [x] Prepare public offline testing instructions in `judge-guide.md`, a reproducible synthetic workflow rehearsal and a timed recording checklist. Automated fixture approvals are explicitly labeled.
 - [x] Prepare AI-assisted factual project text under the entrant's later delegation, a 1200 by 800 original gallery illustration, planned silent-demo captions, structured links and a verified portable preparation archive. See `submission/README.md` for authorship and limits.
+- [x] Create and inspect a 120-second H.264 technical walkthrough from actual domain outputs, with scripted choices and absence of browser footage visible throughout. Captions, captured data and SHA-256 provenance are preserved. This does not complete the browser demo/video URL requirements below.
 - [ ] Learner tries the application and confirms readiness after any fixes.
 - [ ] Complete the brief learning wrap-up; do not invent a reflection.
 - [x] Public GitHub repository exists: https://github.com/nolankido/action-receipt. Public visibility and source verified; unauthenticated Git access checked separately.

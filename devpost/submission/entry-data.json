@@ -5,7 +5,16 @@
   "project_name": "Action Receipt",
   "tagline": "Turn one notice into reviewed actions, with the original words attached.",
   "project_story_file": "project-description.md",
-  "built_with": ["TypeScript", "React", "Vite", "Codex", "Devpost Learn Skill Pack", "HTML", "CSS", "iCalendar"],
+  "built_with": [
+    "TypeScript",
+    "React",
+    "Vite",
+    "Codex",
+    "Devpost Learn Skill Pack",
+    "HTML",
+    "CSS",
+    "iCalendar"
+  ],
   "repository_url": "https://github.com/nolankido/action-receipt",
   "try_it_out_url": "https://github.com/nolankido/action-receipt",
   "judge_instructions_url": "https://github.com/nolankido/action-receipt/blob/main/devpost/judge-guide.md",
@@ -22,7 +31,7 @@
   "video_caption_file": "planned-captions.srt",
   "caption_status": "Planned text; must be aligned to actual footage",
   "current_form_inspected": false,
-  "form_access_observation": "Devpost project manager is signed out in the available browser",
+  "form_access_observation": "GitHub email authorization completed; Devpost sign-up form reports username already taken. Authenticated entry form remains uninspected.",
   "personal_reflection": null,
   "exit_survey_answers": null,
   "eligibility_declarations": null,
@@ -30,5 +39,10 @@
   "submitted": false,
   "submission_confirmation_url": null,
   "deadline_utc": "2026-10-26T21:00:00Z",
-  "deadline_honolulu": "2026-10-26T11:00:00-10:00"
+  "deadline_honolulu": "2026-10-26T11:00:00-10:00",
+  "technical_video_created": true,
+  "technical_video_duration_seconds": 120.0,
+  "technical_video_sha256": "8423b1bf42e03ce02ae631644c1cada469453dcc3b6e7e4799c05a6a9136a8ac",
+  "technical_video_kind": "Captioned real domain-output walkthrough; scripted synthetic checks; browser interface not shown",
+  "submission_demo_complete": false
 }

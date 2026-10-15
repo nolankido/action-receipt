@@ -1,0 +1,51 @@
+1
+00:00:00,000 --> 00:00:07,000
+One notice. Source-linked actions. Dates that need a deliberate check.
+
+2
+00:00:07,000 --> 00:00:21,000
+An invented practice notice supplies the input for every result shown here.
+
+3
+00:00:21,000 --> 00:00:29,000
+The local English text rules run on the source, with no model or API request.
+
+4
+00:00:29,000 --> 00:00:37,000
+Exact quotations establish where words occurred, not whether the interpretation is right.
+
+5
+00:00:37,000 --> 00:00:46,000
+The real repair function creates a separate action from the exact flagged passage.
+
+6
+00:00:46,000 --> 00:00:53,000
+The scripted source decision records its reason and preserves the original flag.
+
+7
+00:00:53,000 --> 00:01:01,000
+The program does not turn next Friday into a guessed calendar date.
+
+8
+00:01:01,000 --> 00:01:10,000
+These are scripted contract checks, not a claim that a person reviewed the notice.
+
+9
+00:01:10,000 --> 00:01:24,000
+This is an excerpt from the actual Markdown serializer output.
+
+10
+00:01:24,000 --> 00:01:35,000
+The timed cutoff is converted to the same instant in UTC, with no inferred reminder.
+
+11
+00:01:35,000 --> 00:01:43,000
+The capture also exercised edit invalidation and the real saved-review parser.
+
+12
+00:01:43,000 --> 00:01:51,000
+Codex used the Devpost Learn Skill Pack; generated planning documents are public.
+
+13
+00:01:51,000 --> 00:02:00,000
+Public source and the runnable offline file: github.com/nolankido/action-receipt

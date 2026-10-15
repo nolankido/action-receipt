@@ -20,6 +20,8 @@ The entrant explicitly delegated drafting after the Learn pack's learner-authors
 
 To reproduce the archive after the normal build and `npm run rehearse:demo`, run `python scripts/package-submission.py`. It uses the standard library, checks current rehearsal hashes, validates caption timing and cover dimensions, packages an explicit allowlist, and verifies every archive member. The cover PNG was rendered from its editable SVG with an already-installed renderer. No image API or paid editor was used.
 
+A separate **2:00 technical walkthrough video** has been produced from actual domain-function outputs, with captions and scripted-review disclosure visible throughout. [Video provenance and reproduction](devpost/submission/README.md#technical-video-created) and [captured data](devpost/demo/technical-video-domain-data.json) are public. It is not browser-interface footage or the completed hackathon demo. The browser blocked local-file navigation; no workaround was attempted. Real interface footage and a public YouTube/Vimeo link remain missing. The video itself was provided separately, while the ZIP includes its manifest and captions.
+
 ## What the local rules do
 
 - Recognize a bounded set of English action words such as register, pay, submit, upload, bring and email.
