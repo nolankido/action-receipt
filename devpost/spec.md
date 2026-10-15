@@ -37,6 +37,9 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 
 Each flag keeps its original reason and exact evidence. A decision records kind, explanation, optional action ID and user/imported provenance. Current-session confirmation and an ephemeral action-content snapshot control whether a link is addressed. Changed meaning, omitted/unavailable action or revoked approval makes it need attention again; imported decisions always need rechecking. Addressed counts describe identified flags only and never certify complete extraction or date resolution. Flag identifiers are unique even when several reasons apply to one passage. Workspace revision tracking includes committed decision changes so a late file read cannot overwrite them.
 
+### Next-step Guidance
+`lib/review-guide.ts` derives a navigation target from typed source-review statuses and the shared export eligibility plan. `app/review-guide.tsx` shows the next target, counts and waiting-clarification disclosure. Loaded decisions always return to recheck; changed/unavailable links return to their exact flag; a pending linked approval routes to its action. User-recorded clarification stays pending but does not block navigation to other actions or download preview. Calendar review is optional. Guidance never changes evidence, decisions, approvals or date confirmation. Explicit navigation opens the target details and moves focus; state changes alone do not move focus. Excluded preview items close the dialog and open the relevant action/date field.
+
 ### Exports
 `lib/export.ts` implements `prd.md > Export`. Export only approved items. Escape iCalendar content lines, fold UTF-8 lines, use stable per-action UIDs, represent date-only entries as all-day markers and timed deadlines as zero-duration instants with explicit offsets. Never invent an event length. Omit unresolved calendar items visibly. Preserve notice notes and source-review flags as context in both download formats, without creating additional tasks or events.
 
@@ -53,8 +56,8 @@ An immutable source string and revision; proposal mode/origin; candidate actions
 
 ## File Structure
 - `standalone/`, `vite.static.config.ts`: static browser entry.
-- `app/receipt-workspace.tsx`, `app/globals.css`: review UI.
-- `lib/local-extraction.ts`, `lib/dates.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, calendar syntax, validation, downloads, local review continuation and examples.
+- `app/receipt-workspace.tsx`, `app/review-guide.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/globals.css`: review UI.
+- `lib/local-extraction.ts`, `lib/dates.ts`, `lib/review-guide.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, calendar syntax, validation, downloads, local review continuation and examples.
 - `scripts/build-static.mjs`: inlines JavaScript/styles/icons and license notices into the distribution, adds a network-blocking policy, rejects external runtime asset references.
 - `release/action-receipt.html`: committed standalone app.
 - `tests/`, `devpost/`: behavioral checks, Skill Pack evidence and technical plan.
@@ -75,6 +78,6 @@ No external runtime services. Development dependencies are listed in package/loc
 The learner explicitly required no new spending. A single-file ordinary browser app avoids API bills, model downloads, hardware-specific inference setup and hosting dependence. Manual source-backed repair covers bounded-parser omissions while preserving the original evidence/approval kernel.
 
 ## Decisions and Open Issues
-The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Eighty-seven automated tests, five fresh local smoke checks and a static build establish narrow mechanical behavior. The formative trial kit in `devpost/usability/` is prepared with three synthetic notices and a blank observation template. No sessions, participant comments or outcomes are claimed. Actual browser interaction, learner review and the public demo/answers/submission remain pending.
+The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Ninety-five automated tests, five fresh local smoke checks and a static build establish narrow mechanical behavior. The formative trial kit in `devpost/usability/` is prepared with three synthetic notices and a blank observation template. No sessions, participant comments or outcomes are claimed. Actual browser interaction, learner review and the public demo/answers/submission remain pending.
 
 Date resolution retains original warnings. A confirmed user-supplied date can become calendar-eligible while original ambiguity remains in exports. Exact action evidence is always mandatory. Saved examples, local rules and user additions retain distinct provenance.

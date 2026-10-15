@@ -6,7 +6,7 @@ import type { Evidence, ReviewedAction, SourceReviewItem } from "../lib/receipt.
 import { sourceReviewState, sourceReviewSummary, type DecisionInput } from "../lib/source-review.ts";
 
 export type FlagActionInput = { title: string; quote: string; condition: string; note: string };
-type Props = { items: SourceReviewItem[]; actions: ReviewedAction[]; disabled: boolean;
+type Props = { items: SourceReviewItem[]; actions: ReviewedAction[]; disabled: boolean; focusedFlag?: { id: string; signal: number };
   onEvidence: (e: Evidence) => void; onAction: (id: string) => void;
   onRecord: (id: string, input: DecisionInput) => void; onCreate: (id: string, input: FlagActionInput) => void };
 
@@ -46,6 +46,12 @@ export default function SourceReviewQueue(props: Props) {
   const summary = sourceReviewSummary(props.items, props.actions);
   const visible = all ? props.items : props.items.filter(item => !sourceReviewState(item, props.actions).addressed);
   const index = Math.max(0, visible.findIndex(item => item.id === selected)); const item = visible[index];
+  useEffect(() => {
+    if (!props.focusedFlag?.signal || !props.items.some(item => item.id === props.focusedFlag!.id)) return;
+    setAll(true); setSelected(props.focusedFlag.id);
+    const timer = setTimeout(() => { const choice = document.getElementById("queue-flag-choice"); choice?.scrollIntoView({ block: "nearest", behavior: "instant" }); choice?.focus({ preventScroll: true }); }, 0);
+    return () => clearTimeout(timer);
+  }, [props.focusedFlag?.id, props.focusedFlag?.signal]);
   useEffect(() => {
     if (focusAfterDecision.current) document.getElementById(item ? "queue-flag-choice" : "source-review-heading")?.focus();
     focusAfterDecision.current = false;

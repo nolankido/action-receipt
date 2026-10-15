@@ -33,7 +33,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [ ] Optional edit and transfer reflection addressed
 - [x] `devpost/app-map.html` generated from finished code, checked and shown
 
-Activity and evidence: 87 automated tests, TypeScript and the production build pass. Five fresh notice checks cover abbreviated dates and weekday conflicts as well as the original cases. Initial implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
+Activity and evidence: 95 automated tests, TypeScript and the production build pass. Five fresh notice checks cover abbreviated dates and weekday conflicts as well as the original cases. Initial implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
 Route and stops: reference-only route in app-map.html: ActionCard, calendarEligible, calendarText. It has not been toured with the learner.
 Edit outcome: not yet offered.
 Reflection: not yet offered; private answer must stay in the ignored profile.
@@ -61,3 +61,5 @@ Activity mode: pending.
 - Date-reading pass: reproduced sentence splitting at abbreviated months and an unchecked weekday/date contradiction. Added shared English calendar syntax, protected abbreviation boundaries while preserving original quotes, accepted explicit-year month abbreviations in either order and matching weekday prefixes, and left adjacent weekday contradictions unresolved with exact review flags. Common validation independently blocks contradicted proposals. Twelve new behavioral tests cover source fidelity, date ambiguity, condition scope, exports, manual resolution and review-file cutoff protection. No runtime service or dependency was added; actual learner review remains pending.
 
 - Guided source review: implemented the learner-approved queue, decision explanations, exact-source repair, existing-action links and pending/all filters. Linked decisions reopen after meaningful edits, omission or revoked approval. Imported choices remain unverified until rechecked. Previews/exports preserve the original flags and current decision trail. Source flag IDs are unique per reason, including multiple reasons on one passage. Version-2 review files retain version-1 read compatibility. A trial kit is prepared; no student sessions or feedback are claimed.
+
+- Next-step navigation: added a state-aware guide to exact flags, unchecked actions and approved download preview. A recorded clarification remains pending without trapping navigation; imported, changed or unavailable decisions require rechecking. Calendar dates are explicitly optional. Excluded preview items link back to action/date fields. Eight new behavioral checks cover state preservation, stale/imported trust, unresolved exports and timed eligibility. Browser interaction and actual learner/student review remain pending.

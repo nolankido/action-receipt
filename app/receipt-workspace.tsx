@@ -10,6 +10,8 @@ import { MAX_REVIEW_BYTES, openReviewFile as parseReviewFile, saveReviewFile } f
 import ExportPreview from "./export-preview.tsx";
 import SourceReviewQueue, { type FlagActionInput } from "./source-review-queue.tsx";
 import { createActionFromFlag, recordSourceDecision, type DecisionInput } from "../lib/source-review.ts";
+import ReviewGuide from "./review-guide.tsx";
+import type { ReviewTarget } from "../lib/review-guide.ts";
 
 function saveFile(text: string, type: string, name: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -60,14 +62,14 @@ function ManualActionForm({ source, disabled, selected, onAdd }: { source: strin
   </div>;
 }
 
-function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0 }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void; focusSignal?: number }) {
+function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0, focusField = "title" }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void; focusSignal?: number; focusField?: "title" | "date" }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!focusSignal) return;
     setOpen(true);
-    const timer = setTimeout(() => { document.getElementById(`action-card-${action.id}`)?.scrollIntoView({ block: "nearest", behavior: "instant" }); document.getElementById(`${action.id}-title`)?.focus({ preventScroll: true }); }, 0);
+    const timer = setTimeout(() => { const field = document.getElementById(`${action.id}-${focusField}`); field?.scrollIntoView({ block: "center", behavior: "instant" }); field?.focus({ preventScroll: true }); }, 0);
     return () => clearTimeout(timer);
-  }, [focusSignal, action.id]);
+  }, [focusSignal, action.id, focusField]);
   const eligible = action.dateConfirmed && canConfirmDate(action);
   const needsClarification = !canConfirmDate(action);
   const change = (patch: Parameters<typeof editAction>[1]) => onChange(editAction(action, patch));
@@ -125,7 +127,8 @@ export default function ReceiptWorkspace() {
   const [announcement, setAnnouncement] = useState("");
   const [methodOpen, setMethodOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [focusedAction, setFocusedAction] = useState({ id: "", signal: 0 });
+  const [focusedAction, setFocusedAction] = useState<{ id: string; signal: number; field: "title" | "date" }>({ id: "", signal: 0, field: "title" });
+  const [focusedFlag, setFocusedFlag] = useState({ id: "", signal: 0 });
   const [restoredReview, setRestoredReview] = useState(false);
   const [openingReview, setOpeningReview] = useState(false);
   const [fileError, setFileError] = useState("");
@@ -142,11 +145,11 @@ export default function ReceiptWorkspace() {
   const approved = exportPlan.checklist;
   const calendar = exportPlan.calendar;
   const active = actions.filter(a => !a.omitted);
-  const unclear = active.filter(a => !a.dateConfirmed || !canConfirmDate(a)).length;
   const meta = (): ReceiptMeta => ({ mode: mode ?? "manual", title, createdAt: createdAt.current, receiptId: receiptId.current, notes, attention, restored: restoredReview });
   function resetResults(newSource: string) {
     workspaceVersion.current++; requestId.current++; currentSource.current = newSource; setSource(newSource); setActions([]); setNotes([]); setAttention([]); setSelected(null); setMode(null); setSampleId(null); setError(""); setBusy(false); setRestoredReview(false); setFileError(""); setFileMessage("");
     receiptId.current = crypto.randomUUID(); createdAt.current = new Date();
+    setFocusedAction({ id: "", signal: 0, field: "title" }); setFocusedFlag({ id: "", signal: 0 }); setPreviewOpen(false);
   }
   function ownNotice() { resetResults(""); setTitle(""); setEditing(true); setAnnouncement("Ready for your notice. Previous results and approvals were cleared."); setTimeout(() => noticeInput.current?.focus(), 0); }
   function loadSample(id: string) {
@@ -186,7 +189,14 @@ export default function ReceiptWorkspace() {
     if (!mode) { setMode("manual"); receiptId.current = crypto.randomUUID(); createdAt.current = new Date(); }
     setActions(old => [...old, action]); setAnnouncement("Added your action with its source passage. Review and approve it before exporting.");
   }
-  function reviewLinkedAction(id: string) { setFocusedAction(old => ({ id, signal: old.signal + 1 })); }
+  function reviewLinkedAction(id: string, field: "title" | "date" = "title") { setFocusedAction(old => ({ id, signal: old.signal + 1, field })); }
+  function goToReview(target: ReviewTarget) {
+    if (busy || openingReview) return;
+    if (target.kind === "flag") setFocusedFlag(old => ({ id: target.id, signal: old.signal + 1 }));
+    else if (target.kind === "action") reviewLinkedAction(target.id);
+    else if (target.kind === "preview") setPreviewOpen(true);
+    else { setEditing(false); setTimeout(() => { const heading = document.getElementById("source-heading"); heading?.scrollIntoView({ block: "nearest", behavior: "instant" }); heading?.focus({ preventScroll: true }); }, 0); }
+  }
   function recordFlag(id: string, input: DecisionInput) {
     const item = attention.find(item => item.id === id); if (!item) throw new Error("This flag is no longer in the current notice.");
     const updated = recordSourceDecision(item, input, actions);
@@ -244,8 +254,9 @@ export default function ReceiptWorkspace() {
           {mode === "sample" && !restoredReview && <div className="mode-banner"><Info size={16} /><p><strong>Synthetic sample walkthrough.</strong> These are saved example results, not a fresh scan of the text. Review, edit, and export them to explore the workflow.</p></div>}
           {mode === "local" && !restoredReview && <div className="mode-banner live"><FileText size={16} /><p><strong>Local text-rule proposals.</strong> These are English pattern matches, not AI interpretation. Read the complete notice and add anything the rules missed.</p></div>}
           {mode === "manual" && !restoredReview && <div className="mode-banner"><Pencil size={16} /><p><strong>Manual review.</strong> You added these actions from the source. No automatic extraction was used for this receipt.</p></div>}
+          <ReviewGuide actions={actions} items={attention} hasResults={mode !== null} canScan={source.trim().length >= MIN_NOTICE_LENGTH && source.length <= MAX_NOTICE_LENGTH} disabled={busy || openingReview} onGo={goToReview} onScan={() => void analyze()} onPaste={() => { setEditing(true); setTimeout(() => noticeInput.current?.focus(), 0); }} onDate={id => reviewLinkedAction(id, "date")} />
           <div className="workspace-grid">
-            <section className="source-panel" aria-labelledby="source-heading"><div className="panel-heading"><div><FileText size={17} /><h2 id="source-heading">The original notice</h2></div><span className="panel-caption">YOUR SOURCE OF TRUTH</span></div>
+            <section className="source-panel" aria-labelledby="source-heading"><div className="panel-heading"><div><FileText size={17} /><h2 id="source-heading" tabIndex={-1}>The original notice</h2></div><span className="panel-caption">YOUR SOURCE OF TRUTH</span></div>
               <div className="source-meta"><label htmlFor="notice-title">Notice name <span>(optional)</span></label><input id="notice-title" maxLength={120} value={title} onChange={e => { workspaceVersion.current++; setTitle(e.target.value); }} placeholder="e.g. Campus workshop registration" /></div>
               <div className="source-tabs" role="group" aria-label="Source view"><button className={!editing ? "active" : ""} onClick={() => setEditing(false)} disabled={!source}><FileText size={13} /> Read & inspect</button><button className={editing ? "active" : ""} onClick={() => setEditing(true)}><Pencil size={13} /> Edit notice</button></div>
               {editing ? <div className="notice-editor"><label className="sr-only" htmlFor="notice-text">Paste the notice text</label><textarea ref={noticeInput} id="notice-text" value={source} maxLength={MAX_NOTICE_LENGTH} placeholder="Paste a school, club, or event notice here. Include the dates and conditions exactly as written." onChange={e => resetResults(e.target.value)} /><div className="editor-footer"><span>Editing clears previous results and approvals.</span><span>{source.length.toLocaleString()} / 15,000</span></div></div> : <div className="notice-paper">{source ? <><p className="document-kicker">{restoredReview ? "LOADED NOTICE · FILE METADATA UNVERIFIED" : mode === "sample" ? "SYNTHETIC EXAMPLE" : "ORIGINAL TEXT"}</p><pre className="notice-content"><SourcePassage source={source} selected={selected} /></pre><div className="paper-end"><span /><ReceiptText size={17} /><span /></div></> : <div className="empty-source"><FileText size={30} /><h3>A little context goes a long way.</h3><p>Paste the complete notice, including dates and conditions.</p><button className="text-button" onClick={() => { setEditing(true); setTimeout(() => noticeInput.current?.focus(), 0); }}>Paste a notice <ArrowRight size={14} /></button></div>}</div>}
@@ -253,9 +264,9 @@ export default function ReceiptWorkspace() {
               <div className="analyze-area"><button className="primary-button analyze-button" disabled={busy || source.trim().length < MIN_NOTICE_LENGTH} onClick={analyze}>{busy ? <LoaderCircle size={17} className="spin" /> : <FileText size={17} />}{busy ? "Checking your notice…" : actions.length > 0 && mode !== "sample" ? "Scan again (clears review)" : "Find actions locally"}<ArrowRight size={17} /></button><p>Uses text rules in this browser. No text is sent to a server or AI service.</p><p className="processing-disclosure">Scanning replaces current actions and approvals. Check for missed instructions and unclear date roles.</p>{error && <div className="error-message" role="alert"><TriangleAlert size={16} /><span>{error}</span></div>}</div>
             </section>
             <section className="actions-panel" aria-labelledby="actions-heading"><div className="panel-heading"><div><ReceiptText size={17} /><h2 id="actions-heading">Your action receipt</h2><span className="count-badge">{active.length}</span></div><span className="panel-caption">REVIEW BEFORE YOU EXPORT</span></div>
-              <div className="review-summary"><span><span className="summary-dot green-dot" /> {approved.length} approved</span><span><span className="summary-dot amber-dot" /> {unclear} date{unclear === 1 ? "" : "s"} to confirm</span></div>
-              {attention.length > 0 && <SourceReviewQueue key={requestId.current} items={attention} actions={actions} disabled={busy || openingReview} onEvidence={highlight} onAction={reviewLinkedAction} onRecord={recordFlag} onCreate={createFromFlag} />}
-              <div className="actions-list">{busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} focusSignal={focusedAction.id === a.id ? focusedAction.signal : 0} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={highlight} />) : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "local" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "local" ? "Check the original notice yourself. The text rules may have missed something. Add actions from exact source passages." : "Scan a notice locally, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}</div>
+              <div className="review-summary"><span><span className="summary-dot green-dot" /> {approved.length} approved for checklist</span><span><span className="summary-dot amber-dot" /> {calendar.length} eligible for calendar</span></div>
+              {attention.length > 0 && <SourceReviewQueue key={requestId.current} items={attention} actions={actions} focusedFlag={focusedFlag} disabled={busy || openingReview} onEvidence={highlight} onAction={reviewLinkedAction} onRecord={recordFlag} onCreate={createFromFlag} />}
+              <div className="actions-list">{busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} focusSignal={focusedAction.id === a.id ? focusedAction.signal : 0} focusField={focusedAction.id === a.id ? focusedAction.field : "title"} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={highlight} />) : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "local" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "local" ? "Check the original notice yourself. The text rules may have missed something. Add actions from exact source passages." : "Scan a notice locally, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}</div>
               {notes.length > 0 && <details className="notice-notes"><summary><Info size={14} /> Notice-level notes <ChevronDown size={13} /></summary><ul>{notes.map((note, i) => <li key={i}>{note}</li>)}</ul></details>}
               {source.trim().length >= MIN_NOTICE_LENGTH && <ManualActionForm key={requestId.current} source={source} disabled={busy || openingReview || actions.length >= 20} selected={selected} onAdd={addManual} />}
               <div className="export-area"><div className="export-title"><span className="export-icon"><ShieldCheck size={18} /></span><div><h3>Your approval controls the tasks.</h3><p>Files also include source quotes, decision notes and flagged passages.</p></div></div><button className="preview-button" disabled={busy || openingReview || !actions.length} onClick={() => setPreviewOpen(true)}><Eye size={16} /> Preview downloads & see what is missing <ArrowUpRight size={14} /></button><div className="export-buttons"><button disabled={!approved.length} onClick={exportChecklist}><Download size={15} /> Checklist <span>{approved.length}</span></button><button disabled={!calendar.length} onClick={exportCalendar}><CalendarDays size={15} /> Calendar <span>{calendar.length}</span></button></div><p className="export-hint">{approved.length > calendar.length ? `${approved.length - calendar.length} approved item${approved.length - calendar.length === 1 ? " stays" : "s stay"} in the checklist only. Confirm complete dates in Review details to include them in the calendar.` : "Downloads a Markdown checklist or .ics file. Nothing is added to your calendar automatically."}</p></div>
@@ -266,7 +277,7 @@ export default function ReceiptWorkspace() {
       </main>
       <footer><span className="footer-brand"><ReceiptText size={15} /> Action Receipt</span><p>Built with AI. Runs locally, without API fees.</p><a className="offline-download" href="./action-receipt.html" download="action-receipt.html"><Download size={12} /> Download offline app</a><button onClick={() => setMethodOpen(true)}>Method & privacy <ArrowUpRight size={12} /></button></footer>
       <div className="sr-only" role="status" aria-live="polite">{announcement}</div>
-      {previewOpen && <ExportPreview actions={actions} meta={meta()} onClose={() => setPreviewOpen(false)} onDownload={downloadPreview} />}
+      {previewOpen && <ExportPreview actions={actions} meta={meta()} onClose={() => setPreviewOpen(false)} onDownload={downloadPreview} onReviewAction={(id, field) => { setPreviewOpen(false); reviewLinkedAction(id, field); }} />}
       <dialog ref={dialog} className="method-dialog" onCancel={() => setMethodOpen(false)} onClose={() => setMethodOpen(false)}><button className="dialog-close icon-button" onClick={() => setMethodOpen(false)} aria-label="Close method and privacy"><X size={20} /></button><span className="dialog-symbol"><ReceiptText size={27} /></span><p className="eyebrow">A RECEIPT, WITH REASONS</p><h2>Clear actions leave room<br />for your judgment.</h2><p>Action Receipt uses local English text rules to propose actions from one notice. It has no runtime AI model or API. It does not guarantee a correct or complete reading.</p><ol><li><strong>Find the source.</strong> Quotations are matched exactly against the pasted text. A match proves the quotation is present, not that the interpretation is right.</li><li><strong>Clarify the date.</strong> Relative wording, missing years and conflicting dates need your decision. Timed deadlines also need a confirmed UTC offset.</li><li><strong>Approve deliberately.</strong> Edits clear approval. Calendar downloads contain only approved actions with confirmed, complete dates. Original warnings stay in the files.</li></ol><h3>What happens to your notice?</h3><p>Your notice, pattern matching, review decisions and downloads stay in this browser. There are no model downloads, API calls, accounts, analytics or saved notice history. Refreshing clears your session. Save a review file explicitly if you want to reopen your work later; the app does not save it automatically. The downloadable app works offline; the hosted page needs a connection to load. Downloaded files contain source quotations, your recorded decision notes, notice notes and flagged passages, including context that is not an approved task.</p><p className="dialog-note">Built with AI coding assistance using the Devpost Learn Skill Pack. The finished app runs with ordinary browser code. Saved samples, fresh local-rule proposals and your own additions remain distinguishable in downloads.</p><button className="primary-button" onClick={() => setMethodOpen(false)}>Back to the workspace <ArrowRight size={16} /></button></dialog>
     </div>
   );

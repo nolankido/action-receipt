@@ -17,17 +17,18 @@ export function createActionFromFlag(source: string, item: SourceReviewItem, inp
   const updated = recordSourceDecision(item, { kind: "linked", note: input.note, actionId: action.id }, [...actions, action]);
   return { action, item: updated };
 }
-export function sourceReviewState(item: SourceReviewItem, actions: ReviewedAction[]): { addressed: boolean; label: string } {
+export type SourceReviewStatus = "decision" | "recheck" | "clarify" | "not_action" | "unavailable" | "changed" | "approval" | "linked";
+export function sourceReviewState(item: SourceReviewItem, actions: ReviewedAction[]): { addressed: boolean; code: SourceReviewStatus; label: string } {
   const d = item.decision;
-  if (!d) return { addressed: false, label: "Decision needed" };
-  if (!d.confirmed) return { addressed: false, label: "Loaded decision needs rechecking" };
-  if (d.kind === "clarify") return { addressed: false, label: "Awaiting clarification" };
-  if (d.kind === "not_action") return { addressed: true, label: "Reviewed: not an obligation" };
+  if (!d) return { addressed: false, code: "decision", label: "Decision needed" };
+  if (!d.confirmed) return { addressed: false, code: "recheck", label: "Loaded decision needs rechecking" };
+  if (d.kind === "clarify") return { addressed: false, code: "clarify", label: "Awaiting clarification" };
+  if (d.kind === "not_action") return { addressed: true, code: "not_action", label: "Reviewed: not an obligation" };
   const a = actions.find(a => a.id === d.actionId);
-  if (!a || a.omitted || !a.evidenceValid || !a.title.trim()) return { addressed: false, label: "Linked action is unavailable" };
-  if (d.actionSnapshot !== signature(a)) return { addressed: false, label: "Linked action changed; recheck this decision" };
-  if (!a.approved) return { addressed: false, label: "Linked action still needs approval" };
-  return { addressed: true, label: calendarEligible(a) ? "Linked to approved action with confirmed date" : "Linked to approved checklist item; date unconfirmed" };
+  if (!a || a.omitted || !a.evidenceValid || !a.title.trim()) return { addressed: false, code: "unavailable", label: "Linked action is unavailable" };
+  if (d.actionSnapshot !== signature(a)) return { addressed: false, code: "changed", label: "Linked action changed; recheck this decision" };
+  if (!a.approved) return { addressed: false, code: "approval", label: "Linked action still needs approval" };
+  return { addressed: true, code: "linked", label: calendarEligible(a) ? "Linked to approved action with confirmed date" : "Linked to approved checklist item; date unconfirmed" };
 }
 export function sourceReviewSummary(items: SourceReviewItem[], actions: ReviewedAction[]) {
   const addressed = items.filter(item => sourceReviewState(item, actions).addressed).length;

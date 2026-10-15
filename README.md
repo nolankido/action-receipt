@@ -14,12 +14,13 @@ The optional hosted review site is https://action-receipt.huzzahoptimistically.c
 - Preserve exact supporting passages and visible conditions, including trailing waivers.
 - Show a source-linked review list for unlinked dates, unsupported obligations, cancellations and skipped passages. The manual form can reuse a highlighted quote. The list is bounded at 80 entries and reports overflow; it is not an exhaustive source review.
 - Guide review of each identified flag. Create a missed action from its exact passage, link an existing action, mark it as not an obligation, or record what needs clarification. Explanations and original flags stay in the receipt. Links need rechecking after action edits; approval and date checks remain separate.
+- Follow the next-step panel to the exact source flag or action that needs review, then to download preview. Recorded clarification requests stay unresolved while you continue reviewing other items. Calendar dates are optional; guidance never approves anything or asks you to guess a date.
 - Propose complete dates only from the actual action clause with a recognized temporal link. Dates/times inside conditions and separate clauses are not borrowed as deadlines. Conflicting clocks/offsets need manual clarification. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
 - Understand full or common abbreviated English month names with four-digit years, such as `Nov. 5, 2032` and `5 Nov 2032`. Keep exact source quotations and check immediately attached weekdays. A weekday/date contradiction stays unresolved with a source-linked flag.
 - Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
 - Save a local review file and reopen it later with source, edits, omissions and context intact. Opening resets every action approval and date confirmation; imported interpretations stay visibly unverified.
 - Export approved checklists and eligible calendar entries, retaining source quotations, warnings, notice-level notes, flagged source context, mode and user corrections. Source-review flags stay context; they do not create extra tasks or calendar events.
-- Preview downloads before saving: see included actions, reasons for exclusions and the exact Markdown or iCalendar content. The preview uses the same eligibility rules and file generators as the downloads and changes no approvals.
+- Preview downloads before saving: see included actions, reasons for exclusions and the exact Markdown or iCalendar content. The preview uses the same eligibility rules and file generators as the downloads and changes no approvals. Each excluded item links back to its action or calendar-date fields.
 
 These are text patterns, not semantic AI. They can miss unfamiliar wording, implicit instructions, cross-sentence context or cancellations. Read the complete source. Use **Add an action from the source** for omissions. A quotation match confirms presence, not interpretation or completeness. Twenty actions per receipt; 30 to 15,000 input characters.
 
@@ -48,14 +49,15 @@ npm run build
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 87 automated tests, TypeScript and the static build pass. Five fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding. The [student trial guide](devpost/usability/facilitator-guide.md), [synthetic notices](devpost/usability/participant-notices.md) and [blank observation template](devpost/usability/observation-template.md) are prepared. No participant sessions or findings are claimed.
+Current verification: 95 automated tests, TypeScript and the static build pass. Five fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding. The [student trial guide](devpost/usability/facilitator-guide.md), [synthetic notices](devpost/usability/participant-notices.md) and [blank observation template](devpost/usability/observation-template.md) are prepared. No participant sessions or findings are claimed.
 
 ## Project structure
 
 - `standalone/`, `vite.static.config.ts`: static React entry and configuration.
-- `app/receipt-workspace.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/globals.css`: guided review interface and read-only download preview.
+- `app/receipt-workspace.tsx`, `app/review-guide.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/globals.css`: guided review interface and read-only download preview.
 - `lib/local-extraction.ts`: bounded, network-free English text rules.
 - `lib/dates.ts`: shared English date patterns and adjacent weekday consistency checks.
+- `lib/review-guide.ts`: navigation derived from current review and export eligibility, with clarification kept pending.
 - `lib/source-review.ts`: source decisions, manual repair, progress and stale-link checks.
 - `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`: evidence, date/review rules, approved exports and explicit local review save/open.
 - `lib/samples.ts`: synthetic notices and saved walkthroughs.

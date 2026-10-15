@@ -32,6 +32,7 @@ A checklist may retain unresolved items with their warnings. Calendar entries re
 
 - Did the person repair the unsupported consent/signature/waiver instruction without being taught the feature?
 - Did they preserve uncertainty instead of guessing a deadline?
+- Did the next-step panel help them find the relevant passage or action? Could they continue with approved checklist items while clarification was still pending? Record observed behavior, not an assumed improvement.
 - Did they understand the difference between recording a source decision, approving an action and confirming a date?
 - Do the saved and exported files match their intended decisions, including omissions, conditions and warnings?
 - Could they recover from a mistake and understand why an edited or imported decision needs rechecking?
