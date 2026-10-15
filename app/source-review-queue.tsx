@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, Plus, Quote, TriangleAlert } from "lucide-react";
 import type { Evidence, ReviewedAction, SourceReviewItem } from "../lib/receipt.ts";
 import { sourceReviewState, sourceReviewSummary, type DecisionInput } from "../lib/source-review.ts";
+import SourceReviewEditor from "./source-review-editor.tsx";
+import type { SourceEditorMode, SourceReviewFields } from "../lib/source-review-form.ts";
 
 export type FlagActionInput = { title: string; quote: string; condition: string; note: string };
 type Props = { items: SourceReviewItem[]; actions: ReviewedAction[]; disabled: boolean; focusedFlag?: { id: string; signal: number };
@@ -11,33 +13,27 @@ type Props = { items: SourceReviewItem[]; actions: ReviewedAction[]; disabled: b
   onRecord: (id: string, input: DecisionInput) => void; onCreate: (id: string, input: FlagActionInput) => void };
 
 function FlagCard({ item, actions, disabled, onEvidence, onAction, onRecord, onCreate }: Omit<Props, "items"> & { item: SourceReviewItem }) {
-  const [editor, setEditor] = useState<"decision" | "create" | null>(null);
-  const [kind, setKind] = useState<DecisionInput["kind"]>(item.decision?.kind ?? "linked");
-  const [actionId, setActionId] = useState(item.decision?.actionId ?? "");
-  const [note, setNote] = useState(item.decision?.note ?? "");
-  const [title, setTitle] = useState(""); const [condition, setCondition] = useState("");
-  const [quote, setQuote] = useState(item.evidence.quote.length <= 1200 ? item.evidence.quote : "");
+  const [editor, setEditor] = useState<SourceEditorMode | null>(null);
+  const [fields, setFields] = useState<SourceReviewFields>(() => ({ kind: item.decision?.kind ?? "linked", actionId: item.decision?.actionId ?? "", note: item.decision?.note ?? "", title: "", condition: "", quote: item.evidence.quote.length <= 1200 ? item.evidence.quote : "" }));
   const [error, setError] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+  const createButton = useRef<HTMLButtonElement>(null); const decisionButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!editor) return;
+    const first = formRef.current?.querySelector<HTMLElement>("input, select, textarea");
+    first?.scrollIntoView({ block: "nearest", behavior: "instant" }); first?.focus({ preventScroll: true });
+  }, [editor]);
+  function closeEditor() { const origin = editor === "create" ? createButton : decisionButton; setEditor(null); setError(""); origin.current?.focus(); }
   const state = sourceReviewState(item, actions);
-  const candidates = actions.filter(a => !a.omitted && a.evidenceValid && a.title.trim());
-  const quoteTooLong = quote.trim().length > 1200;
-  const exact = Boolean(quote.trim() && !quoteTooLong && item.evidence.quote.includes(quote.trim()));
   return <article className="source-review-card">
     <p className={`queue-status ${state.addressed ? "addressed" : "pending"}`}>{state.addressed ? <Check size={14} /> : <TriangleAlert size={14} />}{state.label}</p>
     <p className="queue-reason"><strong>Original flag:</strong> {item.reason}</p>
     <blockquote tabIndex={0} aria-label="Flagged source passage">{item.evidence.quote}</blockquote>
     <button className="text-button" onClick={event => onEvidence(item.evidence, item.id, event.currentTarget)}><Quote size={13} /> Inspect in the full notice <ArrowUpRight size={13} /></button>
     {item.decision && <div className="queue-decision"><strong>{item.decision.origin === "imported" ? "Loaded decision (unverified)" : "Your recorded decision"}</strong><p>{item.decision.kind === "linked" ? "Linked to an action" : item.decision.kind === "not_action" ? "Not an obligation" : "Needs clarification"}</p><p>{item.decision.note}</p>{item.decision.actionId && actions.some(a => a.id === item.decision!.actionId) && <button className="text-button" onClick={() => onAction(item.decision!.actionId!)}>Review linked action <ArrowUpRight size={13} /></button>}</div>}
-    <div className="queue-tools"><button disabled={disabled || actions.length >= 20} onClick={() => { setEditor(editor === "create" ? null : "create"); setError(""); }}><Plus size={14} /> Create an action from this passage</button><button disabled={disabled} onClick={() => { setKind(item.decision?.kind ?? "linked"); setActionId(item.decision?.actionId ?? ""); setNote(item.decision?.note ?? note); setEditor(editor === "decision" ? null : "decision"); setError(""); }}>{item.decision ? "Recheck or change decision" : "Record a decision"}</button></div>
-    {editor && <form className="queue-form" onSubmit={e => { e.preventDefault(); if (disabled) return; try { if (editor === "create") onCreate(item.id, { title, quote, condition, note }); else onRecord(item.id, { kind, note, actionId: kind === "linked" ? actionId : null }); setEditor(null); setError(""); } catch (e) { setError(e instanceof Error ? e.message : "This decision could not be recorded."); } }}>
-      <fieldset disabled={disabled}>
-        {editor === "create" ? <><p>Write the missing action yourself. Its source is prefilled when the passage fits. It will still need approval and date review.</p><label>Action wording<input required maxLength={240} value={title} onChange={e => setTitle(e.target.value)} /></label><label>Exact supporting excerpt<textarea required rows={3} aria-invalid={quoteTooLong || Boolean(quote.trim() && !exact)} aria-describedby={`${item.id}-quote-hint`} value={quote} onChange={e => setQuote(e.target.value)} /></label><p id={`${item.id}-quote-hint`} className="field-hint" role="status">{quoteTooLong ? "The full paste is kept, but this excerpt is over 1,200 characters. Choose a shorter exact excerpt that keeps its applicable conditions, dates and times." : item.evidence.quote.length > 1200 ? "Copy a shorter exact excerpt from the passage above, up to 1,200 characters." : "Keep any conditions that apply. The quotation must be an exact excerpt from this passage."}{quote.trim() && !quoteTooLong && !exact ? " This excerpt does not match." : ""}</p><label>Condition or optionality (optional)<input maxLength={600} value={condition} onChange={e => setCondition(e.target.value)} /></label></> : <><label>How are you addressing this flag?<select value={kind} onChange={e => setKind(e.target.value as DecisionInput["kind"])}><option value="linked">Link to an existing action</option><option value="not_action">This is not an obligation</option><option value="clarify">I need clarification</option></select></label>{kind === "linked" && <label>Choose an action<select required value={actionId} onChange={e => setActionId(e.target.value)}><option value="">Select an action</option>{candidates.map(a => <option key={a.id} value={a.id}>{a.title}</option>)}</select></label>}</>}
-        <label>{editor === "create" ? "How does this action address the flag?" : "Explain your decision"}<textarea required maxLength={600} rows={2} value={note} onChange={e => setNote(e.target.value)} placeholder={kind === "clarify" && editor !== "create" ? "What do you still need to ask or check?" : "Record your reasoning in your own words."} /></label>
-        <p className="field-hint">Recording a decision does not approve an action, confirm a date or transfer a deadline. The original warning stays in the receipt.</p>
-        {error && <p className="error-message" role="alert">{error}</p>}
-        <div className="queue-form-buttons"><button className="primary-button" type="submit" disabled={!note.trim() || (editor === "create" ? !title.trim() || !exact || actions.length >= 20 : kind === "linked" && !candidates.some(a => a.id === actionId))}>{editor === "create" ? "Add action and record link" : "Record checked decision"}</button><button className="text-button" type="button" onClick={() => setEditor(null)}>Cancel</button></div>
-      </fieldset>
-    </form>}
+    <div className="queue-tools"><button ref={createButton} disabled={disabled || actions.length >= 20} aria-expanded={editor === "create"} aria-controls={editor === "create" ? `${item.id}-editor` : undefined} onClick={() => { if (editor === "create") closeEditor(); else { setEditor("create"); setError(""); } }}><Plus size={14} /> Create an action from this passage</button><button ref={decisionButton} disabled={disabled} aria-expanded={editor === "decision"} aria-controls={editor === "decision" ? `${item.id}-editor` : undefined} onClick={() => { if (editor === "decision") closeEditor(); else { setFields(old => ({ ...old, kind: item.decision?.kind ?? "linked", actionId: item.decision?.actionId ?? "", note: item.decision?.note ?? old.note })); setEditor("decision"); setError(""); } }}>{item.decision ? "Recheck or change decision" : "Record a decision"}</button></div>
+    {actions.length >= 20 && <p className="field-hint">This receipt has reached its 20-action limit, including omitted actions. You can still record a decision or review existing actions.</p>}
+    {editor && <SourceReviewEditor item={item} actions={actions} mode={editor} fields={fields} disabled={disabled} error={error} formRef={formRef} onChange={patch => setFields(old => ({ ...old, ...patch }))} onCancel={closeEditor} onSubmit={event => { event.preventDefault(); if (disabled) return; try { if (editor === "create") onCreate(item.id, { title: fields.title, quote: fields.quote, condition: fields.condition, note: fields.note }); else onRecord(item.id, { kind: fields.kind, note: fields.note, actionId: fields.kind === "linked" ? fields.actionId : null }); setEditor(null); setError(""); } catch (e) { setError(e instanceof Error ? e.message : "This decision could not be recorded."); } }} />}
   </article>;
 }
 

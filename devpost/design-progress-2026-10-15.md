@@ -147,3 +147,30 @@ The v0.19.0 application publication completed on October 15, 2026 at 13:07 UTC. 
 Private deployment `appgdep_6ad0d0078d408191af3ba6a6b5a52a4b` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_57caa8fad2c48191843b5ca6edd67f68` at the existing preview URL. Application SHA-256: `a79b82288c15324fd0c5aa859044adc677499643484bd7c6679810f466b4f809`. Portable archive SHA-256: `762565010c9fe65a7d354280b43d9b4c0dddcb26041bc3363a3455424d226c6d`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal source fingerprints and all 34 archive members.
 
 This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
+
+## Guided source-flag forms: v0.20.0
+
+Verified starting state: public main `5214f9338098bc6336d7a33e6164c7e36b974e86`, Sites source `4534e42478d00017d4f9f8511fe4a1759841ed85`, shared tree `0e0b2fc9b9897acded149b122e95dfc30e132f99`. The previous documentation follow-up succeeded privately as deployment `appgdep_6ad0d07464e48191969f991273c90602` for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_96fd01284ee4819188441deeac1b11b9`. Current public main, recent commits, open PRs, repository instructions, this record and actual local source were read before choosing the change. No AGENTS.md file, open PR, dirty checkout or observable concurrent writer was found. Source was reopened through the Sites helper. Access remains custom owner-only with no additional visitors.
+
+### Source-inspected problem and change
+
+The source-flag editor could disable its submit button without explaining the missing requirement. When no active action with valid evidence existed, its default Link to an existing action choice led to an empty selector and an unexplained disabled button. Opening and cancelling an editor also had no explicit focus path. These are source-inspected UI paths, not observed browser-test results.
+
+The editor now has a clear fieldset legend, explicit label/input associations and readable 14-pixel field text. A visible readiness message explains the first unmet requirement using the same existing UI gates: action wording, exact bounded excerpt, eligible link, explanation or action capacity. It changes to a separate-approval reminder when the form is ready. When there is no eligible link, a local hint explains how to create an action from the passage or choose another decision. At the 20-action cap, visible copy explains why creating another action is unavailable, including the fact that omitted actions count toward the cap.
+
+Create and decision controls expose expanded state. Opening an editor focuses its first field; cancelling or closing it returns to the initiating control. Successful recording keeps the existing queue or newly created action navigation rather than applying cancellation focus. Exact domain error messages remain visible in an alert. Full overlong pasted excerpts remain in the field instead of being truncated. The source passage, warning, conditions and distinct action/date approval boundaries stay intact.
+
+The editor also states its existing draft limit: changing to another passage discards unfinished entries. No cross-passage storage or persistence was added. Existing draft prefilling and committed decision behavior are preserved. Form readiness is a presentation helper; recording and creation still go through the unchanged domain validators. No extraction, approval, date, export, import or recovery scope was expanded.
+
+### Executed checks and limits
+
+- All 183 automated tests passed. Three new behavioral checks exercise absent/invalid link candidates, clarification without an action, exact/oversized/missing excerpts, missing wording/explanation, the action cap and parity with actual recording/creation gates. They verify that recording does not grant action approval or date confirmation and does not mutate linked actions.
+- TypeScript and `git diff --check` passed.
+- The supported static build, all 14 fresh synthetic scans and the source-hashed production-domain rehearsal passed. The rehearsal fingerprints include the extracted editor component and its presentation helper.
+- Twelve actual SSR markup states passed structural checks: initial workspace, empty create form, mismatched excerpt, oversized excerpt, ready creation, missing link, no candidates, ready link, clarification, not-an-obligation, exact domain error and disabled form. Checks included unique IDs, fieldset legend, explicit labels, valid description targets, readiness/disabled parity, preserved full paste, source warnings and initial unchecked approvals. These states do not execute the focus effects.
+- The existing paper/forest form styling and previously checked text/background treatments were reused. No new illustration, remote font or dependency was introduced.
+- The Sites skill requires skipping browser QA because the required control-browser skill remains unavailable. Actual mobile fit, form opening/cancellation focus, live-region announcements, keyboard and assistive-technology behavior remain unverified. No browser screenshots or user testing are claimed.
+
+The portable archive is regenerated and verified against the final checked source, standalone HTML and rehearsal hashes. The publication receipt records returned identities separately. Submission, video, personal declarations and account work remain untouched.
+
+Next useful task: when supported browser QA is available, test the source editor's first-field focus, cancel return, error announcement, empty eligible-link state and long excerpts at narrow widths. Otherwise inspect the real export-preview exclusion and clarification flow for one concrete usability defect; preserve the current design and conservative review gates.

@@ -219,9 +219,12 @@ input[type=checkbox]:disabled { cursor: not-allowed; }
 .queue-tools > button + button { background: white; border-color: #d8dfd2; color: #4f6347; }
 .queue-form { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
 .queue-form fieldset { min-width: 0; padding: 0; border: 0; margin: 0; }
+.queue-form legend { padding: 0; margin-bottom: 7px; color: var(--green); font-size: 15px; font-weight: 650; line-height: 1.6; }
 .queue-form fieldset > p { color: var(--muted); font-size: 12px; line-height: 1.8; }
 .queue-form label { display: block; margin-top: 14px; color: #455e3d; font-size: 12px; font-weight: 600; line-height: 1.7; }
-.queue-form input, .queue-form textarea, .queue-form select { display: block; width: 100%; margin-top: 7px; font-size: 13px; font-weight: 400; }
+.queue-form input, .queue-form textarea, .queue-form select { display: block; width: 100%; margin-top: 7px; font-size: 14px; font-weight: 400; }
+.queue-form .queue-form-readiness { margin-top: 13px; padding: 10px 12px; border: 1px solid #e0d1a9; border-radius: 6px; background: #fcf7e9; color: #775b26; }
+.queue-form .queue-form-readiness.is-ready { border-color: #d1ddc5; background: #f0f5e8; color: #47613a; }
 .queue-form-buttons { display: flex; align-items: center; flex-wrap: wrap; gap: 9px 16px; margin-top: 14px; }
 .queue-empty { padding: 13px; border: 1px solid #d7e2cf; border-radius: 7px; background: #f1f6eb; color: #4f6841; font-size: 12px; line-height: 1.8; }
 
