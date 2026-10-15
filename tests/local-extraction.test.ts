@@ -32,7 +32,7 @@ test("conditional and optional instructions retain qualifications; negation does
 });
 test("a passage with multiple instructions cannot assign one deadline automatically", () => {
   const a = extractLocally("Register by May 5, 2031 and pay the deposit by May 7, 2031.").actions[0];
-  assert.equal(a.date, ""); assert.ok(a.issues.some(i => /several actions/.test(i)));
+  assert.equal(a.date, ""); assert.match(a.title, /and pay the deposit/); assert.ok(a.issues.some(i => /several actions/.test(i)));
 });
 test("timed cutoffs need a valid clock and explicit offset, and still need human confirmation", () => {
   const a = extractLocally("Send your report by July 2, 2031 at 5:00 pm UTC-10:00.").actions[0];
@@ -71,4 +71,67 @@ test("trailing waiver and attendance conditions survive shortened action wording
 test("an adjacent explicit cancellation referring back suppresses the earlier proposal", () => {
   const r = extractLocally("Pay the fee by December 2, 2031. This payment request has been cancelled.");
   assert.equal(r.actions.length, 0); assert.ok(r.notes.some(n => /cancellation/.test(n)));
+});
+test("all unlinked date passages and unsupported obligations get exact, source-linked review entries", () => {
+  const quotes = ["Applications close on May 3, 2032.", "The printed form says May 5, 2032.", "The website says May 7, 2032.", "You must attach a signed guardian letter."];
+  const source = quotes.join("\n"); const r = extractLocally(source, 4);
+  assert.equal(r.actions.length, 0); assert.equal(r.attention.length, 4);
+  assert.deepEqual(r.attention.map(item => item.evidence.quote), quotes);
+  for (const item of r.attention) { assert.ok(item.evidence.starts.length > 0); assert.ok(source.includes(item.evidence.quote)); assert.match(item.id, /review-r4-p/); }
+  assert.match(r.attention[3].reason, /outside the supported patterns/);
+});
+test("negation and adjacent cancellation are visible review context, never silent omissions", () => {
+  const r = extractLocally("Pay the deposit by May 3, 2032. This payment request has been cancelled. You do not need to submit a new form.");
+  assert.equal(r.actions.length, 0); assert.equal(r.attention.length, 3);
+  assert.match(r.attention[0].reason, /withdraw/); assert.match(r.attention[1].reason, /Negation/);
+});
+test("the proposal and review-list caps report every omitted part of their bounded results", () => {
+  const make = (n: number) => Array.from({ length: n }, (_, i) => `Submit document ${i + 1} by May 1, 2032.`).join("\n");
+  const twentyFive = extractLocally(make(25)); assert.equal(twentyFive.actions.length, 20); assert.equal(twentyFive.attention.length, 5);
+  assert.ok(twentyFive.attention.every(item => /20-action limit/.test(item.reason)));
+  const more = extractLocally(make(110)); assert.equal(more.attention.length, 80); assert.ok(more.notes.some(n => /10 more omitted/.test(n)));
+});
+test("different or ambiguously mixed clock times remain unresolved even with an explicit date and offset", () => {
+  for (const clocks of ["5:00 pm or 7:00 pm", "noon or 5:00 pm", "5:00 pm or midnight", "5:00 pm or 17:00"]) {
+    const a = extractLocally(`Upload your report by July 2, 2032 at ${clocks} UTC-10:00.`).actions[0];
+    assert.equal(a.time, ""); assert.equal(a.sourceRequiresTime, true); assert.equal(canConfirmDate(a), false);
+  }
+});
+test("different UTC offsets cannot silently choose the first; repeated identical offsets are allowed", () => {
+  const a = extractLocally("Upload your report by July 2, 2032 at 5:00 pm UTC-10:00 or UTC-08:00.").actions[0];
+  assert.equal(a.utcOffset, ""); assert.equal(canConfirmDate(a), false);
+  const b = extractLocally("Upload your report by July 2, 2032 at 5:00 pm UTC-10:00 (also printed as GMT-10:00).").actions[0];
+  assert.equal(b.utcOffset, "-10:00"); assert.equal(b.time, "17:00");
+});
+test("both downloads retain notice-level and skipped-passage context without creating extra tasks", () => {
+  const r = extractLocally("Print your transit permit by September 4, 2032. The separate fee deadline is September 6, 2032.");
+  const a = { ...r.actions[0], approved: true, dateConfirmed: true };
+  const context = { ...meta, notes: r.notes, attention: r.attention };
+  const checklist = checklistText([a], context); const calendar = calendarText([a], context).replace(/\r\n /g, "");
+  assert.equal((checklist.match(/- \[ \]/g) ?? []).length, 1); assert.equal((calendar.match(/BEGIN:VEVENT/g) ?? []).length, 1);
+  for (const output of [checklist, calendar]) { assert.match(output, /fee deadline is September 6/); assert.match(output, /not linked to an action/); assert.match(output, /Local English text rules generated/); }
+});
+test("dates in prefix or trailing conditions are not action deadlines", () => {
+  for (const source of ["If your payment was received by 2031-05-01, bring your student ID.", "Bring your student ID if your payment was received by 2031-05-01."]) {
+    const a = extractLocally(source).actions[0]; assert.equal(a.date, ""); assert.match(a.condition, /payment/); assert.ok(a.issues.some(i => /appears in the condition/.test(i)));
+  }
+  const a = extractLocally("If payment was received by May 1, 2031, bring your student ID on May 4, 2031.").actions[0];
+  assert.equal(a.date, "2031-05-04"); assert.ok(a.dateEvidence.every(e => !e.quote.includes("May 1")));
+});
+test("condition clocks and separate-clause opening hours never become deadline cutoffs", () => {
+  for (const source of ["If you attended the 5 pm UTC-10:00 briefing, submit your report by December 2, 2031.", "Submit your report by December 2, 2031; the help desk is open at 5 pm UTC-10:00."]) {
+    const a = extractLocally(source).actions[0]; assert.equal(a.date, "2031-12-02"); assert.equal(a.time, ""); assert.equal(a.utcOffset, ""); assert.equal(a.requiresTime, false);
+  }
+  const a = extractLocally("Register for the 5 pm UTC-10:00 briefing by December 2, 2031.").actions[0];
+  assert.equal(a.time, ""); assert.ok(a.issues.some(i => /outside a recognized deadline clause/.test(i)));
+});
+test("a complex long instruction keeps its independent warnings without overflowing validation", () => {
+  const source = "If your permit was issued on May 1, 2031, register for " + "the school workshop ".repeat(20) + "on May 4, 2031 at 5 pm and pay the deposit.";
+  const a = extractLocally(source).actions[0];
+  assert.equal(a.date, ""); assert.equal(a.time, ""); assert.match(a.condition, /May 1, 2031/);
+  assert.ok(a.issues.some(i => /shortened/.test(i))); assert.ok(a.issues.some(i => /outside a recognized deadline clause/.test(i)));
+});
+test("a timezone offset by itself does not invent a timed cutoff for a date-only instruction", () => {
+  const a = extractLocally("Submit your permission slip by October 4, 2032 (UTC-10:00).").actions[0];
+  assert.equal(a.date, "2032-10-04"); assert.equal(a.time, ""); assert.equal(a.requiresTime, false); assert.equal(canConfirmDate(a), true);
 });

@@ -30,6 +30,6 @@ These are screen actions, not entrant narration or submission prose.
 4. Open an ambiguous date; clarify it explicitly and show user-supplied provenance.
 5. Confirm a date, approve selected actions and download both formats.
 6. Open the files and show that an unresolved approved action remains checklist-only.
-7. Show a manual source-backed correction and the offline/no-API behavior. Keep the complete recording below three minutes. Write and speak your own narration.
+7. Inspect a flagged source passage, reuse its quotation for a manual correction, and show the offline/no-API behavior. Keep the complete recording below three minutes. Write and speak your own narration.
 
 Current architecture: the public repository contains `release/action-receipt.html`, which judges can download and open without hosting, API access or an app account. No live model run or account funding is a submission-preparation gate for this version. See `zero-cost-plan.md` for the rules interpretation and remaining learner steps.

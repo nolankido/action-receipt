@@ -25,13 +25,13 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 `app/page.tsx` and `app/receipt-workspace.tsx` implement `prd.md > Notice Entry`, `Evidence Review`, `Corrections and Approval` and all normal/error/empty states. Memory only. The current source revision invalidates old responses. A compact manual action form accepts a title, exact source passage and optional condition. User-added items are labeled visibly, begin unapproved with unresolved dates, and share all approval/export rules.
 
 ### Local Rule Engine
-`lib/local-extraction.ts` implements a deliberately bounded English pattern matcher. It segments exact source passages, recognizes selected action words, retains prefix/trailing conditions, matches explicit full dates only with a temporal link, and leaves relative/numeric/multiple/unclear dates unresolved. It skips negated passages and an instruction immediately followed by a cancellation referring back. It does not reliably resolve other cross-sentence changes. No fetch, tools, API or current-date inference. Missing actions are added manually with exact evidence.
+`lib/local-extraction.ts` implements a deliberately bounded English pattern matcher. It segments exact source passages, recognizes selected action words, retains prefix/trailing conditions, matches explicit full dates only with a temporal link, and leaves relative/numeric/multiple/unclear dates unresolved. It skips negated passages and an instruction immediately followed by a cancellation referring back. It does not reliably resolve other cross-sentence changes. No fetch, tools, API or current-date inference. SourceReviewItem records exact evidence and reasons for unlinked or skipped passages, with an 80-item bound and reported overflow. Date matching excludes conditions and later semicolon clauses; cutoff proposals require a recognized temporal tail, and conflicting clocks/offsets stay unresolved. Missing actions are added manually with exact evidence.
 
 ### Validation and Review Rules
 `lib/receipt.ts` implements `prd.md > Evidence Review` and `Dates and Conditions`. Treat proposal fields as untrusted; cap counts and lengths; locate exact quotations locally; preserve issue codes and conditions. A complete explicit date is required for calendar eligibility; date confirmation is distinct from approval. Code confirms quotation presence only, not the truth or completeness of extraction.
 
 ### Exports
-`lib/export.ts` implements `prd.md > Export`. Export only approved items. Escape iCalendar content lines, fold UTF-8 lines, use stable per-action UIDs, represent date-only entries as all-day markers and timed deadlines as zero-duration instants with explicit offsets. Never invent an event length. Omit unresolved calendar items visibly.
+`lib/export.ts` implements `prd.md > Export`. Export only approved items. Escape iCalendar content lines, fold UTF-8 lines, use stable per-action UIDs, represent date-only entries as all-day markers and timed deadlines as zero-duration instants with explicit offsets. Never invent an event length. Omit unresolved calendar items visibly. Preserve notice notes and source-review flags as context in both download formats, without creating additional tasks or events.
 
 ### Samples
 `lib/samples.ts` holds three synthetic notices and explicitly saved walkthrough results: multiple deadlines, ambiguity, and conflicting dates/conditional instructions. Always label this mode and its generated exports.
@@ -55,13 +55,13 @@ No external runtime services. Development dependencies are listed in package/loc
 - Dates in other sentences or uncertain date roles: do not link automatically.
 - Relative wording, multiple dates or incomplete clocks/offsets: retain uncertainty; calendar stays blocked until user clarification.
 - Negation and cancellations: local patterns cover only bounded forms, not complete cross-sentence semantics.
-- Source changes during scan: discard stale results and clear old approvals.
+- Source changes during scan: discard stale results and clear old approvals. Rescanning is explicitly labeled as replacing current review.
 - Refresh: clear memory; downloaded receipts remain with the user.
 
 ## What Was Simplified and Why
 The learner explicitly required no new spending. A single-file ordinary browser app avoids API bills, model downloads, hardware-specific inference setup and hosting dependence. Manual source-backed repair covers bounded-parser omissions while preserving the original evidence/approval kernel.
 
 ## Decisions and Open Issues
-The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Thirty-five automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
+The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Forty-five automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
 
 Date resolution retains original warnings. A confirmed user-supplied date can become calendar-eligible while original ambiguity remains in exports. Exact action evidence is always mandatory. Saved examples, local rules and user additions retain distinct provenance.

@@ -12,17 +12,18 @@ The optional hosted review site is https://action-receipt.huzzahoptimistically.c
 
 - Recognize a bounded set of English action words such as register, pay, submit, upload, bring and email.
 - Preserve exact supporting passages and visible conditions, including trailing waivers.
-- Propose complete dates only from the same passage with a recognized temporal link. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
+- Show a source-linked review list for unlinked dates, unsupported obligations, cancellations and skipped passages. The manual form can reuse a highlighted quote. The list is bounded at 80 entries and reports overflow; it is not an exhaustive source review.
+- Propose complete dates only from the actual action clause with a recognized temporal link. Dates/times inside conditions and separate clauses are not borrowed as deadlines. Conflicting clocks/offsets need manual clarification. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
 - Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
-- Export approved checklists and eligible calendar entries, retaining source quotations, warnings, mode and user corrections.
+- Export approved checklists and eligible calendar entries, retaining source quotations, warnings, notice-level notes, flagged source context, mode and user corrections. Source-review flags stay context; they do not create extra tasks or calendar events.
 
 These are text patterns, not semantic AI. They can miss unfamiliar wording, implicit instructions, cross-sentence context or cancellations. Read the complete source. Use **Add an action from the source** for omissions. A quotation match confirms presence, not interpretation or completeness. Twenty actions per receipt; 30 to 15,000 input characters.
 
-Three synthetic walkthroughs have saved example results and are labeled accordingly. **Find actions locally** runs the actual rule engine on the current text, including edited or completely new notices. It never looks up sample results. Fresh rule proposals, saved examples and user additions remain distinct in exports.
+Three synthetic walkthroughs have saved example results and are labeled accordingly. **Find actions locally** runs the actual rule engine on the current text, including edited or completely new notices. It never looks up sample results. Fresh rule proposals, saved examples and user additions remain distinct in exports. Rescanning explicitly clears the current review; edits also clear approvals.
 
 ## Data handling
 
-Notices and review decisions stay in browser memory. Refreshing clears them. There is no notice database, analytics, account system or automatic calendar integration. The offline build blocks network connections with a content security policy. Exported files contain source quotations and may contain personal information from a notice.
+Notices and review decisions stay in browser memory. Refreshing clears them. There is no notice database, analytics, account system or automatic calendar integration. The offline build blocks network connections with a content security policy. Exported files include source quotations, notice notes and flagged passages, including context that is not an approved task; they may contain personal information from a notice. The export panel discloses this content.
 
 ## Build and check
 
@@ -39,7 +40,7 @@ npm run build
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 35 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
+Current verification: 45 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
 
 ## Project structure
 

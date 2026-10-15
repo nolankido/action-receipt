@@ -1,6 +1,6 @@
-import { calendarEligible, type ReviewedAction } from "./receipt.ts";
+import { calendarEligible, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
 
-export type ReceiptMeta = { mode: "sample" | "local" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[] };
+export type ReceiptMeta = { mode: "sample" | "local" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[]; attention?: SourceReviewItem[] };
 const modeDescription = (mode: ReceiptMeta["mode"]) => mode === "sample" ? "Synthetic sample walkthrough; saved example results, not live AI extraction" : mode === "manual" ? "Manual review; actions added by the user, no AI extraction" : "Local text rules; browser-only proposals, no AI model or API";
 const actionOrigin = (action: ReviewedAction) => action.origin === "user" ? "Added by user from source" : action.origin === "rules" ? "Local text rules" : "Saved sample proposal";
 const textLine = (value: string) => value.replace(/[\r\n]+/g, " ").trim();
@@ -24,6 +24,11 @@ export function checklistText(actions: ReviewedAction[], meta: ReceiptMeta): str
     out.push("");
   }
   if (meta.notes.length) out.push("## Notice notes", ...meta.notes.map(n => `- ${markdown(n)}`), "");
+  if (meta.attention?.length) {
+    out.push("## Source passages flagged for review", "", "These are context flags, not approved tasks. They may already have been addressed during your review. This list is not exhaustive.", "");
+    for (const item of meta.attention) out.push(`- ${markdown(item.reason)}`, `  - Source: “${markdown(item.evidence.quote)}”`);
+    out.push("");
+  }
   return out.join("\n");
 }
 export function escapeICS(value: string): string {
@@ -57,6 +62,8 @@ export function calendarText(actions: ReviewedAction[], meta: ReceiptMeta): stri
       ...(a.time !== a.originalTime || a.utcOffset !== a.originalUtcOffset ? [`Original proposed time/offset: ${a.originalTime || "Not proposed"} / ${a.originalUtcOffset || "Not proposed"}; time or offset edited by user.`] : []),
       ...a.evidence.map(e => `Action source: ${e.quote}`), ...a.dateEvidence.map(e => `Date source: ${e.quote}`),
       ...a.issues.map(i => `Original review flag: ${i}`),
+      ...meta.notes.map(n => `Notice note: ${n}`),
+      ...(meta.attention?.length ? ["Other source passages flagged for review (context, not approved tasks; may already have been addressed):", ...meta.attention.map(item => `${item.reason}\nSource: ${item.evidence.quote}`)] : []),
       "Quotation matching does not certify interpretation or completeness.",
     ].join("\n");
     lines.push("BEGIN:VEVENT", `UID:${meta.receiptId}-${a.id}@actionreceipt.local`, `DTSTAMP:${utcStamp(meta.createdAt)}`);

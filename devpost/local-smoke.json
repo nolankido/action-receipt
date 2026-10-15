@@ -111,13 +111,13 @@
             ],
             "dateEvidence": [
               {
-                "quote": "If you need accessible transport, email the coordinator by next Friday.",
+                "quote": "email the coordinator by next Friday.",
                 "starts": [
-                  99
+                  133
                 ]
               }
             ],
-            "deadlineText": "If you need accessible transport, email the coordinator by next Friday.",
+            "deadlineText": "email the coordinator by next Friday.",
             "originalDate": "",
             "date": "",
             "time": "",
@@ -141,7 +141,8 @@
         "notes": [
           "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
           "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
-        ]
+        ],
+        "attention": []
       },
       "automatic_checks": "passed",
       "human_review": "not_reviewed"
@@ -213,13 +214,13 @@
             ],
             "dateEvidence": [
               {
-                "quote": "Pay the deposit by March 6, 2032 unless you have a waiver.",
+                "quote": "Pay the deposit by March 6, 2032",
                 "starts": [
                   65
                 ]
               }
             ],
-            "deadlineText": "Pay the deposit by March 6, 2032 unless you have a waiver.",
+            "deadlineText": "Pay the deposit by March 6, 2032",
             "originalDate": "2032-03-06",
             "date": "2032-03-06",
             "time": "",
@@ -242,7 +243,20 @@
         "notes": [
           "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
           "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "Source passages flagged for review: 1. This list is not exhaustive.",
           "The notice contains negation or cancellation. Local rules skip negated passages and instructions immediately followed by an explicit withdrawal referring back. Check other cross-sentence changes and qualifications manually."
+        ],
+        "attention": [
+          {
+            "id": "review-r1-p3",
+            "evidence": {
+              "quote": "You do not need to pay a membership fee.",
+              "starts": [
+                124
+              ]
+            },
+            "reason": "Negation or cancellation: no action was created. Check its scope and any changes to other instructions."
+          }
         ]
       },
       "automatic_checks": "passed",
@@ -343,7 +357,20 @@
         ],
         "notes": [
           "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
-          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "Source passages flagged for review: 1. This list is not exhaustive."
+        ],
+        "attention": [
+          {
+            "id": "review-r1-p3",
+            "evidence": {
+              "quote": "The training session is optional.",
+              "starts": [
+                89
+              ]
+            },
+            "reason": "Possible instruction or qualification outside the supported patterns. Inspect it and add an action manually if needed."
+          }
         ]
       },
       "automatic_checks": "passed",

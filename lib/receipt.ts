@@ -16,13 +16,14 @@ export const extractionSchema = z.object({
     condition: z.string().max(600).nullable(),
     evidence: z.array(z.string().min(1).max(1200)).min(1).max(4),
     deadline: deadlineSchema,
-    issues: z.array(z.string().min(1).max(500)).max(6),
+    issues: z.array(z.string().min(1).max(500)).max(10),
   }).strict()).max(20),
   notes: z.array(z.string().min(1).max(600)).max(6),
 }).strict();
 export type Extraction = z.infer<typeof extractionSchema>;
 export type RawAction = Extraction["actions"][number];
 export type Evidence = { quote: string; starts: number[] };
+export type SourceReviewItem = { id: string; evidence: Evidence; reason: string };
 export type ReviewedAction = {
   id: string;
   originalTitle: string;
@@ -99,7 +100,8 @@ export function explicitDates(text: string): string[] {
 }
 
 export function mentionsTime(text: string): boolean {
-  return /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b|\b(?:[01]?\d|2[0-3]):[0-5]\d\b|\b(?:noon|midnight|end of day|close of business)\b/i.test(text);
+  const withoutOffsets = text.replace(/\b(?:UTC|GMT)\s*[+-]\d{2}:\d{2}\b/gi, "");
+  return /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b|\b(?:[01]?\d|2[0-3]):[0-5]\d\b|\b(?:noon|midnight|end of day|close of business)\b/i.test(withoutOffsets);
 }
 
 export function validateExtraction(source: string, input: unknown, revision = 1): { actions: ReviewedAction[]; notes: string[] } {
