@@ -19,13 +19,13 @@ Paste one notice, inspect proposed actions beside their evidence, correct or cla
 A calm, readable document workspace. Original text on the left and action cards on the right on desktop; stacked sections on mobile. Restrained typography, high contrast, explicit status labels. No confidence percentages.
 
 ## Why This Matters to the Learner
-The learner wants a new project for Build With AI: Basics and accepted this practical AI workflow as the direction. No personal missed-deadline story has been supplied.
+The learner wants a new project for Build With AI: Basics and accepted the source-linked review workflow as the direction and later required no API credits or new spending. No personal missed-deadline story has been supplied.
 
 ## What "Working" Looks Like
 A synthetic notice yields separate registration and payment actions with different deadlines; selecting evidence highlights the source; a phrase such as "next Friday" stays unresolved; the user supplies a date, approves actions and downloads accurate files.
 
 ## The POC Boundary
-One pasted plain-text notice, real AI extraction when configured, exact evidence matching, corrections and conditions, explicit date review, approval, checklist and calendar export. Clearly labeled sample walkthroughs are available independently of AI configuration.
+One pasted plain-text notice, local English text-rule proposals, exact evidence matching, manual additions/corrections and conditions, explicit date review, approval, checklist and calendar export. A self-contained browser file requires no model, API, account or hosting. Saved sample walkthroughs remain labeled. Language coverage is deliberately limited and users must check for omissions.
 
 ## Later
 Compare updated notices; process multiple notices; validate broader user demand.
@@ -37,4 +37,4 @@ Compare updated notices; process multiple notices; validate broader user demand.
 - Claims of guaranteed correctness or complete extraction: unsupported.
 
 ## Approval Basis
-The learner approved the displayed proposal with "This is great, let's put this into action" and delegated implementation. This document organizes those accepted choices; it does not claim an interview that did not occur.
+The learner approved the displayed proposal with "This is great, let's put this into action" and delegated implementation. The learner subsequently required a cost-free runtime; the implementation now uses browser rules while preserving the unique kernel. This document organizes those accepted choices; it does not claim an interview that did not occur.

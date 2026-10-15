@@ -9,13 +9,13 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 ## Slices
 
 - [x] **1. Review a notice with evidence, resolve dates, approve and export**
-  Becomes usable: The complete source-to-reviewed-receipt workflow, with clearly labeled walkthroughs and a live endpoint that reports configuration honestly.
+  Becomes usable: The complete source-to-reviewed-receipt workflow, with clearly labeled saved walkthroughs, fresh local-rule scans and a standalone offline file.
   Why now: The evidence/uncertainty kernel appears in the first usable build; exports close the same small loop.
   PRD ref: `prd.md > The Core Journey`, `prd.md > Features and Behavior`
   Spec ref: `spec.md > Components`, `spec.md > Data Model`, `spec.md > Important Failure Modes`
-  Build: Implement the interface, validator, live endpoint, synthetic examples, review rules and local downloads.
-  Verify (mechanical): Run built-in contract/export/API tests, TypeScript, production build and supported browser QA when available. Live model verification remains unchecked until a real service call succeeds.
-  Learner check: Open the hosted app, try the sample and a fresh notice, inspect evidence, resolve a date and export; report what is confusing or broken.
+  Build: Implement the interface, validator, local rule engine, synthetic examples, review rules, local downloads and self-contained packaging.
+  Verify (mechanical): Run built-in rule/evidence/export tests, TypeScript, production build and supported browser QA when available. No model verification or billing step is needed for the budget-revised version. Fresh text-rule checks and a static build are required.
+  Learner check: Open the offline HTML file or optional hosted review, try the sample and scan a fresh notice, inspect evidence, resolve a date and export; report what is confusing or broken.
   Commit: `Build source-linked notice review and approved exports`
 
 ## Hands-on Checkpoints
@@ -23,7 +23,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
-- [ ] Live model extraction verified on fresh source text
+- [x] Local-rule extraction checked on fresh synthetic source text; no API required
 - [ ] Final review complete: feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
@@ -31,7 +31,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [ ] Optional edit and transfer reflection addressed
 - [x] `devpost/app-map.html` generated from finished code, checked and shown
 
-Activity and evidence: 34 automated tests, TypeScript and the production build pass. Implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
+Activity and evidence: 35 automated tests, TypeScript and the production build pass. Implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
 Route and stops: reference-only route in app-map.html: ActionCard, calendarEligible, calendarText. It has not been toured with the learner.
 Edit outcome: not yet offered.
 Reflection: not yet offered; private answer must stay in the ignored profile.
@@ -46,3 +46,8 @@ Activity mode: pending.
 
 - Added source-backed manual action repair without broadening the one-notice loop. Exact quotations are mandatory; items begin unapproved, with manual origin preserved in both exports. A review caught the 600/1,200-character boundary and discarded conflict warnings; both were fixed and covered by a regression check.
 - Secure local key setup completed. Real-service failures are retained in live-smoke reports; the safe diagnostic records exhausted credits. Quota and transient rate errors are now distinct. No further paid requests were made after diagnosis. Hosted paid AI stays disabled.
+
+- The learner explicitly declined API credits and further spending. Replaced runtime inference with local English text rules and a standalone HTML distribution while preserving evidence, uncertainty, approval and exports. The former API verification item was replaced, not falsely marked complete.
+- Removed the active API implementation, environment template and live-smoke command. Historical failed-service reports remain as history. The active build and runtime do not read the unused local credential file.
+- Static build embeds scripts, styles, favicon and runtime dependency licenses; its content security policy blocks network connections. No hosting is required for the distributed file.
+- Independent review fixed non-temporal by/before matching, retained trailing conditions, suppressed an immediately withdrawn request, and made the brand link work within a local file. Fresh regressions pass. Supported browser control is still unavailable; actual browser/learner review remains open.

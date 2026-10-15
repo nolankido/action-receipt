@@ -45,7 +45,7 @@ export type ReviewedAction = {
   evidenceValid: boolean;
   approved: boolean;
   omitted: boolean;
-  origin: "extracted" | "user";
+  origin: "extracted" | "rules" | "user";
   issues: string[];
 };
 
@@ -113,7 +113,7 @@ export function validateExtraction(source: string, input: unknown, revision = 1)
     if (!evidenceValid) issues.push("An action quotation could not be matched to the notice. Approval is blocked.");
     if (dateEvidence.some(e => !e.starts.length)) issues.push("A deadline quotation could not be matched. Resolve the date yourself.");
     const literalDeadline = item.deadline.text && source.includes(item.deadline.text) ? item.deadline.text : dateEvidence.filter(e => e.starts.length).map(e => e.quote).join(" | ");
-    if (item.deadline.text && !source.includes(item.deadline.text)) issues.push("The model's deadline reading was not verbatim. The source quotations are preserved instead.");
+    if (item.deadline.text && !source.includes(item.deadline.text)) issues.push("The proposed deadline wording was not verbatim. The source quotations are preserved instead.");
     if ([...evidence, ...dateEvidence].some(e => e.starts.length > 1)) issues.push("A quotation appears more than once. Review all matching passages in context.");
     const quotedDates = explicitDates(dateEvidence.filter(e => e.starts.length).map(e => e.quote).join("\n"));
     const explicit = item.deadline.status === "explicit" && dateQuotesValid && quotedDates.length === 1 && item.deadline.date === quotedDates[0];

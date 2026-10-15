@@ -5,19 +5,16 @@ status: approved
 # Action Receipt Technical Spec
 
 ## How This Works, In Plain Language
-The browser sends a notice to one server endpoint. An AI service proposes actions and quotes. Ordinary code checks the returned structure, finds the quoted text in the notice, and checks dates. The user checks meaning, fixes uncertainty and approves items. The browser creates download files. The app keeps no notice database.
+The browser reads a pasted notice using bounded English text patterns. Ordinary code checks quotation presence and dates. The user checks meaning, fixes omissions/uncertainty and approves items. The browser creates download files. No server, API key, model download or notice database is required.
 
 ## The Core Journey Through the System
-Implements `prd.md > The Core Journey`: browser input to `/api/extract`, structured model response to validation, linked passages to review cards, reviewed state to local exports. Sample walkthroughs load explicitly labeled saved data through the same validator. They never substitute for a failed live call.
+`standalone/main.tsx` renders the React workspace. Current text goes to `extractLocally`, then through the evidence/date validator to review cards and approved-only exports. The rule engine never imports saved sample results. Saved walkthroughs use the same validator but remain explicitly labeled.
 
 ## Stack
-- React 19 and TypeScript: interactive browser workspace. https://react.dev/ and https://www.typescriptlang.org/docs/
-- Vinext/Vite on Cloudflare Workers through the supplied Sites starter: preserves the approved React/TypeScript/Worker architecture with supported hosting. https://github.com/cloudflare/vinext and https://developers.cloudflare.com/workers/
-- One server-side OpenAI Responses API call with structured JSON output, once a secure key is configured. https://platform.openai.com/docs/api-reference/responses
-- Node built-in test runner for meaningful validation/export checks; no GitHub Actions or background jobs.
+React 19, TypeScript and Vite for a static browser app. Zod validates proposal structures. Node's built-in runner checks rules, evidence, review transitions and exports. No runtime service or GitHub Actions. Retained Sites/Vinext scaffolding is unused by the active static entry and disclosed in third-party notices.
 
 ## Where It Runs and How Someone Tries It
-Node 22.13+ for development. Install with `npx pnpm@11.25.0 install --frozen-lockfile`; run `npm run dev` and open the URL printed by the server. On this managed workspace, use the supported Sites preview only if browser control is available. Run `npm test` and `npm run typecheck`. Hosted review uses the URL returned by Sites. Live extraction needs server-side `OPENAI_API_KEY` and a documented `OPENAI_MODEL`; sample walkthroughs need no key. Local keys belong in ignored `.dev.vars` or `.env.local`, never chat or source. Public GitHub and a public sub-three-minute YouTube/Vimeo recording remain required; hosted deployment is additional.
+Open `release/action-receipt.html` in a current desktop browser, including while offline. No installation is required for the built file. Source development uses Node 22.13+, `npx pnpm@11.25.0 install --frozen-lockfile` and `npm run dev`. Run `npm test`, `npm run typecheck`, `node --experimental-strip-types scripts/smoke-local.ts` and `npm run build`. Supported browser-control availability still governs managed preview QA. The public repository includes the runnable file; the existing private Sites review URL is optional.
 
 ## Look and Feel
 Implement `prd.md > Look and Feel` with warm paper backgrounds, white document surfaces, dark ink, forest green primary controls, amber issue labels, readable system sans text and a restrained serif display headline. Clear focus rings, semantic labels and reduced motion. Responsive two-column workspace.
@@ -27,11 +24,11 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 ### Workspace
 `app/page.tsx` and `app/receipt-workspace.tsx` implement `prd.md > Notice Entry`, `Evidence Review`, `Corrections and Approval` and all normal/error/empty states. Memory only. The current source revision invalidates old responses. A compact manual action form accepts a title, exact source passage and optional condition. User-added items are labeled visibly, begin unapproved with unresolved dates, and share all approval/export rules.
 
-### Extraction Endpoint
-`app/api/extract/route.ts` implements `prd.md > Notice Entry` and `Dates and Conditions`. Limit input bytes and text length, require same-origin browser POST, impose a timeout, use a strict schema, no model tools or link fetching, no raw body logging, and return readable failure codes. Without a key, return a service-unavailable response, not sample data. Parse bounded provider error codes/types without reflecting raw error bodies: quota, temporary rate, authentication and model-access failures stay distinct. `app/api/status/route.ts` reports capability without exposing credentials.
+### Local Rule Engine
+`lib/local-extraction.ts` implements a deliberately bounded English pattern matcher. It segments exact source passages, recognizes selected action words, retains prefix/trailing conditions, matches explicit full dates only with a temporal link, and leaves relative/numeric/multiple/unclear dates unresolved. It skips negated passages and an instruction immediately followed by a cancellation referring back. It does not reliably resolve other cross-sentence changes. No fetch, tools, API or current-date inference. Missing actions are added manually with exact evidence.
 
 ### Validation and Review Rules
-`lib/receipt.ts` implements `prd.md > Evidence Review` and `Dates and Conditions`. Treat model fields as untrusted; cap counts and lengths; locate exact quotations locally; preserve issue codes and conditions. A complete explicit date is required for calendar eligibility; date confirmation is distinct from approval. Code confirms quotation presence only, not the truth or completeness of extraction.
+`lib/receipt.ts` implements `prd.md > Evidence Review` and `Dates and Conditions`. Treat proposal fields as untrusted; cap counts and lengths; locate exact quotations locally; preserve issue codes and conditions. A complete explicit date is required for calendar eligibility; date confirmation is distinct from approval. Code confirms quotation presence only, not the truth or completeness of extraction.
 
 ### Exports
 `lib/export.ts` implements `prd.md > Export`. Export only approved items. Escape iCalendar content lines, fold UTF-8 lines, use stable per-action UIDs, represent date-only entries as all-day markers and timed deadlines as zero-duration instants with explicit offsets. Never invent an event length. Omit unresolved calendar items visibly.
@@ -40,33 +37,31 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 `lib/samples.ts` holds three synthetic notices and explicitly saved walkthrough results: multiple deadlines, ambiguity, and conflicting dates/conditional instructions. Always label this mode and its generated exports.
 
 ## Data Model
-An immutable source string and revision; extraction mode/model; candidate actions with title, condition, action evidence, date evidence, literal deadline, proposed ISO date, time and offset, issues; reviewed actions with edited values, date confirmation, user-change provenance, action origin (extracted/user), approval and omission. Receipt mode distinguishes saved samples, live proposals and manual review. Everything lives in browser memory; no database. A new extraction resets approvals. Provider processing is covered by provider terms, not a claim of zero retention.
+An immutable source string and revision; proposal mode/origin; candidate actions with title, condition, action evidence, date evidence, literal deadline, proposed ISO date, time and offset, issues; reviewed actions with edited values, date confirmation, user-change provenance, action origin (extracted/user), approval and omission. Receipt mode distinguishes saved samples, live proposals and manual review. Everything lives in browser memory; no database. A new extraction resets approvals. All application state and processing are local. Refreshing clears session state.
 
 ## File Structure
-| Path | Purpose |
-| --- | --- |
-| `app/page.tsx`, `app/receipt-workspace.tsx`, `app/globals.css` | Main interface |
-| `app/api/extract/route.ts`, `app/api/status/route.ts` | Server routes |
-| `lib/receipt.ts`, `lib/export.ts`, `lib/samples.ts` | Validation, downloads and synthetic data |
-| `tests/receipt.test.ts`, `tests/api.test.ts` | Contract and behavioral checks |
-| `devpost/` | Skill-generated plans, checklist, workflow evidence and app map |
-| `.openai/hosting.json`, `build/`, `scripts/` | Supplied Sites deployment integration |
+- `standalone/`, `vite.static.config.ts`: static browser entry.
+- `app/receipt-workspace.tsx`, `app/globals.css`: review UI.
+- `lib/local-extraction.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/samples.ts`: rules, validation, downloads and examples.
+- `scripts/build-static.mjs`: inlines JavaScript/styles/icons and license notices into the distribution, adds a network-blocking policy, rejects external runtime asset references.
+- `release/action-receipt.html`: committed standalone app.
+- `tests/`, `devpost/`: behavioral checks, Skill Pack evidence and technical plan.
 
 ## External Services and Dependencies
-AI endpoint: POST `https://api.openai.com/v1/responses` with bearer key, configured model (default `gpt-5-mini`), system extraction instructions, untrusted notice text and strict JSON schema. Validate returned JSON before use. Provider limits/cost depend on the account; no paid plan purchase is authorized. Host secrets through Sites. Keep paid inference on the owner-private review site, require platform identity, and add a four-request/minute per-user, per-isolate throttle. This throttle is best effort, not a global spend cap. Do not enable a public paid endpoint without durable usage controls. Hosting/source synchronization uses Sites helpers. Public GitHub export may require the user to create a new empty repository because the connected GitHub tools do not expose repository creation.
+No external runtime services. Development dependencies are listed in package/lock files. Source and optional static hosting use the existing GitHub/Sites integration. The main deliverable works without hosting. No new paid service, credentials, API credits or background jobs. Static hosting manifest preserves the existing project ID and sets `static.directory` to `dist`.
 
 ## Important Failure Modes
-- No key or provider failure: honest error, retain text, offer separately labeled walkthrough.
-- Unusable output or nonexistent quote: reject/flag; never approve unsupported data.
-- Ambiguous or conflicting time: checklist can retain ambiguity; calendar stays blocked.
-- Source edited during request: discard old response using revision/request identity.
+- Unsupported or implicit wording: the rule engine may miss instructions; require full source review and permit manual evidence-backed additions.
+- Dates in other sentences or uncertain date roles: do not link automatically.
+- Relative wording, multiple dates or incomplete clocks/offsets: retain uncertainty; calendar stays blocked until user clarification.
+- Negation and cancellations: local patterns cover only bounded forms, not complete cross-sentence semantics.
+- Source changes during scan: discard stale results and clear old approvals.
+- Refresh: clear memory; downloaded receipts remain with the user.
 
 ## What Was Simplified and Why
-One notice and no persistent storage keep the evidence trail inspectable. Native file downloads avoid calendar account access. Explicit time offsets avoid silently selecting a time zone. Three saved examples allow interface review while model configuration is pending.
+The learner explicitly required no new spending. A single-file ordinary browser app avoids API bills, model downloads, hardware-specific inference setup and hosting dependence. Manual source-backed repair covers bounded-parser omissions while preserving the original evidence/approval kernel.
 
 ## Decisions and Open Issues
-The learner approved the displayed scope and React/TypeScript/Worker proposal, and delegated routine implementation. No personal technical uncertainty was identified; do not invent one. The genuine implementation risk to investigate is whether quotes and date roles survive live model extraction. Local API credentials are configured securely; real requests returned credit_balance_exhausted / insufficient_quota. Successful runtime extraction verification, secure hosted AI configuration, actual learner review and public submission materials remain open. The public repository exists.
+The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Thirty-five automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
 
-Date resolution retains original flags as historical evidence. A complete user-confirmed date can become calendar-eligible while its original ambiguity remains in the downloaded receipt. Action quotations always remain mandatory. Test stale responses, approval invalidation, separate event/deadline dates, and source-grounding independently from model-quality evaluation.
-
-Manual action repair remains inside the evidence-review loop. Exact passages can be up to 1,200 characters; their full text and detected date conflicts remain in the receipt. Manual dates are never auto-assigned. Exported mode and per-action origin distinguish human additions from model proposals.
+Date resolution retains original warnings. A confirmed user-supplied date can become calendar-eligible while original ambiguity remains in exports. Exact action evidence is always mandatory. Saved examples, local rules and user additions retain distinct provenance.

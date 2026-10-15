@@ -2,8 +2,8 @@
 
 This is a new application. No Review Reply Writer or other previous application code is incorporated.
 
-- Standard React, TypeScript, Vinext, Vite and Cloudflare libraries are listed in `package.json` and `pnpm-lock.yaml`, with their upstream licenses.
-- The supplied Sites Vinext starter provides hosting, build scripts and standard UI utilities. Its license notices remain in `build/` and `vendor/`. These are standard development scaffolding, not newly authored application functionality.
+- React, React DOM, Lucide and Zod are bundled in the static app; their licenses are embedded in the standalone HTML. Standard React, TypeScript, Vinext, Vite and Cloudflare libraries are listed in `package.json` and `pnpm-lock.yaml`, with their upstream licenses.
+- The supplied Sites Vinext starter provided the initial hosting, build scripts and standard UI utilities. The active app now uses a plain Vite static build; retained Worker/Vinext scaffolding is not required by its runtime. Its license notices remain in `build/` and `vendor/`. These are standard development scaffolding, not newly authored application functionality.
 - Devpost Learn Skill Pack was installed from https://github.com/challengepost/learn-ai-basics using its documented command. Its planning templates and instructions guided the documents in `devpost/`. The pack is MIT licensed; its notice is reproduced below. The installed pack itself is checkout-local and can be reinstalled using the documented command and `skills-lock.json`.
 - Lucide provides the interface icons under its upstream license.
 - Synthetic notice text and saved walkthrough results were newly created for this project. They are not real school announcements or model-performance evidence.

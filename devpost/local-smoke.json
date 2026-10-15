@@ -1,0 +1,353 @@
+{
+  "engine": "local English text rules, no AI model",
+  "runtime_network_calls": 0,
+  "interpretation": "Fresh synthetic notice contract checks, not a usability study or proof of complete language understanding.",
+  "cases": [
+    {
+      "id": "separate-and-relative",
+      "source": "Register for the astronomy lab by February 5, 2032. Pay the equipment deposit by February 7, 2032. If you need accessible transport, email the coordinator by next Friday.",
+      "expectedDates": [
+        "2032-02-05",
+        "2032-02-07",
+        ""
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Register for the astronomy lab",
+            "title": "Register for the astronomy lab",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Register for the astronomy lab by February 5, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Register for the astronomy lab by February 5, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Register for the astronomy lab by February 5, 2032.",
+            "originalDate": "2032-02-05",
+            "date": "2032-02-05",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          },
+          {
+            "id": "r1-a2",
+            "originalTitle": "Pay the equipment deposit",
+            "title": "Pay the equipment deposit",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Pay the equipment deposit by February 7, 2032.",
+                "starts": [
+                  52
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Pay the equipment deposit by February 7, 2032.",
+                "starts": [
+                  52
+                ]
+              }
+            ],
+            "deadlineText": "Pay the equipment deposit by February 7, 2032.",
+            "originalDate": "2032-02-07",
+            "date": "2032-02-07",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          },
+          {
+            "id": "r1-a3",
+            "originalTitle": "email the coordinator by next Friday",
+            "title": "email the coordinator by next Friday",
+            "originalCondition": "If you need accessible transport",
+            "condition": "If you need accessible transport",
+            "evidence": [
+              {
+                "quote": "If you need accessible transport, email the coordinator by next Friday.",
+                "starts": [
+                  99
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "If you need accessible transport, email the coordinator by next Friday.",
+                "starts": [
+                  99
+                ]
+              }
+            ],
+            "deadlineText": "If you need accessible transport, email the coordinator by next Friday.",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "The deadline is ambiguous. A date needs your clarification."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "conflict-and-waiver",
+      "source": "Apply using the library form by March 8, 2032 or March 11, 2032. Pay the deposit by March 6, 2032 unless you have a waiver. You do not need to pay a membership fee.",
+      "expectedDates": [
+        "",
+        "2032-03-06"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Apply using the library form",
+            "title": "Apply using the library form",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Apply using the library form by March 8, 2032 or March 11, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Apply using the library form by March 8, 2032 or March 11, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Apply using the library form by March 8, 2032 or March 11, 2032.",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "The notice gives conflicting date information. Choose a date only after clarifying it."
+            ]
+          },
+          {
+            "id": "r1-a2",
+            "originalTitle": "Pay the deposit",
+            "title": "Pay the deposit",
+            "originalCondition": "unless you have a waiver",
+            "condition": "unless you have a waiver",
+            "evidence": [
+              {
+                "quote": "Pay the deposit by March 6, 2032 unless you have a waiver.",
+                "starts": [
+                  65
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Pay the deposit by March 6, 2032 unless you have a waiver.",
+                "starts": [
+                  65
+                ]
+              }
+            ],
+            "deadlineText": "Pay the deposit by March 6, 2032 unless you have a waiver.",
+            "originalDate": "2032-03-06",
+            "date": "2032-03-06",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "The notice contains negation or cancellation. Local rules skip negated passages and instructions immediately followed by an explicit withdrawal referring back. Check other cross-sentence changes and qualifications manually."
+        ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "timed-cutoff",
+      "source": "Upload the lab budget by April 2, 2032 at 5:00 pm. Bring your photo ID on April 4, 2032. The training session is optional.",
+      "expectedDates": [
+        "2032-04-02",
+        "2032-04-04"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Upload the lab budget",
+            "title": "Upload the lab budget",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Upload the lab budget by April 2, 2032 at 5:00 pm.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Upload the lab budget by April 2, 2032 at 5:00 pm.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Upload the lab budget by April 2, 2032 at 5:00 pm.",
+            "originalDate": "2032-04-02",
+            "date": "2032-04-02",
+            "time": "17:00",
+            "utcOffset": "",
+            "originalTime": "17:00",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": true,
+            "requiresTime": true,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "A timed instruction needs a confirmed cutoff and UTC offset. Ambiguous clock wording must be resolved manually."
+            ]
+          },
+          {
+            "id": "r1-a2",
+            "originalTitle": "Bring your photo ID on April 4, 2032",
+            "title": "Bring your photo ID on April 4, 2032",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Bring your photo ID on April 4, 2032.",
+                "starts": [
+                  51
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Bring your photo ID on April 4, 2032.",
+                "starts": [
+                  51
+                ]
+              }
+            ],
+            "deadlineText": "Bring your photo ID on April 4, 2032.",
+            "originalDate": "2032-04-04",
+            "date": "2032-04-04",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    }
+  ]
+}

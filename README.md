@@ -1,76 +1,69 @@
 # Action Receipt
 
-A small notice-review application: paste a campus notice, inspect proposed actions beside exact supporting passages, clarify dates, and export approved items.
+Review one notice with its source evidence, clarify dates, and export only actions you approve. Built with AI coding assistance and the official Devpost Learn Skill Pack. The finished app uses local English text rules and ordinary browser code, with no runtime AI model.
 
-## Current status
+## Use without installation or payment
 
-The review interface, evidence/date validation and file exports are implemented. Three clearly labeled synthetic walkthroughs and source-backed manual review work without an API key. The live extraction endpoint has been exercised against the real service, which returned HTTP 429 with `credit_balance_exhausted` / `insufficient_quota`. No successful live extraction is claimed. The API key is stored securely in an ignored local server file; hosted paid processing remains disabled. Thirty-four automated contract/API/export tests pass; mock provider responses are not live model-quality evidence. Browser interaction and actual learner review remain pending.
+Download `release/action-receipt.html` from this public repository and open it in a current desktop browser. The file contains its JavaScript, styles, icons and dependency license notices. It runs from a local file without a server, network connection, account, API key, credits or model download. No paid hosting is required.
 
-## Run locally
+The optional hosted review site is https://action-receipt.huzzahoptimistically.chatgpt.site. It retains the owner's existing private audience. The downloadable app in this public repository is the judge-access route and does not depend on that site.
 
-Requires Node.js 22.13 or later and Git. Use one package manager; this repository uses pnpm.
+## What the local rules do
+
+- Recognize a bounded set of English action words such as register, pay, submit, upload, bring and email.
+- Preserve exact supporting passages and visible conditions, including trailing waivers.
+- Propose complete dates only from the same passage with a recognized temporal link. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
+- Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
+- Export approved checklists and eligible calendar entries, retaining source quotations, warnings, mode and user corrections.
+
+These are text patterns, not semantic AI. They can miss unfamiliar wording, implicit instructions, cross-sentence context or cancellations. Read the complete source. Use **Add an action from the source** for omissions. A quotation match confirms presence, not interpretation or completeness. Twenty actions per receipt; 30 to 15,000 input characters.
+
+Three synthetic walkthroughs have saved example results and are labeled accordingly. **Find actions locally** runs the actual rule engine on the current text, including edited or completely new notices. It never looks up sample results. Fresh rule proposals, saved examples and user additions remain distinct in exports.
+
+## Data handling
+
+Notices and review decisions stay in browser memory. Refreshing clears them. There is no notice database, analytics, account system or automatic calendar integration. The offline build blocks network connections with a content security policy. Exported files contain source quotations and may contain personal information from a notice.
+
+## Build and check
+
+For source development, use Node.js 22.13+ and the repository's pnpm version. Downloading the already-built HTML above requires neither.
 
 ```sh
 npx pnpm@11.25.0 install --frozen-lockfile
 npm run dev
-```
-
-Open the local URL printed by the server. The synthetic walkthrough is available immediately. For live analysis, put the server-side variable names from `.env.example` into your ignored `.dev.vars`, configure a real API key through your own secure credential workflow, set `ACTION_RECEIPT_AI_ENABLED=1` and `ACTION_RECEIPT_ALLOW_LOCAL_AI=1`, and restart development. The local exception applies only to loopback hosts. Do not put real keys in browser code, screenshots or commits.
-
-For hosted review, use Sites to configure secret environment values and deploy. The paid inference deployment is owner-private and requires platform identity. Do not make paid inference publicly available without durable usage limits. The included four-request/minute per-user throttle is per isolate and is not a global spend cap. The OpenAI API is a separate service from a ChatGPT subscription; no paid account purchase has been made by this project.
-
-## Check and build
-
-```sh
 npm test
 npm run typecheck
+node --experimental-strip-types scripts/smoke-local.ts
 npm run build
 ```
 
-`npm test` uses Node's built-in runner. Cases cover unsupported evidence, distinct deadlines, missing context, conflicts, stale responses, edit-driven approval invalidation, calendar eligibility, provider errors, request bounds, escaping, byte-correct iCalendar folding and correction provenance. They do not replace a live extraction assessment.
+The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-## Review workflow
-
-1. Try a synthetic notice. Its sample label remains visible and appears in exported files.
-2. Select **View source** to highlight all exact occurrences of a quotation.
-3. If an instruction was missed, use **Add an action from the source** with an exact supporting passage. This also supports manual review without sending text to the AI service. Added items start unapproved and retain user provenance in both exports.
-4. Open **Review details** to inspect source evidence, edit wording/conditions, and clarify date/time information. A missed cutoff can be added explicitly.
-5. Confirm complete dates separately from approving actions. A time in the source requires a confirmed time and UTC offset.
-6. Check **I checked this action**. Edits revoke approval.
-7. Download a Markdown checklist or `.ics` calendar file. Unresolved approved items remain checklist-only. Imports do not happen automatically.
-
-The application does not guarantee correct interpretation or complete extraction. A model can quote a real passage while misunderstanding it. Read the complete notice, including qualifications and cancellations.
-
-## Data handling
-
-The app has no notice database, stored history, inbox access or autonomous actions. Source text and review decisions live in browser memory; refreshing clears them. Live processing sends the notice to OpenAI through the server using `store: false`; provider retention and processing are governed by provider policies. Application code does not log notice bodies. Exported files contain source quotations and may contain personal data from your notice.
-
-For actual model checks after secure key configuration, run `node --env-file=.dev.vars --experimental-strip-types scripts/smoke-live.ts`. It uses synthetic notices, records only safe provider status/code/type diagnostics, preserves failures in `devpost/live-smoke.json`, and leaves human assessment explicitly pending.
-
-The observed credit issue is recorded in `devpost/live-service-diagnostic.json`; original failed runs remain intact. Enable live AI only after account credits are available and secure hosted configuration is complete. There is no silent fallback from a failed AI request to the synthetic results.
+Current verification: 35 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
 
 ## Project structure
 
-- `app/receipt-workspace.tsx`: browser interaction, source highlighting, review and downloads.
-- `app/api/`: extraction and capability endpoints.
-- `lib/receipt.ts`: schema, quotation matching, dates and review rules.
-- `lib/export.ts`: checklist and iCalendar serialization.
-- `lib/extraction-service.ts`: bounded requests and structured AI extraction.
-- `lib/samples.ts`: newly authored synthetic notices and saved walkthrough results.
-- `tests/`: behavioral and API-contract verification.
-- `devpost/`: Skill Pack planning documents, evidence, build state and app map.
-- `build/`, `scripts/`, `vendor/`: standard Sites starter deployment integration and notices.
+- `standalone/`, `vite.static.config.ts`: static React entry and configuration.
+- `app/receipt-workspace.tsx`, `app/globals.css`: review interface.
+- `lib/local-extraction.ts`: bounded, network-free English text rules.
+- `lib/receipt.ts`, `lib/export.ts`: evidence, date/review rules and downloads.
+- `lib/samples.ts`: synthetic notices and saved walkthroughs.
+- `scripts/build-static.mjs`: self-contained HTML packaging and license preservation.
+- `release/action-receipt.html`: runnable distribution.
+- `tests/`, `devpost/`: checks, planning, workflow evidence and app map.
 
-## Required Skill Pack workflow
+The repository retains standard unused Sites/Vinext starter integration and its notices. The active build uses the static entry above. Earlier `devpost/live-*.json` files preserve failed experiments from an abandoned API design; they are historical evidence, not current setup requirements. The API implementation, key template and live-test script were removed when the learner required no new spending. The app cannot use API credits even if a key exists elsewhere.
 
-The official Devpost Learn Skill Pack was installed and used in Codex. See `devpost/workflow.md`, `devpost/skill-pack-evidence.json`, and the generated `devpost/scope.md`, `devpost/prd.md`, `devpost/spec.md` and `devpost/checklist.md`. Installed skills and personal learner context are ignored. Reinstall the official pack with:
+## Hackathon process
+
+The official Skill Pack was installed and used in Codex. See `devpost/workflow.md`, `skill-pack-evidence.json`, `scope.md`, `prd.md`, `spec.md` and `checklist.md`. The budget-driven revision is documented in `devpost/zero-cost-plan.md`. Reinstall the pack with:
 
 ```sh
 npx skills add challengepost/learn-ai-basics --all -y
 ```
 
-`devpost/submission-checklist.md` records outstanding mechanical requirements. The actual learner review, human-written answers, public video and submission confirmation remain open. No user research or completed hackathon submission is claimed.
+The current rules require a working project built with the Skill Pack; no runtime model API requirement is stated. This is our reading of https://learn-ai-basics.devpost.com/rules, not an organizer eligibility ruling. The public repository, a public demonstration under three minutes, actual learner review, learner-written answers and the exit survey remain part of the submission process. No completed submission is claimed.
 
 ## License
 
-MIT. Standard scaffolding, libraries and Skill Pack use are disclosed in `THIRD_PARTY_NOTICES.md`.
+MIT. Dependencies, starter scaffolding and Skill Pack use are disclosed in `THIRD_PARTY_NOTICES.md`. Bundled runtime licenses are embedded in the standalone HTML.

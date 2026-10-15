@@ -8,9 +8,9 @@ Source: `scope.md > The Core Loop`, `scope.md > The Unique Kernel`.
 
 ## The Core Journey
 1. Open the workspace and paste a notice, or load a clearly labeled synthetic sample.
-2. Request AI extraction, with clear disclosure that the text is sent to the configured model service. Sample walkthroughs use saved example results and say so.
+2. Run local text rules in the browser. No notice is sent to a model or server. Sample walkthroughs use saved example results and say so.
 3. Review proposed actions, their conditions, date wording, matching source passages and unresolved issues.
-4. Edit action wording or supply an explicit date. User edits remain distinguishable from model proposals and invalidate prior approval.
+4. Edit action wording or supply an explicit date. User edits remain distinguishable from automatic proposals and invalidate prior approval.
 5. Approve each action after review.
 6. Download a checklist containing only approved actions, preserving unresolved wording and provenance. Download calendar entries only for approved items with confirmed complete dates.
 
@@ -41,13 +41,13 @@ Export an evidence-bearing Markdown checklist and an iCalendar file from the cur
 - Empty: actionable guidance and synthetic samples.
 - Processing: progress label and disabled duplicate submissions; source remains editable.
 - No actions: explain that nothing actionable was identified and suggest checking the notice.
-- Missing service configuration: explicit unavailable message; sample walkthrough and source-backed manual review remain available. Quota, authentication and model-access failures have distinct messages.
-- Failed model/schema/evidence checks: report the failure without fabricating success or silently using samples.
+- Unsupported wording: explain the rule engine's limited coverage and offer manual source-backed additions.
+- Invalid input/schema/evidence checks: report failure without fabricating success or silently using samples.
 - New source: previous approvals and results cleared.
-- Refresh/close: session text and actions disappear. No persistence claim about the external AI provider.
+- Refresh/close: session text and actions disappear. No provider processing exists in this version.
 
 ## Product Decisions
-The learner accepted the narrow text workflow, evidence links, explicit ambiguity, manual approval and exports in the displayed proposal. They authorized routine implementation decisions. Test samples, a method explanation, responsive layout and button labels implement those choices. A real notice, user feedback and measured model performance remain unestablished.
+The learner accepted the narrow text workflow, evidence links, explicit ambiguity, manual approval and exports in the displayed proposal. They authorized routine implementation decisions. Test samples, a method explanation, responsive layout and button labels implement those choices. Actual user feedback and broad language coverage remain unestablished.
 
 ## What We're Building
 The complete single-notice loop above, with inspectable source, uncertainty and controlled export.
@@ -56,4 +56,7 @@ The complete single-notice loop above, with inspectable source, uncertainty and 
 Inbox connections, multiple documents, background reminders, cloud history, PDF/OCR and collaborative workflows.
 
 ## Open Questions
-Local API credentials are securely configured. Actual service requests failed because the account has no API credits, so live extraction quality remains unverified and hosted paid processing stays disabled. Public source is available at https://github.com/nolankido/action-receipt. The entrant's hands-on review and final written answers remain pending. These do not justify simulated live-extraction claims.
+The learner required no new spending. The API architecture was removed in favor of local text rules and a standalone offline file. Fresh local contract checks are required; model access and credits are no longer completion gates. Public source is available at https://github.com/nolankido/action-receipt. The entrant's hands-on review and final written answers remain pending. These do not justify simulated live-extraction claims.
+
+## Budget Revision
+The downloadable file runs without hosting, credentials or a model download. The local engine handles selected English action words and same-passage explicit date links; it does not infer cross-sentence dates. Preserve conditional/optional wording, flag multiple instructions/dates and support manual repair. Clearly distinguish local rules from AI at runtime, and built-with-AI development from the finished product.
