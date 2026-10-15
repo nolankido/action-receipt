@@ -102,3 +102,11 @@ The inspection bar is sticky within the source area, wraps its controls, truncat
 The checked portable archive is regenerated from the final source/build/rehearsal state and its member hashes verified. Exact final source, public commit, saved-version and deployment identities are provided by the publication results and public commit metadata, not inferred from a URL. Submission, personal declarations, entry copy, video and account work remain untouched.
 
 Next useful task: with a supported browser, test long-source round trips from action evidence, date evidence and source flags at desktop/mobile widths. Also check hidden-view return and a source flag whose card changes while inspecting. If browser access remains unavailable, inspect actual recoverable file/error and source-flag form flows for a bounded defect; do not add another theme or broaden extraction.
+
+### Verified publication receipt
+
+The v0.18.0 application publication completed on October 15, 2026 at 12:04 UTC. Public main was advanced without force from its expected previous head and reread successfully as `93cd2a0458ce19259269afec0ea7b07712583c45`. Its complete 206-file tree `45bd78a2bc05bea84d985f1c5fa15e8f7cf78e7d` exactly matched Sites source commit `46fba035a7e900516eeb8243f24105682db62ddb`. All 14 changed blobs were hash-verified before advancing main.
+
+Private deployment `appgdep_6ad0c145d84081918bfb72164c126c6f` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_410d7c979db8819186c9b0b2a22f445f` at the existing preview URL. Application SHA-256: `1c8a049b2d70c59d3a3cc52a457f0dc36acea8889ee031e616170526fd9d64b6`. Portable archive SHA-256: `bc81fff6f9bb3c67f9d52102365c99e45bb426683d02fb6b1ee44ff8af26b8e3`. Post-publication read-only verification confirmed 34 archive members, all recorded member/source hashes, identical built and committed HTML, and a clean checkout.
+
+This receipt is a documentation-only follow-up to that returned publication. It does not alter the application, rehearsal inputs or portable archive. Its own source/public identities are in the corresponding commit metadata; the application identities above refer to the already verified feature publication.
