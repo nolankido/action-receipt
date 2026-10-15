@@ -1,0 +1,40 @@
+---
+doc: scope
+status: approved
+---
+# Action Receipt
+
+Turn one student notice into a reviewable checklist with exact source evidence and explicit uncertainty.
+
+## The Unique Kernel
+Each proposed obligation and deadline is linked to the passage that supports it. Ambiguous dates remain visibly unresolved, and calendar export requires the user to resolve the date and approve the action. Matching a quotation is evidence of its presence, not proof of correct interpretation or completeness.
+
+## Who It's For
+A student handling an event, club or administrative notice with several obligations. They currently reread the notice and manually copy dates into a checklist or calendar. This audience is a hypothesis to test, not an established research finding.
+
+## The Core Loop
+Paste one notice, inspect proposed actions beside their evidence, correct or clarify them, approve selected actions, and download a checklist or calendar file.
+
+## Inspiration & Identity
+A calm, readable document workspace. Original text on the left and action cards on the right on desktop; stacked sections on mobile. Restrained typography, high contrast, explicit status labels. No confidence percentages.
+
+## Why This Matters to the Learner
+The learner wants a new project for Build With AI: Basics and accepted this practical AI workflow as the direction. No personal missed-deadline story has been supplied.
+
+## What "Working" Looks Like
+A synthetic notice yields separate registration and payment actions with different deadlines; selecting evidence highlights the source; a phrase such as "next Friday" stays unresolved; the user supplies a date, approves actions and downloads accurate files.
+
+## The POC Boundary
+One pasted plain-text notice, real AI extraction when configured, exact evidence matching, corrections and conditions, explicit date review, approval, checklist and calendar export. Clearly labeled sample walkthroughs are available independently of AI configuration.
+
+## Later
+Compare updated notices; process multiple notices; validate broader user demand.
+
+## Explicitly Cut
+- Inbox integration and automatic actions: unnecessary access and automation for this proof.
+- Accounts and stored notice history: unnecessary persistence and privacy complexity.
+- PDF/OCR and uploads: pasted text is sufficient for the core loop.
+- Claims of guaranteed correctness or complete extraction: unsupported.
+
+## Approval Basis
+The learner approved the displayed proposal with "This is great, let's put this into action" and delegated implementation. This document organizes those accepted choices; it does not claim an interview that did not occur.
