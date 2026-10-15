@@ -48,3 +48,6 @@ After reviewing the current judging criteria, the learner approved a guided sour
 
 ## Next-step guidance improvement
 The learner requested continued improvement. Added navigation based on actual review state, direct flag/action focus, optional calendar review and links from excluded preview items back to the relevant fields. Clarification remains pending while other review can continue. Eight new behavioral checks cover unchanged trust state, imported decisions, stale links, empty reviews and real export eligibility. This is mechanical implementation evidence, not learner exploration or participant findings.
+
+## Clarification handoff improvement
+The learner requested continued improvement. Added an optional local question sheet that turns incomplete calendar details and current-user clarification notes into editable source-linked question drafts. Selection starts empty; editing clears selection, and full-source/context changes invalidate a checked draft. Only selected questions and their own supporting context enter the Markdown sheet. No question is sent and no approval, date or source decision changes. Eleven new behavioral checks cover these boundaries. This does not complete a learner activity, student trial, demo or submission.

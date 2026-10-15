@@ -1,12 +1,13 @@
 "use client";
 
-import { ArrowRight, CalendarDays, Eye, Route, TriangleAlert } from "lucide-react";
+import { ArrowRight, CalendarDays, Eye, MessageCircleQuestion, Route, TriangleAlert } from "lucide-react";
 import { planReviewGuide, type ReviewTarget } from "../lib/review-guide.ts";
 import type { ReviewedAction, SourceReviewItem } from "../lib/receipt.ts";
 
-export default function ReviewGuide({ actions, items, hasResults, canScan, disabled, onGo, onScan, onPaste, onDate }: {
+export default function ReviewGuide({ actions, items, hasResults, canScan, disabled, onGo, onScan, onPaste, onDate, questionCount, onQuestions }: {
   actions: ReviewedAction[]; items: SourceReviewItem[]; hasResults: boolean; canScan: boolean; disabled: boolean;
   onGo: (target: ReviewTarget) => void; onScan: () => void; onPaste: () => void; onDate: (id: string) => void;
+  questionCount: number; onQuestions: () => void;
 }) {
   const plan = planReviewGuide(actions, items);
   const copy = {
@@ -23,6 +24,7 @@ export default function ReviewGuide({ actions, items, hasResults, canScan, disab
     <div className="guide-buttons"><button className="primary-button" disabled={disabled} onClick={() => hasResults ? onGo(plan.target) : canScan ? onScan() : onPaste()}>{hasResults ? copy[2] : canScan ? "Find actions locally" : "Paste a notice"}<ArrowRight size={15} /></button>
       {hasResults && actions.length > 0 && plan.target.kind !== "preview" && <button className="text-button" disabled={disabled} onClick={() => onGo({ kind: "preview" })}><Eye size={15} /> Inspect current downloads</button>}
       {hasResults && plan.target.kind === "preview" && plan.optionalDateAction && <button className="text-button" disabled={disabled} onClick={() => onDate(plan.optionalDateAction!)}><CalendarDays size={15} /> Review optional calendar dates ({plan.checklistOnly})</button>}
+      {hasResults && questionCount > 0 && <button className="text-button" disabled={disabled} onClick={onQuestions}><MessageCircleQuestion size={15} /> Prepare clarification questions ({questionCount})</button>}
     </div>
     <p className="guide-boundary">{hasResults ? "This guide describes the current review, not completeness. Calendar export is optional. Never guess a date to finish." : "Your notice stays in this browser. No account, credits or model download."}</p>
   </section>;

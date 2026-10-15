@@ -45,6 +45,11 @@ Each flag keeps its original reason and exact evidence. A decision records kind,
 
 `app/export-preview.tsx` provides an optional modal preview for both formats. `planExports` shares the exact checklist/calendar eligibility selectors used by serializers and workspace counts, and provides exclusion reasons. `reviewedDateText` reports only valid confirmed dates as confirmed. Read-only action summaries show conditions and time/offset wording, alongside context disclosure and the exact serialized file text. Download the same displayed string. Mount the preview only while open to avoid serializing files during ordinary editing. The dialog uses native focus handling, accessible labels and plain format buttons; source text renders as escaped React text. It makes no network request and changes no review state.
 
+### Clarification Sheet
+`lib/clarification.ts` derives optional drafts from active source-backed actions with incomplete date/time/offset fields and current-user confirmed clarification notes. Complete-but-unconfirmed dates do not produce questions. User notes replace generic prompts for the same exact action passage. Re-match quotes against current source; exclude omitted/invalid actions and unverified imported clarification choices. Each draft has an ephemeral basis containing the whole current source and relevant context/fields. Editing clears selection; changed source/context or duplicate/unknown selected IDs block serialization. Questions are bounded to 600 characters.
+
+`app/clarification-sheet.tsx` provides a native modal with editable drafts, source inspection, explicit unchecked-by-default selection and exact Markdown preview. Download the displayed string. The serializer includes only selected questions and their own context, conditions, source quotes and provenance; preserve quoted line breaks and escape Markdown. It never invokes task/event serializers or changes review trust. Entry points appear in guidance, export preview and the export area, including when no actions qualify. Closing discards component-local drafts/selections; disclose this before the form. Existing version-2 review files are unchanged. No clipboard, network or external messaging integration is needed.
+
 ### Samples
 `lib/samples.ts` holds three synthetic notices and explicitly saved walkthrough results: multiple deadlines, ambiguity, and conflicting dates/conditional instructions. Always label this mode and its generated exports.
 
@@ -56,8 +61,8 @@ An immutable source string and revision; proposal mode/origin; candidate actions
 
 ## File Structure
 - `standalone/`, `vite.static.config.ts`: static browser entry.
-- `app/receipt-workspace.tsx`, `app/review-guide.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/globals.css`: review UI.
-- `lib/local-extraction.ts`, `lib/dates.ts`, `lib/review-guide.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, calendar syntax, validation, downloads, local review continuation and examples.
+- `app/receipt-workspace.tsx`, `app/review-guide.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/clarification-sheet.tsx`, `app/globals.css`: review UI.
+- `lib/local-extraction.ts`, `lib/dates.ts`, `lib/review-guide.ts`, `lib/clarification.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, calendar syntax, validation, downloads, local review continuation and examples.
 - `scripts/build-static.mjs`: inlines JavaScript/styles/icons and license notices into the distribution, adds a network-blocking policy, rejects external runtime asset references.
 - `release/action-receipt.html`: committed standalone app.
 - `tests/`, `devpost/`: behavioral checks, Skill Pack evidence and technical plan.
@@ -78,6 +83,6 @@ No external runtime services. Development dependencies are listed in package/loc
 The learner explicitly required no new spending. A single-file ordinary browser app avoids API bills, model downloads, hardware-specific inference setup and hosting dependence. Manual source-backed repair covers bounded-parser omissions while preserving the original evidence/approval kernel.
 
 ## Decisions and Open Issues
-The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Ninety-five automated tests, five fresh local smoke checks and a static build establish narrow mechanical behavior. The formative trial kit in `devpost/usability/` is prepared with three synthetic notices and a blank observation template. No sessions, participant comments or outcomes are claimed. Actual browser interaction, learner review and the public demo/answers/submission remain pending.
+The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. One hundred six automated tests, five fresh local smoke checks and a static build establish narrow mechanical behavior. The formative trial kit in `devpost/usability/` is prepared with three synthetic notices and a blank observation template. No sessions, participant comments or outcomes are claimed. Actual browser interaction, learner review and the public demo/answers/submission remain pending.
 
 Date resolution retains original warnings. A confirmed user-supplied date can become calendar-eligible while original ambiguity remains in exports. Exact action evidence is always mandatory. Saved examples, local rules and user additions retain distinct provenance.
