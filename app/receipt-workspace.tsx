@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { version as appVersion } from "../package.json";
 import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCheck, ChevronDown, CircleHelp, Download, Eye, FileText, FolderOpen, Info, LoaderCircle, LockKeyhole, MessageCircleQuestion, Pencil, Plus, Quote, ReceiptText, RotateCcw, ShieldCheck, Sparkles, TriangleAlert, X } from "lucide-react";
 import { reviewScenario, samples } from "../lib/samples.ts";
 import { demoScenario } from "../lib/demo-scenario.ts";
 import { extractLocally } from "../lib/local-extraction.ts";
-import { calendarEligible, canApprove, canConfirmDate, displayDate, editAction, manualAction, nextManualNumber, noticeInputState, resultIsCurrent, validateExtraction, validDate, validOffset, validTime, type Evidence, type ReviewedAction, type SourceReviewItem } from "../lib/receipt.ts";
+import { MAX_CALENDAR_DRAFT_LENGTH, calendarEligible, canApprove, canConfirmDate, dateConfirmationIssues, displayDate, editAction, manualAction, nextManualNumber, noticeInputState, resultIsCurrent, validateExtraction, validDate, validOffset, validTime, type Evidence, type ReviewedAction, type SourceReviewItem } from "../lib/receipt.ts";
 import { calendarText, checklistText, planExports, type ReceiptMeta } from "../lib/export.ts";
 import { MAX_REVIEW_BYTES, openReviewFile as parseReviewFile, saveReviewFile } from "../lib/review-file.ts";
 import ExportPreview from "./export-preview.tsx";
@@ -80,6 +81,8 @@ function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0, focu
   }, [focusSignal, action.id, focusField]);
   const eligible = action.dateConfirmed && canConfirmDate(action);
   const needsClarification = !canConfirmDate(action);
+  const dateIssues = dateConfirmationIssues(action);
+  const oversizedDraft = action.time.length > MAX_CALENDAR_DRAFT_LENGTH || action.utcOffset.length > MAX_CALENDAR_DRAFT_LENGTH;
   const change = (patch: Parameters<typeof editAction>[1]) => onChange(editAction(action, patch));
   const prefix = action.id;
   return (
@@ -103,11 +106,11 @@ function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0, focu
         <div className="original-deadline"><span className="field-label">Original deadline wording</span><p>{action.deadlineText || "Not stated in the notice"}</p></div>
         {action.dateEvidence.map((e, i) => <button className="evidence-quote" key={`date-${i}`} onClick={() => onEvidence(e)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span><ArrowUpRight size={12} /></button>)}
         {action.evidence.slice(1).map((e, i) => <button className="evidence-quote" key={`action-${i}`} onClick={() => onEvidence(e)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span></button>)}
-        <label htmlFor={`${prefix}-date`}>Calendar date <span className="optional-label">confirm after checking</span></label><input type="date" id={`${prefix}-date`} min="1000-01-01" max="9999-12-31" value={action.date} onChange={e => change({ date: e.target.value })} />
+        <label htmlFor={`${prefix}-date`}>Calendar date <span className="optional-label">confirm after checking</span></label><input type="date" id={`${prefix}-date`} min="1000-01-01" max="9999-12-31" aria-invalid={Boolean(action.date) && !validDate(action.date)} aria-describedby={`${prefix}-calendar-help`} value={action.date} onChange={e => change({ date: e.target.value })} />
         {!action.sourceRequiresTime && <label className="check-row timed-cutoff-toggle"><input type="checkbox" checked={action.requiresTime} onChange={e => change({ requiresTime: e.target.checked })} /><span>This action has a timed cutoff.</span></label>}
-        {action.requiresTime && <div className="time-fields"><div><label htmlFor={`${prefix}-time`}>Cutoff time</label><input type="time" id={`${prefix}-time`} value={action.time} onChange={e => change({ time: e.target.value })} /></div><div><label htmlFor={`${prefix}-offset`}>UTC offset on that date</label><input id={`${prefix}-offset`} placeholder="e.g. -10:00" maxLength={6} value={action.utcOffset} onChange={e => change({ utcOffset: e.target.value })} /></div></div>}
+        {action.requiresTime && <div className="time-fields"><div><label htmlFor={`${prefix}-time`}>Cutoff time</label><input type="time" id={`${prefix}-time`} step={60} aria-invalid={Boolean(action.time) && !validTime(action.time)} aria-describedby={`${prefix}-calendar-help`} value={action.time} onChange={e => change({ time: e.target.value })} /></div><div><label htmlFor={`${prefix}-offset`}>UTC offset on that date</label><input id={`${prefix}-offset`} placeholder="e.g. -10:00" aria-invalid={Boolean(action.utcOffset) && !validOffset(action.utcOffset)} aria-describedby={`${prefix}-calendar-help`} value={action.utcOffset} onChange={e => change({ utcOffset: e.target.value })} /></div></div>}
         <p className="field-hint">{action.requiresTime ? "Confirm the cutoff and UTC offset for this specific date. Daylight saving time can change offsets." : "Calendar export creates an all-day deadline marker. No cutoff time or reminder is inferred."}</p>
-        {action.requiresTime && validDate(action.date) && validTime(action.time) && validOffset(action.utcOffset) && !canConfirmDate(action) && <p className="error-message" role="alert">This cutoff falls outside the supported calendar range after UTC conversion. Check the date, time and offset before confirming.</p>}
+        <div id={`${prefix}-calendar-help`} className={`calendar-review-help ${dateIssues.length ? "needs-details" : ""}`}><strong>{dateIssues.length ? "Calendar is optional. These details still need checking:" : eligible ? "Date details confirmed." : "Complete details, ready for your date check."}</strong>{dateIssues.length > 0 && <ul>{dateIssues.map(issue => <li key={issue}>{issue}</li>)}</ul>}{action.requiresTime && action.time && !validTime(action.time) && <p>Time value needing review: <code>{action.time}</code></p>}<p>{action.requiresTime ? "Use HH:MM and an explicit signed UTC offset, such as -10:00 or +05:30. The full offset paste is kept; unsupported formats are not shortened." : "Keep the action undated for checklist-only use if its deadline is unknown. Never guess a date to finish."}</p>{oversizedDraft && <p className="error-message">A time or offset draft is over 64 characters. The full value is kept, but shorten it before saving a review file.</p>}</div>
         <label className="check-row date-confirm"><input type="checkbox" aria-label={`Confirm ${action.requiresTime ? "date, time and UTC offset" : "date"} for: ${action.title || "untitled action"}`} checked={action.dateConfirmed} disabled={!canConfirmDate(action) || action.omitted} onChange={e => onChange({ ...action, dateConfirmed: e.target.checked, approved: false })} /><span>I confirmed this date{action.requiresTime ? ", time, and UTC offset" : ""}.</span></label>
         <p className="provenance">{action.dateOrigin === "user supplied" ? "Date or time edited by you. Original wording and warnings stay in the receipt." : action.dateOrigin === "review file" ? "Date or time loaded from a review file. Check it against the source and confirm again." : "Dates are proposals until you confirm them."}</p>
         {action.issues.length > 0 && <div className="review-flags"><span className="field-label"><TriangleAlert size={13} /> Original review flags</span><ul>{action.issues.map((issue, i) => <li key={i}>{issue}</li>)}</ul>{eligible && <p>Your confirmed date resolves calendar eligibility. Original flags remain in the export.</p>}</div>}
@@ -173,6 +176,7 @@ export default function ReceiptWorkspace() {
   const approved = exportPlan.checklist;
   const calendar = exportPlan.calendar;
   const active = actions.filter(a => !a.omitted);
+  const calendarDraftsFit = actions.every(a => a.time.length <= MAX_CALENDAR_DRAFT_LENGTH && a.utcOffset.length <= MAX_CALENDAR_DRAFT_LENGTH);
   const questionCount = clarificationCandidates(source, actions, attention).length;
   const meta = (): ReceiptMeta => ({ mode: mode ?? "manual", title, createdAt: createdAt.current, receiptId: receiptId.current, notes, attention, restored: restoredReview });
   const snapshot = (): WorkspaceSnapshot => ({ source, title, actions, notes, attention, mode, sampleId, restored: restoredReview, receiptId: receiptId.current, createdAt: createdAt.current });
@@ -261,6 +265,7 @@ export default function ReceiptWorkspace() {
   function saveReview() {
     try {
       if (!inputState.ready) throw new Error(inputState.message);
+      if (!calendarDraftsFit) throw new Error("A time or UTC offset draft exceeds 64 characters. Shorten it before saving the review.");
       saveFile(saveReviewFile({ source, actions, meta: meta() }), "application/json;charset=utf-8", "action-receipt-review.json");
       setSaveBaseline(reviewContentStamp(content)); setDownloadRequested(true);
       setFileError(""); setFileMessage("Review-file download requested for the current version. Confirm the file saved before leaving. It includes the full notice and added actions, but not the recovery copy or unfinished form entries. Opening it requires fresh approvals.");
@@ -318,7 +323,7 @@ export default function ReceiptWorkspace() {
         <div className="guided-review-example"><p><strong>Try a harder notice.</strong> Practice a missed instruction, a weekday/date conflict and a waived fee with a fresh local scan.</p><button onClick={tryGuidedReview}>Try harder notice (replaces review)</button></div></details>
         <section id="workspace" className="workspace" tabIndex={-1} aria-label="Notice review workspace">
           <div className="workspace-top"><div className="workspace-title"><span className="workspace-number">01</span><h2>Your notice, made clearer</h2></div><span className="privacy-label"><LockKeyhole size={13} /> Runs in your browser</span></div>
-          <ReviewSaveStatus current={session.current} previous={session.previous} downloadRequested={!session.current && downloadRequested} canSave={!busy && !openingReview && inputState.ready} onSave={saveReview} />
+          <ReviewSaveStatus current={session.current} previous={session.previous} downloadRequested={!session.current && downloadRequested} canSave={!busy && !openingReview && inputState.ready && calendarDraftsFit} onSave={saveReview} />
           <details className="review-file-toolbar"><summary>Open a saved review <ChevronDown size={13} /></summary><div className="review-file-buttons"><button disabled={busy || openingReview} onClick={() => reviewInput.current?.click()}>{openingReview ? <LoaderCircle size={14} className="spin" /> : <FolderOpen size={14} />} {openingReview ? "Opening review…" : "Open review file"}</button><input ref={reviewInput} className="sr-only" type="file" accept=".json,application/json" aria-label="Choose a saved Action Receipt review" disabled={busy || openingReview} onChange={e => { const file = e.currentTarget.files?.[0]; e.currentTarget.value = ""; if (file) void openReview(file); }} /></div><p>Save keeps the full notice and added actions, including unapproved items. Opening replaces this workspace and resets approvals and date confirmations. Unfinished form entries are not saved.</p></details>{fileMessage && <p className="review-file-message file-feedback" role="status">{fileMessage}</p>}{fileError && <div className="error-message file-feedback" role="alert"><TriangleAlert size={15} /> {fileError}</div>}
           {recoveryCopy && <RecoveryBanner copy={recoveryCopy} onRestore={restorePrevious} onDiscard={() => { setRecoveryCopy(null); setAnnouncement("Recovery copy discarded from this tab."); setTimeout(() => document.getElementById("workspace")?.focus({ preventScroll: true }), 0); }} />}
           {restoredReview && <div className="mode-banner"><FolderOpen size={16} /><p><strong>Loaded review file.</strong> Its labels and interpretation are unverified. Check the source again. Approvals and date confirmations were cleared when opened. Loaded source decisions need rechecking. The file describes its prior mode as {mode === "sample" ? "a synthetic sample" : mode === "local" ? "local text rules" : "manual review"}.</p></div>}
@@ -346,7 +351,7 @@ export default function ReceiptWorkspace() {
         </section>
         <section className="principles" aria-label="Review principles"><div><span>01</span><p><strong>Follow the evidence.</strong> Open a source passage to see the words behind an action.</p></div><div><span>02</span><p><strong>Keep uncertainty visible.</strong> Unclear dates stay unresolved until you clarify them.</p></div><div><span>03</span><p><strong>Make the final call.</strong> Check meaning, conditions, and anything the rules missed.</p></div></section>
       </main>
-      <footer><span className="footer-brand"><ReceiptText size={15} /> Action Receipt</span><p>Built with AI. Runs locally, without API fees.</p><a className="offline-download" href="./action-receipt.html" download="action-receipt.html"><Download size={12} /> Download offline app</a><button onClick={() => setMethodOpen(true)}>Method & privacy <ArrowUpRight size={12} /></button></footer>
+      <footer><span className="footer-brand"><ReceiptText size={15} /> Action Receipt</span><p>v{appVersion} · Built with AI. Runs locally, without API fees.</p><a className="offline-download" href="" download={`action-receipt-v${appVersion}.html`}><Download size={12} /> Download offline app</a><button onClick={() => setMethodOpen(true)}>Method & privacy <ArrowUpRight size={12} /></button></footer>
       <div className="sr-only" role="status" aria-live="polite">{announcement}</div>
       {previewOpen && <ExportPreview actions={actions} meta={meta()} onClose={() => setPreviewOpen(false)} onDownload={downloadPreview} onReviewAction={(id, field) => { setPreviewOpen(false); reviewLinkedAction(id, field); }} questionCount={questionCount} onQuestions={openQuestions} />}
       {questionsOpen && <ClarificationSheet source={source} actions={actions} meta={meta()} onClose={() => setQuestionsOpen(false)} onDownload={downloadQuestions} />}

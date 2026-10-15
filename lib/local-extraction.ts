@@ -1,5 +1,5 @@
 import { explicitDates, locateEvidence, mentionsTime, noticeInputState, validateExtraction, type Extraction, type RawAction, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
-import { datedWeekdayPattern, protectDateAbbreviations, weekdayConflicts, weekdayPattern } from "./dates.ts";
+import { dateProblems, datedWeekdayPattern, protectDateAbbreviations, weekdayConflicts, weekdayPattern } from "./dates.ts";
 import { explicitOffset, parseClock } from "./times.ts";
 
 const verbs = "register|pay|bring|submit|upload|email|contact|complete|apply|return|sign|fill|send|book|reserve|confirm|check|download|print|prepare|attend|arrive|ask|use";
@@ -46,6 +46,7 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
     const match = instruction.exec(body);
     if (!match || (/^contact\b/i.test(body) && /questions\?\s*$/i.test(segments[index - 1] ?? ""))) {
       if (negated.test(quote)) flag(index, quote, "Negation or cancellation: no action was created. Check its scope and any changes to other instructions.");
+      else if (dateProblems(quote).length) flag(index, quote, "Date needs clarification: " + dateProblems(quote).slice(0, 2).join(" "));
       else if (explicitDates(quote).length || relative.test(quote) || deadlineMarker.test(quote) || mentionsTime(quote)) {
         unmatchedDates.push(quote); flag(index, quote, "Date or cutoff not linked to an action. Decide what it applies to; no cross-sentence date was assigned.");
       } else if (/\b(?:must|shall|need(?:s)? to|required|mandatory|obligatory|responsible for|please|optional|recommended)\b/i.test(quote)) flag(index, quote, "Possible instruction or qualification outside the supported patterns. Inspect it and add an action manually if needed.");
@@ -61,12 +62,17 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
     if ((condition?.length ?? 0) > 600) { skippedLong = true; flag(index, quote, "Long condition exceeds the review limit. Add this instruction manually with its qualifications."); continue; }
     const many = multipleInstructions.test(body);
     const dates = explicitDates(actionContent);
-    const hasDateContext = dates.length > 0 || relative.test(actionContent) || deadlineMarker.test(actionContent) || mentionsTime(actionContent);
-    const linkedDate = temporalDate.exec(actionContent) ?? (/^(?:bring|attend|arrive|return)$/i.test(match[1]) ? scheduledDate.exec(actionContent) : null);
-    const clearRole = Boolean(linkedDate);
+    const dateIssues = dateProblems(actionContent);
+    issues.push(...dateIssues.slice(0, 3));
+    const hasDateContext = dates.length > 0 || dateIssues.length > 0 || relative.test(actionContent) || deadlineMarker.test(actionContent) || mentionsTime(actionContent);
+    const linkedDate = temporalDate.exec(actionContent) ?? (!deadlineMarker.test(actionContent) && /^(?:bring|attend|arrive|return)$/i.test(match[1]) ? scheduledDate.exec(actionContent) : null);
+    const linkedDates = linkedDate ? explicitDates(linkedDate[0]) : [];
+    const clearRole = linkedDates.length === 1 && dates.length === 1 && linkedDates[0] === dates[0];
     const weekdayIssues = weekdayConflicts(actionContent);
-    const status: RawAction["deadline"]["status"] = weekdayIssues.length ? "conflict" : !hasDateContext ? "missing" : dates.length === 1 && clearRole && !relative.test(actionContent) && !many ? "explicit" : "ambiguous";
+    const status: RawAction["deadline"]["status"] = weekdayIssues.length ? "conflict" : !hasDateContext ? "missing" : dates.length === 1 && clearRole && !dateIssues.length && !relative.test(actionContent) && !many ? "explicit" : "ambiguous";
     if (weekdayIssues.length) flag(index, quote, "Weekday/date conflict: " + weekdayIssues[0]);
+    if (dateIssues.length) flag(index, quote, "Date needs clarification: " + dateIssues.slice(0, 2).join(" "));
+    if (condition && dateProblems(condition).length) flag(index, quote, "Date in a condition needs clarification: " + dateProblems(condition).slice(0, 2).join(" "));
     if (condition && (explicitDates(condition).length || relative.test(condition) || mentionsTime(condition))) issues.push("A date or time appears in the condition. It was kept as a qualification, not used as this action's deadline.");
     if (body.includes(";")) flag(index, quote, "This passage has several clauses. Details after the semicolon were not linked as a deadline; inspect any additional instructions manually.");
     if (many) issues.push("This passage may contain several actions. Split or correct it manually before approval; no date is assigned automatically.");

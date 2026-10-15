@@ -12,6 +12,8 @@ const cases = [
   { id: "24-hour-cutoff", source: "Upload the astronomy budget by April 2, 2032 at 17:00 UTC-10:00. Bring your photo ID on April 4, 2032.", expectedDates: ["2032-04-02", "2032-04-04"] },
   { id: "invalid-cutoff", source: "Submit the astronomy budget by April 2, 2032 at 24:00 UTC-10:00.", expectedDates: ["2032-04-02"] },
   { id: "invalid-offset", source: "Pay the astronomy deposit by April 2, 2032 at 17:00 UTC-10:00:30 and GMT+09.", expectedDates: ["2032-04-02"] },
+  { id: "invalid-calendar", source: "Submit the astronomy form by February 30, 2032 for the event on March 1, 2032.", expectedDates: [""] },
+  { id: "mixed-numeric-calendar", source: "Pay the astronomy deposit by April 2, 2032 (printed deadline 04/03/2032).", expectedDates: [""] },
 ];
 const observations = cases.map(c => {
   const result = extractLocally(c.source);
@@ -23,6 +25,7 @@ const observations = cases.map(c => {
   if (c.id === "24-hour-cutoff") { assert.equal(result.actions[0].time, "17:00"); assert.equal(result.actions[0].utcOffset, "-10:00"); assert.equal(canConfirmDate(result.actions[0]), true); assert.equal(calendarEligible(result.actions[0]), false); }
   if (c.id === "invalid-cutoff") { assert.equal(result.actions[0].time, ""); assert.equal(result.actions[0].sourceRequiresTime, true); assert.equal(canConfirmDate(result.actions[0]), false); assert.equal(calendarEligible({ ...result.actions[0], approved: true, dateConfirmed: true }), false); }
   if (c.id === "invalid-offset") { assert.equal(result.actions[0].time, "17:00"); assert.equal(result.actions[0].utcOffset, ""); assert.equal(result.actions[0].sourceRequiresTime, true); assert.equal(canConfirmDate(result.actions[0]), false); assert.equal(calendarEligible({ ...result.actions[0], approved: true, dateConfirmed: true }), false); }
+  if (c.id === "invalid-calendar" || c.id === "mixed-numeric-calendar") { assert.ok(result.attention.some(f => /Date needs clarification/.test(f.reason))); assert.equal(result.actions[0].date, ""); assert.equal(calendarEligible({ ...result.actions[0], approved: true, dateConfirmed: true }), false); }
   return { ...c, actual: result, automatic_checks: "passed", human_review: "not_reviewed" };
 });
 const report = { engine: "local English text rules, no AI model", runtime_network_calls: 0, interpretation: "Fresh synthetic notice contract checks, not a usability study or proof of complete language understanding.", cases: observations };

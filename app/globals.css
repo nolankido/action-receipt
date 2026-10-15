@@ -74,3 +74,11 @@
 .review-save-copy .review-save-limit{font-size:10px;color:#796437}
 .review-save-status>button{display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;background:white;border:1px solid #b9cbb0;color:var(--green);border-radius:6px;padding:10px 13px;min-height:44px;font-size:12px}
 @media(max-width:700px){.review-save-status{align-items:stretch;flex-direction:column;gap:11px;padding:15px}.review-save-status>button{align-self:flex-start}.review-save-copy p{font-size:12px}.review-save-copy .review-save-limit{font-size:11px}}
+
+.calendar-review-help{margin-top:12px;padding:11px 12px;border:1px solid #cddac3;border-radius:6px;background:#f2f7ee;color:#49613c;font-size:11px;line-height:1.7}
+.calendar-review-help.needs-details{background:#fff8e9;border-color:#e5d3a8;color:#735720}
+.calendar-review-help ul{margin:6px 0;padding-left:18px}
+.calendar-review-help p{margin-top:5px}
+.calendar-review-help code{overflow-wrap:anywhere}
+.time-fields input[aria-invalid=true]{border-color:#ad8039}
+@media(max-width:600px){.calendar-review-help{font-size:12px}}

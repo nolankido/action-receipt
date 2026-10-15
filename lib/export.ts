@@ -1,4 +1,4 @@
-import { calendarEligible, canConfirmDate, checklistEligible, validDate, validTime, validOffset, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
+import { calendarEligible, canConfirmDate, checklistEligible, dateConfirmationIssues, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
 import { sourceDecisionLines, sourceReviewSummary } from "./source-review.ts";
 
 export type ReceiptMeta = { mode: "sample" | "local" | "manual"; title: string; createdAt: Date; receiptId: string; notes: string[]; attention?: SourceReviewItem[]; restored?: boolean };
@@ -17,10 +17,8 @@ function checklistBlocker(a: ReviewedAction): string {
 }
 function calendarBlocker(a: ReviewedAction): string {
   if (!checklistEligible(a)) return checklistBlocker(a);
-  if (!validDate(a.date)) return "Checklist only: supply a complete, valid date in Review details.";
-  if (a.requiresTime && !validTime(a.time)) return "Checklist only: supply a valid cutoff time in Review details.";
-  if (a.requiresTime && !validOffset(a.utcOffset)) return "Checklist only: supply a valid UTC offset for the cutoff date.";
-  if (a.requiresTime && !canConfirmDate(a)) return "Checklist only: this cutoff falls outside the supported calendar range after UTC conversion. Check the date, time and offset.";
+  const issue = dateConfirmationIssues(a)[0];
+  if (issue) return "Checklist only: " + issue[0].toLowerCase() + issue.slice(1);
   return "Checklist only: confirm the date" + (a.requiresTime ? ", time and UTC offset" : "") + " in Review details.";
 }
 export function planExports(actions: ReviewedAction[]) {

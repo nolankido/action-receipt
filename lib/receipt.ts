@@ -1,11 +1,12 @@
 import { z } from "zod";
-import { explicitDates, validDate, weekdayConflicts } from "./dates.ts";
+import { dateProblems, explicitDates, validDate, weekdayConflicts } from "./dates.ts";
 import { cutoffFitsCalendar, mentionsTime, validOffset, validTime } from "./times.ts";
 export { explicitDates, validDate } from "./dates.ts";
 export { mentionsTime, validOffset, validTime } from "./times.ts";
 
 export const MAX_NOTICE_LENGTH = 15_000;
 export const MIN_NOTICE_LENGTH = 30;
+export const MAX_CALENDAR_DRAFT_LENGTH = 64;
 export function noticeInputState(source: string): { ready: boolean; kind: "empty" | "short" | "long" | "ready"; message: string } {
   if (source.length > MAX_NOTICE_LENGTH) {
     const extra = source.length - MAX_NOTICE_LENGTH;
@@ -98,9 +99,10 @@ export function validateExtraction(source: string, input: unknown, revision = 1)
     if (item.deadline.text && !source.includes(item.deadline.text)) issues.push("The proposed deadline wording was not verbatim. The source quotations are preserved instead.");
     if ([...evidence, ...dateEvidence].some(e => e.starts.length > 1)) issues.push("A quotation appears more than once. Review all matching passages in context.");
     const quotedDates = explicitDates(dateEvidence.filter(e => e.starts.length).map(e => e.quote).join("\n"));
+    const dateIssues = [...new Set(dateEvidence.filter(e => e.starts.length).flatMap(e => dateProblems(e.quote)))];
     const weekdayIssues = [...new Set(dateEvidence.filter(e => e.starts.length).flatMap(e => weekdayConflicts(e.quote)))];
-    issues.push(...weekdayIssues.slice(0, 3));
-    const explicit = item.deadline.status === "explicit" && dateQuotesValid && !weekdayIssues.length && quotedDates.length === 1 && item.deadline.date === quotedDates[0];
+    issues.push(...weekdayIssues.slice(0, 3), ...dateIssues.slice(0, 3));
+    const explicit = item.deadline.status === "explicit" && dateQuotesValid && !weekdayIssues.length && !dateIssues.length && quotedDates.length === 1 && item.deadline.date === quotedDates[0];
     const proposedDate = explicit && validDate(item.deadline.date ?? "") ? item.deadline.date! : "";
     if (weekdayIssues.length || item.deadline.status === "conflict" || quotedDates.length > 1) issues.push("The notice gives conflicting date information. Choose a date only after clarifying it.");
     else if (item.deadline.status === "ambiguous") issues.push("The deadline is ambiguous. A date needs your clarification.");
@@ -125,7 +127,17 @@ export function validateExtraction(source: string, input: unknown, revision = 1)
 }
 
 export function canConfirmDate(action: ReviewedAction): boolean {
-  return validDate(action.date) && (!action.requiresTime || cutoffFitsCalendar(action.date, action.time, action.utcOffset));
+  return dateConfirmationIssues(action).length === 0;
+}
+export function dateConfirmationIssues(action: ReviewedAction): string[] {
+  const issues: string[] = [];
+  if (!validDate(action.date)) issues.push("Supply a complete, valid date in Review details.");
+  if (action.requiresTime) {
+    if (!validTime(action.time)) issues.push("Supply a valid cutoff time in Review details.");
+    if (!validOffset(action.utcOffset)) issues.push("Supply a valid UTC offset for the cutoff date.");
+    if (validDate(action.date) && validTime(action.time) && validOffset(action.utcOffset) && !cutoffFitsCalendar(action.date, action.time, action.utcOffset)) issues.push("This cutoff falls outside the supported calendar range after UTC conversion. Check the date, time and offset.");
+  }
+  return issues;
 }
 export function manualAction(source: string, title: string, quote: string, condition: string, id: number): ReviewedAction {
   const input = noticeInputState(source);

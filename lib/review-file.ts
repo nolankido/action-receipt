@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, locateEvidence, mentionsTime, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
+import { MAX_CALENDAR_DRAFT_LENGTH, MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, locateEvidence, mentionsTime, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
 import type { ReceiptMeta } from "./export.ts";
 import { extractLocally } from "./local-extraction.ts";
 
@@ -11,8 +11,8 @@ const savedAction = z.object({
   id: identifier, title: z.string().max(240), originalTitle: z.string().min(1).max(240),
   condition: z.string().max(600), originalCondition: z.string().max(600),
   evidence: z.array(quote).min(1).max(4), dateEvidence: z.array(quote).max(4), deadlineText: z.string().max(5000),
-  date: z.string().max(10), originalDate: z.string().max(10), time: z.string().max(5), originalTime: z.string().max(5),
-  utcOffset: z.string().max(6), originalUtcOffset: z.string().max(6), requiresTime: z.boolean(), omitted: z.boolean(),
+  date: z.string().max(10), originalDate: z.string().max(10), time: z.string().max(MAX_CALENDAR_DRAFT_LENGTH), originalTime: z.string().max(5),
+  utcOffset: z.string().max(MAX_CALENDAR_DRAFT_LENGTH), originalUtcOffset: z.string().max(6), requiresTime: z.boolean(), omitted: z.boolean(),
   origin: z.enum(["extracted", "rules", "user", "imported"]), issues: z.array(z.string().min(1).max(600)).max(24),
 }).strict();
 const decisionSchema = z.object({ kind: z.enum(["linked", "not_action", "clarify"]), note: z.string().trim().min(1).max(600), actionId: identifier.nullable() }).strict().refine(d => d.kind === "linked" ? d.actionId !== null : d.actionId === null);

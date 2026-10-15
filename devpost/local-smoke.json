@@ -195,6 +195,7 @@
             "origin": "rules",
             "issues": [
               "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "A date appears in the passage, but its role as this action's deadline is not established. Check it manually.",
               "The notice gives conflicting date information. Choose a date only after clarifying it."
             ]
           },
@@ -852,6 +853,153 @@
           "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
         ],
         "attention": []
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "invalid-calendar",
+      "source": "Submit the astronomy form by February 30, 2032 for the event on March 1, 2032.",
+      "expectedDates": [
+        ""
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Submit the astronomy form",
+            "title": "Submit the astronomy form",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Submit the astronomy form by February 30, 2032 for the event on March 1, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Submit the astronomy form by February 30, 2032 for the event on March 1, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Submit the astronomy form by February 30, 2032 for the event on March 1, 2032.",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "The written date “February 30, 2032” is invalid or outside the supported calendar range. Clarify it before confirming a date.",
+              "A date appears in the passage, but its role as this action's deadline is not established. Check it manually.",
+              "The deadline is ambiguous. A date needs your clarification."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "Source passages flagged for review: 1. This list is not exhaustive."
+        ],
+        "attention": [
+          {
+            "id": "review-r1-p1-f1",
+            "evidence": {
+              "quote": "Submit the astronomy form by February 30, 2032 for the event on March 1, 2032.",
+              "starts": [
+                0
+              ]
+            },
+            "reason": "Date needs clarification: The written date “February 30, 2032” is invalid or outside the supported calendar range. Clarify it before confirming a date."
+          }
+        ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "mixed-numeric-calendar",
+      "source": "Pay the astronomy deposit by April 2, 2032 (printed deadline 04/03/2032).",
+      "expectedDates": [
+        ""
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Pay the astronomy deposit",
+            "title": "Pay the astronomy deposit",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Pay the astronomy deposit by April 2, 2032 (printed deadline 04/03/2032).",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Pay the astronomy deposit by April 2, 2032 (printed deadline 04/03/2032).",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Pay the astronomy deposit by April 2, 2032 (printed deadline 04/03/2032).",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "Numeric date wording “04/03/2032” has no supported interpretation here. Clarify it without choosing a date locale.",
+              "The deadline is ambiguous. A date needs your clarification."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "Source passages flagged for review: 1. This list is not exhaustive."
+        ],
+        "attention": [
+          {
+            "id": "review-r1-p1-f1",
+            "evidence": {
+              "quote": "Pay the astronomy deposit by April 2, 2032 (printed deadline 04/03/2032).",
+              "starts": [
+                0
+              ]
+            },
+            "reason": "Date needs clarification: Numeric date wording “04/03/2032” has no supported interpretation here. Clarify it without choosing a date locale."
+          }
+        ]
       },
       "automatic_checks": "passed",
       "human_review": "not_reviewed"
