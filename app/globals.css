@@ -334,11 +334,15 @@ input[type=checkbox]:disabled { cursor: not-allowed; }
 .manual-toggle { display: flex; align-items: center; gap: 7px; width: 100%; min-height: 45px; padding: 9px 0; color: var(--green); background: transparent; text-align: left; font-size: 12px; font-weight: 600; line-height: 1.6; }
 .manual-toggle > svg:last-child { margin-left: auto; }
 .manual-action-form { padding: 6px 0 12px; }
-.manual-action-form > p:first-child { margin-bottom: 14px; color: var(--muted); font-size: 12px; line-height: 1.8; }
-.manual-action-form > label { display: block; margin: 15px 0 7px; color: #465f3e; font-size: 12px; font-weight: 600; }
+.manual-action-form[hidden] { display: none; }
+.manual-action-form fieldset { min-width: 0; padding: 0; margin: 0; border: 0; }
+.manual-action-form legend { color: var(--green); font-size: 15px; font-weight: 650; line-height: 1.6; }
+.manual-action-form fieldset > p:first-of-type { margin: 8px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.manual-action-form fieldset > label { display: block; margin: 15px 0 7px; color: #465f3e; font-size: 12px; font-weight: 600; }
 .manual-action-form label > span { font-weight: 400; }
 .manual-action-form input, .manual-action-form textarea { font-size: 14px; }
-.manual-action-form .primary-button { margin-top: 15px; }
+.manual-action-readiness { margin-top: 14px; color: var(--green); font-size: 12px; line-height: 1.8; }
+.manual-form-buttons { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; }
 .matched-passage { color: #38632c; }
 .reuse-passage { margin-top: 4px; }
 

@@ -27,6 +27,7 @@ import { planSourceReturn, type SourceOrigin } from "../lib/source-inspection.ts
 import ReviewFileFeedback from "./review-file-feedback.tsx";
 import type { ReviewFileFeedback as FileFeedback } from "../lib/review-file-feedback.ts";
 import CalendarReview from "./calendar-review.tsx";
+import ManualActionEditor from "./manual-action-editor.tsx";
 
 function saveFile(text: string, type: string, name: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -46,35 +47,24 @@ function SourcePassage({ source, selected }: { source: string; selected: Evidenc
   return <>{chunks}</>;
 }
 
-function ManualActionForm({ source, disabled, selected, onAdd }: { source: string; disabled: boolean; selected: Evidence | null; onAdd: (title: string, quote: string, condition: string) => void }) {
+function ManualActionForm({ source, disabled, limitReached, selected, onAdd }: { source: string; disabled: boolean; limitReached: boolean; selected: Evidence | null; onAdd: (title: string, quote: string, condition: string) => void }) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [quote, setQuote] = useState("");
   const [condition, setCondition] = useState("");
   const [error, setError] = useState("");
   const titleInput = useRef<HTMLInputElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
   useEffect(() => { if (open) titleInput.current?.focus(); }, [open]);
-  const quoteTooLong = quote.trim().length > 1200;
-  const exactMatch = Boolean(quote.trim() && !quoteTooLong && source.includes(quote.trim()));
+  function close() { setOpen(false); if (toggle.current?.disabled) document.getElementById("actions-heading")?.focus(); else toggle.current?.focus(); }
   return <div className="manual-action-area">
-    <button className="manual-toggle" disabled={disabled} aria-expanded={open} aria-controls="manual-action-form" onClick={() => setOpen(!open)}><Plus size={15} /> {open ? "Close action form" : "Add an action from the source"}<ChevronDown size={14} className={open ? "rotate" : ""} /></button>
-    {disabled && <p className="field-hint">Add actions after processing finishes. A receipt can hold up to 20 actions.</p>}
-    {open && <form id="manual-action-form" className="manual-action-form" onSubmit={e => {
+    <button ref={toggle} className="manual-toggle" disabled={disabled} aria-expanded={open} aria-controls="manual-action-form" onClick={() => open ? close() : setOpen(true)}><Plus size={15} /> {open ? "Close action form" : "Add an action from the source"}<ChevronDown size={14} className={open ? "rotate" : ""} /></button>
+    {disabled && <p className="field-hint">{limitReached ? "The receipt has reached its 20-action limit, including omitted actions. Review existing actions instead." : "Add actions after the notice or review file finishes loading."}</p>}
+    <ManualActionEditor open={open} source={source} disabled={disabled} limitReached={limitReached} selected={selected} title={title} quote={quote} condition={condition} error={error} titleRef={titleInput} onChange={patch => { if (patch.title !== undefined) setTitle(patch.title); if (patch.quote !== undefined) setQuote(patch.quote); if (patch.condition !== undefined) setCondition(patch.condition); }} onReuse={() => { if (selected) { setQuote(selected.quote); setError(""); } }} onClose={close} onSubmit={e => {
       e.preventDefault(); if (disabled) return;
       try { onAdd(title, quote, condition); setTitle(""); setQuote(""); setCondition(""); setError(""); setOpen(false); }
       catch (e) { setError(e instanceof Error ? e.message : "This action could not be added."); }
-    }}>
-      <p>Repair a missed instruction, or review a notice yourself. Your action will be labeled as added by you and needs approval before export.</p>
-      <label htmlFor="manual-action-title">What needs to be done?</label><input ref={titleInput} id="manual-action-title" required maxLength={240} value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Bring a signed permission slip" />
-      <label htmlFor="manual-action-quote">Exact supporting passage</label><textarea id="manual-action-quote" required rows={3} value={quote} onChange={e => setQuote(e.target.value)} placeholder="Copy the relevant words from the original notice." aria-invalid={quoteTooLong || Boolean(quote.trim() && !exactMatch)} aria-describedby="manual-passage-hint" />
-      {selected && <button className="text-button reuse-passage" type="button" disabled={selected.quote.length > 1200} onClick={() => { setQuote(selected.quote); setError(""); }}><Quote size={13} /> Use highlighted passage</button>}
-      {selected && selected.quote.length > 1200 && <p className="field-hint">The highlighted passage is longer than 1,200 characters. Copy a shorter exact excerpt from it.</p>}
-      <p className={`field-hint ${exactMatch ? "matched-passage" : ""}`} id="manual-passage-hint" role="status">{quoteTooLong ? "The full paste is kept, but this excerpt is over 1,200 characters. Choose a shorter exact excerpt that keeps any applicable conditions, dates and times." : quote.trim() ? exactMatch ? "This passage occurs in the notice. Check that it supports your action." : "This passage does not match the notice. Copy its exact wording." : "Include any conditions, dates and times that apply. Up to 1,200 characters."}</p>
-      <label htmlFor="manual-action-condition">Condition or optionality <span>(optional)</span></label><input id="manual-action-condition" maxLength={600} value={condition} onChange={e => setCondition(e.target.value)} placeholder="e.g. Only if you plan to attend" />
-      <p className="field-hint">Set and confirm any date in Review details after adding the action.</p>
-      {error && <p className="error-message" role="alert">{error}</p>}
-      <button className="primary-button" type="submit" disabled={disabled || !title.trim() || !exactMatch}><Plus size={15} /> Add for review</button>
-    </form>}
+    }} />
   </div>;
 }
 
@@ -394,7 +384,7 @@ export default function ReceiptWorkspace() {
                 </div>
               </div>
               {notes.length > 0 && <details className="notice-notes"><summary><Info size={14} /> Notice-level notes <ChevronDown size={13} /></summary><ul>{notes.map((note, i) => <li key={i}>{note}</li>)}</ul></details>}
-              {inputState.ready && <ManualActionForm key={requestId.current} source={source} disabled={busy || openingReview || actions.length >= 20} selected={selected} onAdd={addManual} />}
+              {inputState.ready && <ManualActionForm key={requestId.current} source={source} disabled={busy || openingReview || actions.length >= 20} limitReached={actions.length >= 20} selected={selected} onAdd={addManual} />}
               <div className="export-area"><div className="export-title"><span className="export-icon"><ShieldCheck size={18} /></span><div><h3>Your approval controls the tasks.</h3><p>Files also include source quotes, decision notes and flagged passages.</p></div></div><button className="preview-button" disabled={busy || openingReview || !actions.length} onClick={() => setPreviewOpen(true)}><Eye size={16} /> Preview downloads & see what is missing <ArrowUpRight size={14} /></button><button className="preview-button question-open" disabled={busy || openingReview || !questionCount} onClick={openQuestions}><MessageCircleQuestion size={16} /> Prepare clarification questions <span>{questionCount}</span></button><div className="export-buttons"><button disabled={!approved.length} onClick={exportChecklist}><Download size={15} /> Checklist <span>{approved.length}</span></button><button disabled={!calendar.length} onClick={exportCalendar}><CalendarDays size={15} /> Calendar <span>{calendar.length}</span></button></div><p className="export-hint">{approved.length > calendar.length ? `${approved.length - calendar.length} approved item${approved.length - calendar.length === 1 ? " stays" : "s stay"} in the checklist only. Confirm complete dates in Review details to include them in the calendar.` : "Downloads a Markdown checklist or .ics file. Nothing is added to your calendar automatically."}</p></div>
             </section>
           </div>

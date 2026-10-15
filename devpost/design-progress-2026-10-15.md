@@ -252,3 +252,30 @@ The v0.22.0 application publication completed on October 15, 2026 at 16:00 UTC. 
 Private deployment `appgdep_6ad0f8acd01c819194685dfd56998089` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_6c7cfa3099988191959984668c73bf4c` at the existing preview URL. Application SHA-256: `3571e639377b7c920a9d7a052154b171265cb6253078cf0ff7d74f1c510379b8`. Portable archive SHA-256: `ca5d0e710cc9a443b180cbbed73f3a3855618464d6a6fa601e0d09db43b42549`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal fingerprints and all 34 archive members.
 
 This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
+
+## Manual-repair form states: v0.23.0
+
+Verified starting state: public main `f548f3e0c99ca6b1945baf622dbe58822665d9c2`, Sites source `1b4dd7a3b9fa8cdf5a264e48c62691f9b2dddf0c`, shared tree `3467d5ad2a35b9c35b372369957fa55052d35b71`. The previous documentation follow-up succeeded privately as deployment `appgdep_6ad0f912d6f08191880628e692a06421` for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_aac6575ad484819192bf81b47cf06fb5`. Current main, recent commits, open PRs, repository instructions, this record and actual source were read. No AGENTS.md file, open PR, dirty checkout or observable concurrent writer was found. Source was reopened with the Sites helper. Audience remains custom owner-only with no additional visitors.
+
+### Source-inspected problem and change
+
+The manual action toggle referenced a form ID that did not exist while closed. The form's single disabled explanation also told users to wait for processing even when the permanent 20-action capacity was the actual blocker. Once inside the form, its close control was only above all the fields.
+
+The manual editor now remains in the DOM behind the native hidden attribute when closed, giving the toggle a real, stable control target. Existing in-memory drafts remain intact when closing, and the interface explains that replacement/rescanning clears them and review-file downloads exclude unfinished entries. A bottom Close without adding control provides an explicit exit without requiring a return to the top. Closing restores focus to the toggle, or to the actions heading if the toggle is disabled.
+
+Loading and capacity messages are distinct; capacity explicitly includes omitted actions. Fields are grouped in a named fieldset and disabled together while adding is unavailable. The close control stays outside that disabled fieldset so presentation can still be closed. A concise readiness message explains missing wording or an unmatched/oversized excerpt before the disabled submit button. Exact evidence feedback, highlighted-passage reuse, full overlong pastes and condition/date guidance remain.
+
+The domain add handler, evidence checks, limits, action provenance, approval/date requirements and successful-add focus are unchanged. No extraction feature, cross-session draft storage, dependency, network request or account was added.
+
+### Executed checks and limits
+
+- All 186 existing tests passed. No extra test count was needed for this UI refactor.
+- TypeScript and `git diff --check` passed.
+- The supported static build, all 14 fresh synthetic scans and the source-hashed production-domain rehearsal passed. The new editor component is included in the rehearsal fingerprint.
+- Ten actual SSR states passed structural checks: workspace with the closed target, closed draft, empty form, mismatched excerpt, oversized excerpt, ready form, loading, capacity, oversized highlighted passage and domain error. Checks covered unique IDs, field labels and descriptions, the actual closed control target, hidden state, submit/fieldset gates, an enabled type-button close control, capacity/loading copy, full pasted text, preserved error details and initially unchecked approvals.
+- Temporary direct component-handler checks confirmed untruncated 1,201-character change forwarding and a close-only callback without form submission. These checks do not execute browser events.
+- Existing form typography, paper/forest styling and status colors were retained. The Sites skill requires skipping browser QA because the required control-browser skill remains unavailable. Actual opening/closing focus, native disabled/hidden interaction, mobile fit and screen-reader behavior remain unverified. No screenshots or browser tests are claimed.
+
+The portable archive is regenerated and verified against the final source, HTML and rehearsal hashes. Returned publication identities are recorded separately. Submission, video, personal declarations and account work remain untouched.
+
+Next useful task: run supported browser QA when available, especially closed-form tab order, first-field focus, bottom-close return, fieldset blocking and highlighted-passage reuse. Otherwise consolidate evidence and inspect for a reproduced regression rather than adding features or cosmetic changes to fill the remaining time.

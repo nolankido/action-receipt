@@ -99,7 +99,7 @@ assert.ok(reopened.meta.attention?.every(f => f.decision && !f.decision.confirme
 
 const files = [
   "app/receipt-workspace.tsx", "app/globals.css", "app/review-guide.tsx", "app/source-review-queue.tsx", "app/source-review-editor.tsx", "app/calendar-review.tsx", "app/export-preview.tsx",
-  "app/clarification-sheet.tsx", "app/download-feedback.tsx", "app/recovery-banner.tsx", "app/review-save-status.tsx", "app/review-file-feedback.tsx", "app/action-view-controls.tsx", "app/source-inspection-bar.tsx", "standalone/main.tsx", "vite.static.config.ts",
+  "app/clarification-sheet.tsx", "app/download-feedback.tsx", "app/manual-action-editor.tsx", "app/recovery-banner.tsx", "app/review-save-status.tsx", "app/review-file-feedback.tsx", "app/action-view-controls.tsx", "app/source-inspection-bar.tsx", "standalone/main.tsx", "vite.static.config.ts",
   "scripts/build-static.mjs", "scripts/rehearse-demo.ts", "package.json", "pnpm-lock.yaml",
   ...(await readdir("lib")).filter(n => n.endsWith(".ts")).map(n => "lib/" + n),
 ].sort();
