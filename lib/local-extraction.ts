@@ -1,19 +1,18 @@
 import { MAX_NOTICE_LENGTH, MIN_NOTICE_LENGTH, explicitDates, locateEvidence, mentionsTime, validateExtraction, validOffset, validTime, type Extraction, type RawAction, type ReviewedAction, type SourceReviewItem } from "./receipt.ts";
+import { datedWeekdayPattern, protectDateAbbreviations, weekdayConflicts, weekdayPattern } from "./dates.ts";
 
 const verbs = "register|pay|bring|submit|upload|email|contact|complete|apply|return|sign|fill|send|book|reserve|confirm|check|download|print|prepare|attend|arrive|ask|use";
 const instruction = new RegExp(`^(?:(?:please|then|also)\\s+|(?:you\\s+)?(?:must|should|need to|are required to|have to|can|may)\\s+)?(${verbs})\\b`, "i");
 const negated = /\b(?:do not|don't|does not|doesn't|must not|should not|no longer|not required|not necessary|need not|no need to|not need to|withdrawn|cancelled|canceled|waived)\b/i;
-const relative = /\b(?:next|this|coming)\s+(?:monday|tuesday|wednesday|thursday|friday|saturday|sunday|week|month)|\b(?:today|tomorrow|tonight|yesterday)|\bwithin\b|\bin\s+(?:\d+|one|two|three|four|five|six|seven|ten)\s+(?:days?|weeks?)\b/i;
+const relative = new RegExp(`\\b(?:next|this|coming)\\s+(?:${weekdayPattern}|week|month)\\b|\\b(?:today|tomorrow|tonight|yesterday)|\\bwithin\\b|\\bin\\s+(?:\\d+|one|two|three|four|five|six|seven|ten)\\s+(?:days?|weeks?)\\b`, "i");
 const deadlineMarker = /\b(?:by|before|within|no later than|due|deadline|cutoff|until)\b/i;
 const multipleInstructions = new RegExp(`(?:\\band\\b|\\bthen\\b|;)\\s+(?:please\\s+)?(?:${verbs})\\b`, "i");
-const months = "january|february|march|april|may|june|july|august|september|october|november|december";
-const fullDate = `(?:\\d{4}-\\d{2}-\\d{2}|(?:${months})\\s+\\d{1,2}(?:st|nd|rd|th)?[,]?\\s+\\d{4}|\\d{1,2}(?:st|nd|rd|th)?\\s+(?:${months})[,]?\\s+\\d{4})`;
-const temporalDate = new RegExp(`\\b(?:by|before|no later than|on or before|due(?:\\s+on)?|until)\\s+(?:the\\s+)?${fullDate}\\b`, "i");
-const scheduledDate = new RegExp(`\\bon\\s+${fullDate}\\b`, "i");
+const temporalDate = new RegExp(`\\b(?:by|before|no later than|on or before|due(?:\\s+on)?|until)\\s+(?:the\\s+)?${datedWeekdayPattern}\\b`, "i");
+const scheduledDate = new RegExp(`\\bon\\s+${datedWeekdayPattern}\\b`, "i");
 
 function passages(source: string): string[] {
   const segmenter = new Intl.Segmenter("en", { granularity: "sentence" });
-  return source.split(/\r?\n/).flatMap(line => [...segmenter.segment(line)].map(s => s.segment.trim())).filter(Boolean);
+  return source.split(/\r?\n/).flatMap(line => [...segmenter.segment(protectDateAbbreviations(line))].map(s => line.slice(s.index, s.index + s.segment.length).trim())).filter(Boolean);
 }
 function clock(text: string): string | null {
   const values = new Set<string>();
@@ -82,7 +81,9 @@ export function extractLocally(source: string, revision = 1): { actions: Reviewe
     const hasDateContext = dates.length > 0 || relative.test(actionContent) || deadlineMarker.test(actionContent) || mentionsTime(actionContent);
     const linkedDate = temporalDate.exec(actionContent) ?? (/^(?:bring|attend|arrive|return)$/i.test(match[1]) ? scheduledDate.exec(actionContent) : null);
     const clearRole = Boolean(linkedDate);
-    const status: RawAction["deadline"]["status"] = !hasDateContext ? "missing" : dates.length === 1 && clearRole && !relative.test(actionContent) && !many ? "explicit" : "ambiguous";
+    const weekdayIssues = weekdayConflicts(actionContent);
+    const status: RawAction["deadline"]["status"] = weekdayIssues.length ? "conflict" : !hasDateContext ? "missing" : dates.length === 1 && clearRole && !relative.test(actionContent) && !many ? "explicit" : "ambiguous";
+    if (weekdayIssues.length) flag(index, quote, "Weekday/date conflict: " + weekdayIssues[0]);
     if (condition && (explicitDates(condition).length || relative.test(condition) || mentionsTime(condition))) issues.push("A date or time appears in the condition. It was kept as a qualification, not used as this action's deadline.");
     if (body.includes(";")) flag(index, quote, "This passage has several clauses. Details after the semicolon were not linked as a deadline; inspect any additional instructions manually.");
     if (many) issues.push("This passage may contain several actions. Split or correct it manually before approval; no date is assigned automatically.");

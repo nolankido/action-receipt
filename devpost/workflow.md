@@ -39,3 +39,6 @@ The learner requested another improvement pass before submission. Added explicit
 
 ## Download-preview improvement
 The learner requested another improvement pass. Added a read-only preview within the approved export workflow. Included actions and exclusion reasons share eligibility rules with the actual downloads; the exact serialized content is inspectable and downloadable. Conditions, offsets and source-context disclosure remain visible. Six additional behavioral tests cover agreement between export plans and actual files, plus date and review transitions. Sixty-three automated tests pass. No browser observation, new user feedback or submission is claimed.
+
+## Date-reading improvement
+The learner requested another improvement pass. Direct synthetic checks reproduced two gaps: abbreviation periods split date-bearing instructions, and a contradictory written weekday did not block a complete date proposal. Shared bounded calendar syntax now supports common English month abbreviations, preserves original quotations during segmentation and checks immediately attached weekdays independently in validation. Conflicts stay unresolved and source-linked; no year or numeric locale is inferred. Twelve additional tests and two fresh smoke cases cover these changes. No learner observation or exhaustive language coverage is claimed.

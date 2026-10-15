@@ -30,6 +30,8 @@ Implement `prd.md > Look and Feel` with warm paper backgrounds, white document s
 ### Validation and Review Rules
 `lib/receipt.ts` implements `prd.md > Evidence Review` and `Dates and Conditions`. Treat proposal fields as untrusted; cap counts and lengths; locate exact quotations locally; preserve issue codes and conditions. A complete explicit date is required for calendar eligibility; date confirmation is distinct from approval. Code confirms quotation presence only, not the truth or completeness of extraction.
 
+`lib/dates.ts` shares bounded full-date patterns between the rule engine and validator. English month names and common abbreviations work in either written order with an explicit four-digit year. Immediately attached full/abbreviated weekdays are checked using UTC calendar arithmetic; contradictions block source date proposals and create visible source-review context. User clarification can resolve calendar eligibility while original warnings persist. A same-length internal substitution protects abbreviation periods during sentence segmentation; quotations and positions always come from the original unchanged source. Missing years, ambiguous numeric formats, relative wording and uncertain date roles remain unresolved.
+
 ### Exports
 `lib/export.ts` implements `prd.md > Export`. Export only approved items. Escape iCalendar content lines, fold UTF-8 lines, use stable per-action UIDs, represent date-only entries as all-day markers and timed deadlines as zero-duration instants with explicit offsets. Never invent an event length. Omit unresolved calendar items visibly. Preserve notice notes and source-review flags as context in both download formats, without creating additional tasks or events.
 
@@ -47,7 +49,7 @@ An immutable source string and revision; proposal mode/origin; candidate actions
 ## File Structure
 - `standalone/`, `vite.static.config.ts`: static browser entry.
 - `app/receipt-workspace.tsx`, `app/globals.css`: review UI.
-- `lib/local-extraction.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, validation, downloads, local review continuation and examples.
+- `lib/local-extraction.ts`, `lib/dates.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, calendar syntax, validation, downloads, local review continuation and examples.
 - `scripts/build-static.mjs`: inlines JavaScript/styles/icons and license notices into the distribution, adds a network-blocking policy, rejects external runtime asset references.
 - `release/action-receipt.html`: committed standalone app.
 - `tests/`, `devpost/`: behavioral checks, Skill Pack evidence and technical plan.
@@ -68,6 +70,6 @@ No external runtime services. Development dependencies are listed in package/loc
 The learner explicitly required no new spending. A single-file ordinary browser app avoids API bills, model downloads, hardware-specific inference setup and hosting dependence. Manual source-backed repair covers bounded-parser omissions while preserving the original evidence/approval kernel.
 
 ## Decisions and Open Issues
-The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Sixty-three automated tests, fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
+The cost-free runtime is the learner's decision. No successful live model extraction is required or claimed. Historical failed API reports remain as history. Seventy-five automated tests, five fresh local smoke checks and a static build establish narrow mechanical behavior; actual browser interaction, learner review and the public demo/answers/submission remain pending.
 
 Date resolution retains original warnings. A confirmed user-supplied date can become calendar-eligible while original ambiguity remains in exports. Exact action evidence is always mandatory. Saved examples, local rules and user additions retain distinct provenance.

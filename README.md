@@ -14,6 +14,7 @@ The optional hosted review site is https://action-receipt.huzzahoptimistically.c
 - Preserve exact supporting passages and visible conditions, including trailing waivers.
 - Show a source-linked review list for unlinked dates, unsupported obligations, cancellations and skipped passages. The manual form can reuse a highlighted quote. The list is bounded at 80 entries and reports overflow; it is not an exhaustive source review.
 - Propose complete dates only from the actual action clause with a recognized temporal link. Dates/times inside conditions and separate clauses are not borrowed as deadlines. Conflicting clocks/offsets need manual clarification. Relative dates, missing years, ambiguous numeric formats, several dates and uncertain roles require review.
+- Understand full or common abbreviated English month names with four-digit years, such as `Nov. 5, 2032` and `5 Nov 2032`. Keep exact source quotations and check immediately attached weekdays. A weekday/date contradiction stays unresolved with a source-linked flag.
 - Require separate action approval and date confirmation. Timed cutoffs also require a complete time and explicit UTC offset.
 - Save a local review file and reopen it later with source, edits, omissions and context intact. Opening resets every action approval and date confirmation; imported interpretations stay visibly unverified.
 - Export approved checklists and eligible calendar entries, retaining source quotations, warnings, notice-level notes, flagged source context, mode and user corrections. Source-review flags stay context; they do not create extra tasks or calendar events.
@@ -44,13 +45,14 @@ npm run build
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 63 automated tests, TypeScript and the static build pass. Three fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
+Current verification: 75 automated tests, TypeScript and the static build pass. Five fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding.
 
 ## Project structure
 
 - `standalone/`, `vite.static.config.ts`: static React entry and configuration.
 - `app/receipt-workspace.tsx`, `app/export-preview.tsx`, `app/globals.css`: review interface and read-only download preview.
 - `lib/local-extraction.ts`: bounded, network-free English text rules.
+- `lib/dates.ts`: shared English date patterns and adjacent weekday consistency checks.
 - `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`: evidence, date/review rules, approved exports and explicit local review save/open.
 - `lib/samples.ts`: synthetic notices and saved walkthroughs.
 - `scripts/build-static.mjs`: self-contained HTML packaging and license preservation.

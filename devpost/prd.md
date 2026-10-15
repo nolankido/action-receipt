@@ -31,6 +31,8 @@ Every action and date may have separate exact quotations. Match them against imm
 ### Dates and Conditions
 Display original date wording. Explicit full dates can be proposed, but every date needs human confirmation. Relative dates, missing years, incomplete times/zones, invalid dates and conflicts require clarification. Optional or conditional instructions keep those qualifications visible. The user may keep an action undated for checklist use. Calendar export requires a confirmed calendar date; timed source deadlines require a confirmed time and UTC offset. No guessed dates, durations or reminders.
 
+Recognize full and common abbreviated English month names in month-first or day-first dates with explicit four-digit years. Preserve periods in abbreviations as source text, not sentence boundaries. An immediately adjacent written weekday may qualify a date; if the weekday contradicts the calendar date, leave the date unresolved and show an exact-source conflict flag. Do not choose which part is correct. This is a bounded syntax check, not exhaustive language interpretation.
+
 ### Corrections and Approval
 Each action can be edited, omitted or approved. A missed action can be added from an exact supporting source passage, including by reusing the currently highlighted passage in the manual form, with an optional condition and explicit user provenance. This works without AI. It begins with an unresolved date and no approval; the same date and export gates apply. Receipts hold at most 20 actions. Changing an action, date or condition revokes its approval. A user-supplied date is labeled as such. All actions start unapproved. An unresolved action may be approved for checklist use with the issue retained; it stays ineligible for calendar export.
 

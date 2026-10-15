@@ -375,6 +375,265 @@
       },
       "automatic_checks": "passed",
       "human_review": "not_reviewed"
+    },
+    {
+      "id": "abbreviated-dates",
+      "source": "Register for the film lab by Thu., Sept. 2, 2032. Pay the equipment deposit by 4 Sep. 2032. If you need accessible transport, email the coordinator by next Monday.",
+      "expectedDates": [
+        "2032-09-02",
+        "2032-09-04",
+        ""
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Register for the film lab",
+            "title": "Register for the film lab",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Register for the film lab by Thu., Sept. 2, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Register for the film lab by Thu., Sept. 2, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Register for the film lab by Thu., Sept. 2, 2032.",
+            "originalDate": "2032-09-02",
+            "date": "2032-09-02",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          },
+          {
+            "id": "r1-a2",
+            "originalTitle": "Pay the equipment deposit",
+            "title": "Pay the equipment deposit",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Pay the equipment deposit by 4 Sep. 2032.",
+                "starts": [
+                  50
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Pay the equipment deposit by 4 Sep. 2032.",
+                "starts": [
+                  50
+                ]
+              }
+            ],
+            "deadlineText": "Pay the equipment deposit by 4 Sep. 2032.",
+            "originalDate": "2032-09-04",
+            "date": "2032-09-04",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          },
+          {
+            "id": "r1-a3",
+            "originalTitle": "email the coordinator by next Monday",
+            "title": "email the coordinator by next Monday",
+            "originalCondition": "If you need accessible transport",
+            "condition": "If you need accessible transport",
+            "evidence": [
+              {
+                "quote": "If you need accessible transport, email the coordinator by next Monday.",
+                "starts": [
+                  92
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "email the coordinator by next Monday.",
+                "starts": [
+                  126
+                ]
+              }
+            ],
+            "deadlineText": "email the coordinator by next Monday.",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "The deadline is ambiguous. A date needs your clarification."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ],
+        "attention": []
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
+    },
+    {
+      "id": "weekday-conflict",
+      "source": "Submit the film list by Friday, Sep. 6, 2032. Bring your student ID on Sep. 7, 2032.",
+      "expectedDates": [
+        "",
+        "2032-09-07"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Submit the film list",
+            "title": "Submit the film list",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Submit the film list by Friday, Sep. 6, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Submit the film list by Friday, Sep. 6, 2032.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Submit the film list by Friday, Sep. 6, 2032.",
+            "originalDate": "",
+            "date": "",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "unresolved",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "The written weekday Friday does not match 2032-09-06 (Monday). Clarify the deadline before confirming a date.",
+              "The notice gives conflicting date information. Choose a date only after clarifying it."
+            ]
+          },
+          {
+            "id": "r1-a2",
+            "originalTitle": "Bring your student ID on Sep. 7, 2032",
+            "title": "Bring your student ID on Sep. 7, 2032",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Bring your student ID on Sep. 7, 2032.",
+                "starts": [
+                  46
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Bring your student ID on Sep. 7, 2032.",
+                "starts": [
+                  46
+                ]
+              }
+            ],
+            "deadlineText": "Bring your student ID on Sep. 7, 2032.",
+            "originalDate": "2032-09-07",
+            "date": "2032-09-07",
+            "time": "",
+            "utcOffset": "",
+            "originalTime": "",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": false,
+            "requiresTime": false,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence.",
+          "Source passages flagged for review: 1. This list is not exhaustive."
+        ],
+        "attention": [
+          {
+            "id": "review-r1-p1",
+            "evidence": {
+              "quote": "Submit the film list by Friday, Sep. 6, 2032.",
+              "starts": [
+                0
+              ]
+            },
+            "reason": "Weekday/date conflict: The written weekday Friday does not match 2032-09-06 (Monday). Clarify the deadline before confirming a date."
+          }
+        ]
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
     }
   ]
 }

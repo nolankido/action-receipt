@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { explicitDates, validDate, weekdayConflicts } from "./dates.ts";
+export { explicitDates, validDate } from "./dates.ts";
 
 export const MAX_NOTICE_LENGTH = 15_000;
 export const MIN_NOTICE_LENGTH = 30;
@@ -50,14 +52,6 @@ export type ReviewedAction = {
   issues: string[];
 };
 
-export function validDate(value: string): boolean {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const [y, m, d] = value.split("-").map(Number);
-  if (y < 1000 || m < 1 || m > 12 || d < 1 || d > 31) return false;
-  const date = new Date(Date.UTC(y, m - 1, d));
-  return date.getUTCFullYear() === y && date.getUTCMonth() === m - 1 && date.getUTCDate() === d;
-}
-
 export function validTime(value: string): boolean {
   return /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
 }
@@ -81,24 +75,6 @@ export function locateEvidence(source: string, quote: string): Evidence {
   return { quote, starts };
 }
 
-const monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-export function explicitDates(text: string): string[] {
-  const dates = new Set<string>();
-  for (const match of text.matchAll(/\b(\d{4}-\d{2}-\d{2})\b/g)) {
-    if (validDate(match[1])) dates.add(match[1]);
-  }
-  const words = monthNames.join("|");
-  for (const match of text.matchAll(new RegExp(`\\b(${words})\\s+(\\d{1,2})(?:st|nd|rd|th)?[,]?\\s+(\\d{4})\\b`, "gi"))) {
-    const date = `${match[3]}-${String(monthNames.indexOf(match[1].toLowerCase()) + 1).padStart(2, "0")}-${match[2].padStart(2, "0")}`;
-    if (validDate(date)) dates.add(date);
-  }
-  for (const match of text.matchAll(new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(${words})[,]?\\s+(\\d{4})\\b`, "gi"))) {
-    const date = `${match[3]}-${String(monthNames.indexOf(match[2].toLowerCase()) + 1).padStart(2, "0")}-${match[1].padStart(2, "0")}`;
-    if (validDate(date)) dates.add(date);
-  }
-  return [...dates];
-}
-
 export function mentionsTime(text: string): boolean {
   const withoutOffsets = text.replace(/\b(?:UTC|GMT)\s*[+-]\d{2}:\d{2}\b/gi, "");
   return /\b\d{1,2}(?::\d{2})?\s*(?:a\.?m\.?|p\.?m\.?)\b|\b(?:[01]?\d|2[0-3]):[0-5]\d\b|\b(?:noon|midnight|end of day|close of business)\b/i.test(withoutOffsets);
@@ -118,9 +94,11 @@ export function validateExtraction(source: string, input: unknown, revision = 1)
     if (item.deadline.text && !source.includes(item.deadline.text)) issues.push("The proposed deadline wording was not verbatim. The source quotations are preserved instead.");
     if ([...evidence, ...dateEvidence].some(e => e.starts.length > 1)) issues.push("A quotation appears more than once. Review all matching passages in context.");
     const quotedDates = explicitDates(dateEvidence.filter(e => e.starts.length).map(e => e.quote).join("\n"));
-    const explicit = item.deadline.status === "explicit" && dateQuotesValid && quotedDates.length === 1 && item.deadline.date === quotedDates[0];
+    const weekdayIssues = [...new Set(dateEvidence.filter(e => e.starts.length).flatMap(e => weekdayConflicts(e.quote)))];
+    issues.push(...weekdayIssues.slice(0, 3));
+    const explicit = item.deadline.status === "explicit" && dateQuotesValid && !weekdayIssues.length && quotedDates.length === 1 && item.deadline.date === quotedDates[0];
     const proposedDate = explicit && validDate(item.deadline.date ?? "") ? item.deadline.date! : "";
-    if (item.deadline.status === "conflict" || quotedDates.length > 1) issues.push("The notice gives conflicting date information. Choose a date only after clarifying it.");
+    if (weekdayIssues.length || item.deadline.status === "conflict" || quotedDates.length > 1) issues.push("The notice gives conflicting date information. Choose a date only after clarifying it.");
     else if (item.deadline.status === "ambiguous") issues.push("The deadline is ambiguous. A date needs your clarification.");
     else if (!proposedDate) issues.push(item.deadline.text ? "A complete, unambiguous date was not established from the quoted text." : "No deadline was stated for this action.");
     const timeContext = literalDeadline + " " + dateEvidence.filter(e => e.starts.length).map(e => e.quote).join(" ");
