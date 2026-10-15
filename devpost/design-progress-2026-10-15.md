@@ -174,3 +174,11 @@ The editor also states its existing draft limit: changing to another passage dis
 The portable archive is regenerated and verified against the final checked source, standalone HTML and rehearsal hashes. The publication receipt records returned identities separately. Submission, video, personal declarations and account work remain untouched.
 
 Next useful task: when supported browser QA is available, test the source editor's first-field focus, cancel return, error announcement, empty eligible-link state and long excerpts at narrow widths. Otherwise inspect the real export-preview exclusion and clarification flow for one concrete usability defect; preserve the current design and conservative review gates.
+
+### Verified publication receipt
+
+The v0.20.0 application publication completed on October 15, 2026 at 14:02 UTC. Public main was advanced without force from its expected head and reread as `715f303fceb1d9301ed46d472ad05f04e8ad06f8`. All 13 changed blobs and the complete 212-file tree `ac437de7e4dc1f0bd448b54b6c6da40f76943460` were hash-matched to Sites source `fb7b2ecdf5753b0fabb85c04e78d631876112b81` before main advanced.
+
+Private deployment `appgdep_6ad0dcec9a3c819193e4ad28254cd3ae` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_d1def61d08d48191b810bc10578ea01a` at the existing preview URL. Application SHA-256: `5770d78c43ecf4d1d8e751b7c124cf157eb9b2f4631bffd74ea3b31b84176008`. Portable archive SHA-256: `f0ef7c5bc9289890d8b3b2ef7106b6d6f287be59d0bed00b76f22718597ebfc0`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal fingerprints and all 34 archive members.
+
+This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
