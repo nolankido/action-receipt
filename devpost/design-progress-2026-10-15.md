@@ -209,3 +209,11 @@ The fixed dialog header/footer and existing source/context disclosures remain. R
 The portable archive is regenerated and verified against the final source, standalone HTML and rehearsal hashes. Returned publication identities are recorded in the publication receipt. Submission and video work remain untouched.
 
 Next useful task: use supported browser QA when available to test request/error announcements and scroll positioning inside both dialogs, unchanged download-button focus and edited-question stale feedback. Without that capability, inspect actual first-use, manual-action and empty-source paths for a concrete defect rather than adding more interface sections.
+
+### Verified publication receipt
+
+The v0.21.0 application publication completed on October 15, 2026 at 15:02 UTC. Public main was advanced without force from its expected head and reread as `28c7a07d73510d0ce55134140e07621c76a9906f`. All 15 changed blobs and the complete 215-file tree `35b48a49c0582c831e2c39f51ec21d4e6d93da09` were hash-matched to Sites source `62f556356d054926f94d20bcbe6d100ce5fafdbb` before main advanced.
+
+Private deployment `appgdep_6ad0eafa7474819182057be58857f308` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_900052f534188191bcfd8b46450e6ff5` at the existing preview URL. Application SHA-256: `4dbce6349bcadbca234c56bdc901e2bb3107018f5ae5742979394229b902fa3c`. Portable archive SHA-256: `bbd89b9eaeca0e84d68b465dc963e133de8924046d95931ded8cc3c0b423be96`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal fingerprints and all 34 archive members.
+
+This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
