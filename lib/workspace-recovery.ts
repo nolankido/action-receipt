@@ -6,7 +6,7 @@ export type WorkspaceSnapshot = {
   mode: ReceiptMeta["mode"] | null; sampleId: string | null; restored: boolean; receiptId: string; createdAt: Date;
 };
 export type ReplacementKind = "source_edit" | "scan" | "replace";
-export type RecoveryCopy = { label: string; workspace: WorkspaceSnapshot };
+export type RecoveryCopy = { label: string; workspace: WorkspaceSnapshot; unsaved?: boolean };
 
 export function shouldCheckpoint(workspace: WorkspaceSnapshot, kind: ReplacementKind): boolean {
   if (!workspace.source.trim() && !workspace.actions.length && !workspace.attention.length) return false;

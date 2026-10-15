@@ -795,6 +795,66 @@
       },
       "automatic_checks": "passed",
       "human_review": "not_reviewed"
+    },
+    {
+      "id": "invalid-offset",
+      "source": "Pay the astronomy deposit by April 2, 2032 at 17:00 UTC-10:00:30 and GMT+09.",
+      "expectedDates": [
+        "2032-04-02"
+      ],
+      "actual": {
+        "actions": [
+          {
+            "id": "r1-a1",
+            "originalTitle": "Pay the astronomy deposit",
+            "title": "Pay the astronomy deposit",
+            "originalCondition": "",
+            "condition": "",
+            "evidence": [
+              {
+                "quote": "Pay the astronomy deposit by April 2, 2032 at 17:00 UTC-10:00:30 and GMT+09.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "dateEvidence": [
+              {
+                "quote": "Pay the astronomy deposit by April 2, 2032 at 17:00 UTC-10:00:30 and GMT+09.",
+                "starts": [
+                  0
+                ]
+              }
+            ],
+            "deadlineText": "Pay the astronomy deposit by April 2, 2032 at 17:00 UTC-10:00:30 and GMT+09.",
+            "originalDate": "2032-04-02",
+            "date": "2032-04-02",
+            "time": "17:00",
+            "utcOffset": "",
+            "originalTime": "17:00",
+            "originalUtcOffset": "",
+            "sourceRequiresTime": true,
+            "requiresTime": true,
+            "dateConfirmed": false,
+            "dateOrigin": "source proposal",
+            "evidenceValid": true,
+            "approved": false,
+            "omitted": false,
+            "origin": "rules",
+            "issues": [
+              "Found by local English text rules. Check meaning, conditions and the complete notice.",
+              "A timed instruction needs a valid cutoff and UTC offset. Invalid, conflicting or unsupported clock wording must be clarified manually."
+            ]
+          }
+        ],
+        "notes": [
+          "Local English text rules generated these proposals. They can miss instructions or misunderstand scope. Read every part of the notice and add missed actions manually.",
+          "Dates are linked only within the same passage. No dates are inferred from today's date or borrowed from a different sentence."
+        ],
+        "attention": []
+      },
+      "automatic_checks": "passed",
+      "human_review": "not_reviewed"
     }
   ]
 }

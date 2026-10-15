@@ -1,6 +1,8 @@
 import { validDate } from "./dates.ts";
 
-const offsetPattern = /\b(?:UTC|GMT)\s*[+-]\d{2}:\d{2}\b/gi;
+// Consume the whole zone token, including unsupported seconds/fractions. A
+// valid-looking prefix of a malformed token must never become an offset.
+const offsetPattern = /\b(?:UTC|GMT)\b(?:[ \t]*[+\-−][^\s,;!?()[\]{}"'“”‘’]*)?/gi;
 const withoutOffsets = (text: string) => text.replace(offsetPattern, "");
 // Recognize malformed clock-like text as a cutoff to review, not a date-only
 // instruction. Validity and interpretation are separate checks.
@@ -42,8 +44,10 @@ export function parseClock(text: string): string | null {
   return values.size === 1 && families.size === 1 ? [...values][0] : null;
 }
 export function explicitOffset(text: string): string | null {
-  const values = [...text.matchAll(/\b(?:UTC|GMT)\s*([+-]\d{2}:\d{2})\b/gi)].map(m => m[1]);
-  return values.length && values.every(validOffset) && new Set(values).size === 1 ? values[0] : null;
+  const mentions = [...text.matchAll(offsetPattern)];
+  const values = mentions.map(m => m[0].replace(/^(?:UTC|GMT)[ \t]*/i, "").replace(/\.+$/, ""));
+  const continued = mentions.some(m => /^,\d/.test(text.slice(m.index + m[0].length)));
+  return !continued && values.length && values.every(validOffset) && new Set(values).size === 1 ? values[0] : null;
 }
 /** iCalendar DATE-TIME requires a four-digit UTC year after offset conversion. */
 export function cutoffFitsCalendar(date: string, time: string, offset: string): boolean {

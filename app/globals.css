@@ -63,3 +63,14 @@
 .notice-content mark:focus{outline:3px solid var(--green);outline-offset:3px}
 .action-card h3,.evidence-line>span,.deadline-line>span,.queue-decision p{overflow-wrap:anywhere;min-width:0}
 @media(max-width:600px){.app-shell input:not([type=checkbox]),.app-shell textarea,.app-shell select{font-size:16px}.editor-footer{font-size:11px}}
+
+.review-save-status{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 23px;background:#f5f8f0;border-bottom:1px solid var(--line)}
+.review-save-status.has-changes{background:#fff8e9}
+.review-save-copy{display:flex;gap:11px;align-items:flex-start;min-width:0}
+.review-save-copy>svg{color:var(--green);flex-shrink:0;margin-top:2px}
+.has-changes .review-save-copy>svg{color:#896120}
+.review-save-copy h3{font-size:12px;line-height:1.5;color:#354b32}
+.review-save-copy p{font-size:11px;line-height:1.7;color:#5f7056;margin-top:3px;max-width:760px}
+.review-save-copy .review-save-limit{font-size:10px;color:#796437}
+.review-save-status>button{display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;background:white;border:1px solid #b9cbb0;color:var(--green);border-radius:6px;padding:10px 13px;min-height:44px;font-size:12px}
+@media(max-width:700px){.review-save-status{align-items:stretch;flex-direction:column;gap:11px;padding:15px}.review-save-status>button{align-self:flex-start}.review-save-copy p{font-size:12px}.review-save-copy .review-save-limit{font-size:11px}}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCheck, ChevronDown, CircleHelp, Download, Eye, FileText, FolderOpen, Info, LoaderCircle, LockKeyhole, MessageCircleQuestion, Pencil, Plus, Quote, ReceiptText, RotateCcw, Save, ShieldCheck, Sparkles, TriangleAlert, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, CalendarDays, Check, CheckCheck, ChevronDown, CircleHelp, Download, Eye, FileText, FolderOpen, Info, LoaderCircle, LockKeyhole, MessageCircleQuestion, Pencil, Plus, Quote, ReceiptText, RotateCcw, ShieldCheck, Sparkles, TriangleAlert, X } from "lucide-react";
 import { reviewScenario, samples } from "../lib/samples.ts";
 import { demoScenario } from "../lib/demo-scenario.ts";
 import { extractLocally } from "../lib/local-extraction.ts";
@@ -16,7 +16,9 @@ import type { ReviewTarget } from "../lib/review-guide.ts";
 import ClarificationSheet from "./clarification-sheet.tsx";
 import { clarificationCandidates } from "../lib/clarification.ts";
 import RecoveryBanner from "./recovery-banner.tsx";
-import { copyWorkspace, recoverWorkspace, shouldCheckpoint, type RecoveryCopy, type ReplacementKind, type WorkspaceSnapshot } from "../lib/workspace-recovery.ts";
+import { recoverWorkspace, type RecoveryCopy, type ReplacementKind, type WorkspaceSnapshot } from "../lib/workspace-recovery.ts";
+import { checkpointReview, reviewContentStamp, reviewSessionState } from "../lib/review-session.ts";
+import ReviewSaveStatus from "./review-save-status.tsx";
 
 function saveFile(text: string, type: string, name: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -119,6 +121,8 @@ function ActionCard({ action, index, onChange, onEvidence, focusSignal = 0, focu
 
 export default function ReceiptWorkspace() {
   const [initial] = useState(() => extractLocally(demoScenario.source));
+  const [saveBaseline, setSaveBaseline] = useState(() => reviewContentStamp({ source: demoScenario.source, title: demoScenario.title, ...initial, mode: "local", sampleId: null, restored: false }));
+  const [downloadRequested, setDownloadRequested] = useState(false);
   const [source, setSource] = useState(demoScenario.source);
   const [title, setTitle] = useState(demoScenario.title);
   const [actions, setActions] = useState<ReviewedAction[]>(initial.actions);
@@ -156,6 +160,14 @@ export default function ReceiptWorkspace() {
     passage?.focus({ preventScroll: true });
   }, [selected, evidenceFocus, editing]);
   const inputState = noticeInputState(source);
+  const content = { source, title, actions, notes, attention, mode, sampleId, restored: restoredReview };
+  const session = reviewSessionState(content, saveBaseline, recoveryCopy);
+  useEffect(() => {
+    if (!session.warnBeforeLeaving) return;
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [session.warnBeforeLeaving]);
   const shortPractice = mode === "local" && !restoredReview && source === demoScenario.source;
   const exportPlan = planExports(actions);
   const approved = exportPlan.checklist;
@@ -165,11 +177,12 @@ export default function ReceiptWorkspace() {
   const meta = (): ReceiptMeta => ({ mode: mode ?? "manual", title, createdAt: createdAt.current, receiptId: receiptId.current, notes, attention, restored: restoredReview });
   const snapshot = (): WorkspaceSnapshot => ({ source, title, actions, notes, attention, mode, sampleId, restored: restoredReview, receiptId: receiptId.current, createdAt: createdAt.current });
   function rememberWorkspace(kind: ReplacementKind, label: string) {
-    const current = snapshot();
-    if (shouldCheckpoint(current, kind)) setRecoveryCopy({ label, workspace: copyWorkspace(current) });
+    setRecoveryCopy(checkpointReview(snapshot(), saveBaseline, recoveryCopy, kind, label));
   }
   function resetResults(newSource: string, replacement?: { kind: ReplacementKind; label: string }) {
     if (replacement) rememberWorkspace(replacement.kind, replacement.label);
+    // Comparison data must not retain a different notice after replacement.
+    setSaveBaseline(""); setDownloadRequested(false);
     workspaceVersion.current++; requestId.current++; currentSource.current = newSource; setSource(newSource); setActions([]); setNotes([]); setAttention([]); setSelected(null); setMode(null); setSampleId(null); setError(""); setBusy(false); setRestoredReview(false); setFileError(""); setFileMessage("");
     receiptId.current = crypto.randomUUID(); createdAt.current = new Date();
     setFocusedAction({ id: "", signal: 0, field: "title" }); setFocusedFlag({ id: "", signal: 0 }); setPreviewOpen(false); setQuestionsOpen(false);
@@ -180,6 +193,7 @@ export default function ReceiptWorkspace() {
     resetResults(sample.source, { kind: "replace", label: "Before loading a sample" }); setTitle(sample.title); setMode("sample"); setSampleId(id); setEditing(false);
     const result = validateExtraction(sample.source, sample.result, requestId.current + 1);
     setActions(result.actions); setNotes(result.notes); receiptId.current = crypto.randomUUID(); createdAt.current = new Date();
+    setSaveBaseline(reviewContentStamp({ source: sample.source, title: sample.title, ...result, attention: [], mode: "sample", sampleId: id, restored: false }));
     setAnnouncement(`Loaded ${sample.label}, a synthetic walkthrough with saved results.`);
   }
   async function analyze() {
@@ -204,12 +218,14 @@ export default function ReceiptWorkspace() {
     resetResults(reviewScenario.source, { kind: "replace", label: "Before guided practice" }); setTitle(reviewScenario.title); setEditing(false);
     const result = extractLocally(reviewScenario.source, requestId.current);
     setActions(result.actions); setNotes(result.notes); setAttention(result.attention); setMode("local");
+    setSaveBaseline(reviewContentStamp({ source: reviewScenario.source, title: reviewScenario.title, ...result, mode: "local", sampleId: null, restored: false }));
     setAnnouncement("Scanned an invented notice using the actual local rules. Review the flagged passages and add the missed consent action.");
   }
   function restartPractice() {
     resetResults(demoScenario.source, { kind: "replace", label: "Before restarting short practice" }); setTitle(demoScenario.title); setEditing(false);
     const result = extractLocally(demoScenario.source, requestId.current);
     setActions(result.actions); setNotes(result.notes); setAttention(result.attention); setMode("local");
+    setSaveBaseline(reviewContentStamp({ source: demoScenario.source, title: demoScenario.title, ...result, mode: "local", sampleId: null, restored: false }));
     setAnnouncement("Freshly scanned the short synthetic practice notice. Nothing is approved or date-confirmed.");
     setTimeout(() => document.getElementById("workspace")?.focus({ preventScroll: false }), 0);
   }
@@ -246,8 +262,9 @@ export default function ReceiptWorkspace() {
     try {
       if (!inputState.ready) throw new Error(inputState.message);
       saveFile(saveReviewFile({ source, actions, meta: meta() }), "application/json;charset=utf-8", "action-receipt-review.json");
-      setFileError(""); setFileMessage("Review file downloaded. It includes the full notice and added actions. Opening it later requires fresh approvals.");
-      setAnnouncement("Saved a local review file. No notice was uploaded.");
+      setSaveBaseline(reviewContentStamp(content)); setDownloadRequested(true);
+      setFileError(""); setFileMessage("Review-file download requested for the current version. Confirm the file saved before leaving. It includes the full notice and added actions, but not the recovery copy or unfinished form entries. Opening it requires fresh approvals.");
+      setAnnouncement("Review-file download requested. Confirm it saved before leaving. No notice was uploaded.");
     } catch (e) { setFileError(e instanceof Error ? e.message : "The review could not be saved."); }
   }
   async function openReview(file: File) {
@@ -262,6 +279,7 @@ export default function ReceiptWorkspace() {
       if (version !== workspaceVersion.current) throw new Error("Your review changed while the file was opening. Open the file again if you want to replace it.");
       resetResults(loaded.source, { kind: "replace", label: "Before opening a review file" }); setTitle(loaded.meta.title); setActions(loaded.actions); setNotes(loaded.meta.notes); setAttention(loaded.meta.attention ?? []); setMode(loaded.meta.mode); setRestoredReview(true); setEditing(false);
       receiptId.current = loaded.meta.receiptId; createdAt.current = loaded.meta.createdAt;
+      setSaveBaseline(reviewContentStamp({ source: loaded.source, title: loaded.meta.title, actions: loaded.actions, notes: loaded.meta.notes, attention: loaded.meta.attention ?? [], mode: loaded.meta.mode, sampleId: null, restored: true }));
       setFileMessage("Review opened. Edits, omissions and decision notes were kept. Approvals and date confirmations were cleared; loaded source decisions need rechecking.");
       setAnnouncement(`Opened ${loaded.actions.length} actions from a review file. Check and approve them again before export.`);
     } catch (e) { if (thisLoad === fileLoadId.current) setFileError(e instanceof Error ? e.message : "The file could not be opened. Your current review was kept."); }
@@ -274,7 +292,8 @@ export default function ReceiptWorkspace() {
     fileLoadId.current++; setOpeningReview(false); resetResults(saved.source);
     setTitle(saved.title); setActions(saved.actions); setNotes(saved.notes); setAttention(saved.attention); setMode(saved.mode); setSampleId(saved.sampleId); setRestoredReview(saved.restored); setEditing(saved.mode === null);
     receiptId.current = saved.receiptId; createdAt.current = saved.createdAt;
-    setRecoveryCopy({ label: "Before the last recovery", workspace: result.previous });
+    setSaveBaseline(recoveryCopy.unsaved ? "" : reviewContentStamp(saved));
+    setRecoveryCopy({ label: "Before the last recovery", workspace: result.previous, unsaved: session.current });
     setFileMessage("Workspace recovered from this tab's memory. Approvals and date confirmations were cleared. Recheck every recorded source decision. The outgoing workspace is now the recovery copy.");
     setAnnouncement("Previous workspace recovered. Check actions, dates and source decisions again. Outgoing work remains in the recovery copy.");
   }
@@ -299,7 +318,8 @@ export default function ReceiptWorkspace() {
         <div className="guided-review-example"><p><strong>Try a harder notice.</strong> Practice a missed instruction, a weekday/date conflict and a waived fee with a fresh local scan.</p><button onClick={tryGuidedReview}>Try harder notice (replaces review)</button></div></details>
         <section id="workspace" className="workspace" tabIndex={-1} aria-label="Notice review workspace">
           <div className="workspace-top"><div className="workspace-title"><span className="workspace-number">01</span><h2>Your notice, made clearer</h2></div><span className="privacy-label"><LockKeyhole size={13} /> Runs in your browser</span></div>
-          <details className="review-file-toolbar"><summary>Save or reopen a review <ChevronDown size={13} /></summary><div className="review-file-buttons"><button disabled={busy || openingReview || !inputState.ready} onClick={saveReview}><Save size={14} /> Save review file</button><button disabled={busy || openingReview} onClick={() => reviewInput.current?.click()}>{openingReview ? <LoaderCircle size={14} className="spin" /> : <FolderOpen size={14} />} {openingReview ? "Opening review…" : "Open review file"}</button><input ref={reviewInput} className="sr-only" type="file" accept=".json,application/json" aria-label="Choose a saved Action Receipt review" disabled={busy || openingReview} onChange={e => { const file = e.currentTarget.files?.[0]; e.currentTarget.value = ""; if (file) void openReview(file); }} /></div><p>Save keeps the full notice and added actions, including unapproved items. Opening replaces this workspace and resets approvals and date confirmations. Unfinished form entries are not saved.</p></details>{fileMessage && <p className="review-file-message file-feedback" role="status">{fileMessage}</p>}{fileError && <div className="error-message file-feedback" role="alert"><TriangleAlert size={15} /> {fileError}</div>}
+          <ReviewSaveStatus current={session.current} previous={session.previous} downloadRequested={!session.current && downloadRequested} canSave={!busy && !openingReview && inputState.ready} onSave={saveReview} />
+          <details className="review-file-toolbar"><summary>Open a saved review <ChevronDown size={13} /></summary><div className="review-file-buttons"><button disabled={busy || openingReview} onClick={() => reviewInput.current?.click()}>{openingReview ? <LoaderCircle size={14} className="spin" /> : <FolderOpen size={14} />} {openingReview ? "Opening review…" : "Open review file"}</button><input ref={reviewInput} className="sr-only" type="file" accept=".json,application/json" aria-label="Choose a saved Action Receipt review" disabled={busy || openingReview} onChange={e => { const file = e.currentTarget.files?.[0]; e.currentTarget.value = ""; if (file) void openReview(file); }} /></div><p>Save keeps the full notice and added actions, including unapproved items. Opening replaces this workspace and resets approvals and date confirmations. Unfinished form entries are not saved.</p></details>{fileMessage && <p className="review-file-message file-feedback" role="status">{fileMessage}</p>}{fileError && <div className="error-message file-feedback" role="alert"><TriangleAlert size={15} /> {fileError}</div>}
           {recoveryCopy && <RecoveryBanner copy={recoveryCopy} onRestore={restorePrevious} onDiscard={() => { setRecoveryCopy(null); setAnnouncement("Recovery copy discarded from this tab."); setTimeout(() => document.getElementById("workspace")?.focus({ preventScroll: true }), 0); }} />}
           {restoredReview && <div className="mode-banner"><FolderOpen size={16} /><p><strong>Loaded review file.</strong> Its labels and interpretation are unverified. Check the source again. Approvals and date confirmations were cleared when opened. Loaded source decisions need rechecking. The file describes its prior mode as {mode === "sample" ? "a synthetic sample" : mode === "local" ? "local text rules" : "manual review"}.</p></div>}
           {mode === "sample" && !restoredReview && <div className="mode-banner"><Info size={16} /><p><strong>Synthetic sample walkthrough.</strong> These are saved example results, not a fresh scan of the text. Review, edit, and export them to explore the workflow.</p></div>}
