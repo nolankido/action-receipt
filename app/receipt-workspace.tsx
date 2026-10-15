@@ -22,6 +22,8 @@ import { checkpointReview, reviewContentStamp, reviewSessionState } from "../lib
 import ReviewSaveStatus from "./review-save-status.tsx";
 import ActionViewControls from "./action-view-controls.tsx";
 import { chooseActionView, planActionView, revealActionView, type ActionView, type ActionViewFilter } from "../lib/action-view.ts";
+import SourceInspectionBar from "./source-inspection-bar.tsx";
+import { planSourceReturn, type SourceOrigin } from "../lib/source-inspection.ts";
 
 function saveFile(text: string, type: string, name: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -73,7 +75,7 @@ function ManualActionForm({ source, disabled, selected, onAdd }: { source: strin
   </div>;
 }
 
-function ActionCard({ action, index, onChange, onEvidence, hidden = false, focusSignal = 0, focusField = "title" }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence) => void; hidden?: boolean; focusSignal?: number; focusField?: "title" | "date" }) {
+function ActionCard({ action, index, onChange, onEvidence, hidden = false, focusSignal = 0, focusField = "title" }: { action: ReviewedAction; index: number; onChange: (a: ReviewedAction) => void; onEvidence: (e: Evidence, trigger: HTMLElement) => void; hidden?: boolean; focusSignal?: number; focusField?: "title" | "date" }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!focusSignal) return;
@@ -97,15 +99,15 @@ function ActionCard({ action, index, onChange, onEvidence, hidden = false, focus
       {action.condition && <p className="condition" id={`${prefix}-qualification`}><strong>Qualification to check</strong><span>{action.condition}</span></p>}
       <div className={`deadline-line ${needsClarification ? "unresolved" : ""}`}><CalendarDays size={17} /><div><span className="deadline-label">{eligible ? "Calendar details confirmed" : needsClarification ? "Calendar details need clarification" : "Calendar date not confirmed"}</span><p>{action.date ? displayDate(action.date) : action.deadlineText || "No deadline stated"}{action.requiresTime ? ` · ${validTime(action.time) ? action.time : "Cutoff time unresolved"} · ${validOffset(action.utcOffset) ? `UTC${action.utcOffset}` : "UTC offset unresolved"}` : ""}</p></div>{eligible && <Check size={15} className="confirmed-check" aria-label="Date confirmed" />}</div>
       <div className="evidence-line"><Quote size={13} /><span>{action.evidence[0]?.quote}</span></div>
-      <div className="action-tools"><button className="text-button" onClick={() => onEvidence(action.evidence[0])} disabled={!action.evidence[0]?.starts.length}><Quote size={13} /> View source <ArrowUpRight size={12} /></button><button className="text-button" aria-expanded={open} aria-controls={`${prefix}-review`} onClick={() => setOpen(!open)}>{open ? "Close details" : "Review details"}<ChevronDown size={13} className={open ? "rotate" : ""} /></button></div>
+      <div className="action-tools"><button className="text-button" onClick={event => onEvidence(action.evidence[0], event.currentTarget)} disabled={!action.evidence[0]?.starts.length}><Quote size={13} /> View source <ArrowUpRight size={12} /></button><button className="text-button" aria-expanded={open} aria-controls={`${prefix}-review`} onClick={() => setOpen(!open)}>{open ? "Close details" : "Review details"}<ChevronDown size={13} className={open ? "rotate" : ""} /></button></div>
       {open && <div className="action-details" id={`${prefix}-review`}>
         <label htmlFor={`${prefix}-title`}>Action wording</label><textarea id={`${prefix}-title`} rows={2} maxLength={240} value={action.title} onChange={e => change({ title: e.target.value })} />
         {action.title !== action.originalTitle && <p className="provenance">{action.origin === "imported" ? "Prior action metadata (unverified)" : "Original proposed action"}: {action.originalTitle}</p>}
         <label htmlFor={`${prefix}-condition`}>Condition, exception or optionality</label><textarea id={`${prefix}-condition`} rows={2} maxLength={600} value={action.condition} onChange={e => change({ condition: e.target.value })} placeholder="Only if…" />
         {action.condition !== action.originalCondition && <p className="provenance">{action.origin === "imported" ? "Prior condition metadata (unverified)" : "Original proposed condition"}: {action.originalCondition || "None"}</p>}
         <div className="original-deadline"><span className="field-label">Original deadline wording</span><p>{action.deadlineText || "Not stated in the notice"}</p></div>
-        {action.dateEvidence.map((e, i) => <button className="evidence-quote" key={`date-${i}`} onClick={() => onEvidence(e)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span><ArrowUpRight size={12} /></button>)}
-        {action.evidence.slice(1).map((e, i) => <button className="evidence-quote" key={`action-${i}`} onClick={() => onEvidence(e)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span></button>)}
+        {action.dateEvidence.map((e, i) => <button className="evidence-quote" key={`date-${i}`} onClick={event => onEvidence(e, event.currentTarget)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span><ArrowUpRight size={12} /></button>)}
+        {action.evidence.slice(1).map((e, i) => <button className="evidence-quote" key={`action-${i}`} onClick={event => onEvidence(e, event.currentTarget)} disabled={!e.starts.length}><Quote size={13} /><span>{e.quote}</span></button>)}
         <label htmlFor={`${prefix}-date`}>Calendar date <span className="optional-label">confirm after checking</span></label><input type="date" id={`${prefix}-date`} min="1000-01-01" max="9999-12-31" aria-invalid={Boolean(action.date) && !validDate(action.date)} aria-describedby={`${prefix}-calendar-help`} value={action.date} onChange={e => change({ date: e.target.value })} />
         {!action.sourceRequiresTime && <label className="check-row timed-cutoff-toggle"><input type="checkbox" checked={action.requiresTime} onChange={e => change({ requiresTime: e.target.checked })} /><span>This action has a timed cutoff.</span></label>}
         {action.requiresTime && <div className="time-fields"><div><label htmlFor={`${prefix}-time`}>Cutoff time</label><input type="time" id={`${prefix}-time`} step={60} aria-invalid={Boolean(action.time) && !validTime(action.time)} aria-describedby={`${prefix}-calendar-help`} value={action.time} onChange={e => change({ time: e.target.value })} /></div><div><label htmlFor={`${prefix}-offset`}>UTC offset on that date</label><input id={`${prefix}-offset`} placeholder="e.g. -10:00" aria-invalid={Boolean(action.utcOffset) && !validOffset(action.utcOffset)} aria-describedby={`${prefix}-calendar-help`} value={action.utcOffset} onChange={e => change({ utcOffset: e.target.value })} /></div></div>}
@@ -137,6 +139,10 @@ export default function ReceiptWorkspace() {
   const [editing, setEditing] = useState(false);
   const [selected, setSelected] = useState<Evidence | null>(null);
   const [evidenceFocus, setEvidenceFocus] = useState(0);
+  const [sourceOrigin, setSourceOrigin] = useState<SourceOrigin | null>(null);
+  const [returnFocus, setReturnFocus] = useState(0);
+  const sourceTrigger = useRef<HTMLElement | null>(null);
+  const pendingReturn = useRef<SourceOrigin | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [announcement, setAnnouncement] = useState("");
@@ -163,6 +169,17 @@ export default function ReceiptWorkspace() {
     passage?.scrollIntoView({ behavior: "instant", block: "nearest" });
     passage?.focus({ preventScroll: true });
   }, [selected, evidenceFocus, editing]);
+  useEffect(() => {
+    if (!returnFocus) return;
+    const trigger = sourceTrigger.current;
+    const origin = pendingReturn.current;
+    if (trigger?.isConnected && !trigger.closest("[hidden]")) {
+      trigger.scrollIntoView({ block: "center", behavior: "instant" }); trigger.focus({ preventScroll: true });
+    } else if (origin?.kind === "action") reviewLinkedAction(origin.id);
+    else if (origin?.kind === "flag") setFocusedFlag(old => ({ id: origin.id, signal: old.signal + 1 }));
+    else document.getElementById("actions-heading")?.focus();
+    pendingReturn.current = null;
+  }, [returnFocus]);
   const inputState = noticeInputState(source);
   const content = { source, title, actions, notes, attention, mode, sampleId, restored: restoredReview };
   const session = reviewSessionState(content, saveBaseline, recoveryCopy);
@@ -178,6 +195,7 @@ export default function ReceiptWorkspace() {
   const calendar = exportPlan.calendar;
   const active = actions.filter(a => !a.omitted);
   const actionViewPlan = planActionView(actions, actionView);
+  const sourceReturn = planSourceReturn(sourceOrigin, actions.map(a => a.id), attention.map(item => item.id), actionView);
   const calendarDraftsFit = actions.every(a => a.time.length <= MAX_CALENDAR_DRAFT_LENGTH && a.utcOffset.length <= MAX_CALENDAR_DRAFT_LENGTH);
   const questionCount = clarificationCandidates(source, actions, attention).length;
   const meta = (): ReceiptMeta => ({ mode: mode ?? "manual", title, createdAt: createdAt.current, receiptId: receiptId.current, notes, attention, restored: restoredReview });
@@ -190,6 +208,7 @@ export default function ReceiptWorkspace() {
     // Comparison data must not retain a different notice after replacement.
     setSaveBaseline(""); setDownloadRequested(false);
     setActionView(chooseActionView([], "all"));
+    setSourceOrigin(null); sourceTrigger.current = null; pendingReturn.current = null;
     workspaceVersion.current++; requestId.current++; currentSource.current = newSource; setSource(newSource); setActions([]); setNotes([]); setAttention([]); setSelected(null); setMode(null); setSampleId(null); setError(""); setBusy(false); setRestoredReview(false); setFileError(""); setFileMessage("");
     receiptId.current = crypto.randomUUID(); createdAt.current = new Date();
     setFocusedAction({ id: "", signal: 0, field: "title" }); setFocusedFlag({ id: "", signal: 0 }); setPreviewOpen(false); setQuestionsOpen(false);
@@ -211,6 +230,7 @@ export default function ReceiptWorkspace() {
     setActionView(chooseActionView([], "all"));
     workspaceVersion.current++; setRestoredReview(false); setFileError(""); setFileMessage("");
     setBusy(true); setError(""); setActions([]); setNotes([]); setAttention([]); setSelected(null); setMode(null); setSampleId(null);
+    setSourceOrigin(null); sourceTrigger.current = null; pendingReturn.current = null;
     try {
       await new Promise<void>(resolve => setTimeout(resolve, 0));
       if (!resultIsCurrent(thisRequest, requestId.current, submitted, currentSource.current)) return;
@@ -237,7 +257,17 @@ export default function ReceiptWorkspace() {
     setAnnouncement("Freshly scanned the short synthetic practice notice. Nothing is approved or date-confirmed.");
     setTimeout(() => document.getElementById("workspace")?.focus({ preventScroll: false }), 0);
   }
-  function highlight(evidence: Evidence) { setSelected(evidence); setEvidenceFocus(n => n + 1); setEditing(false); setAnnouncement(`Highlighted ${evidence.starts.length} source match${evidence.starts.length === 1 ? "" : "es"}. Focus moved to the first match in the original notice.`); }
+  function highlight(evidence: Evidence, origin: SourceOrigin, trigger: HTMLElement) {
+    sourceTrigger.current = trigger;
+    setSourceOrigin(origin); setSelected(evidence); setEvidenceFocus(n => n + 1); setEditing(false);
+    setAnnouncement(`Highlighted ${evidence.starts.length} source match${evidence.starts.length === 1 ? "" : "es"}. Focus moved to the first match. Use Back to ${origin.kind === "action" ? "action" : "flagged passage"} above the notice to return.`);
+  }
+  function returnFromSource(clear = false) {
+    pendingReturn.current = sourceReturn.origin; setActionView(sourceReturn.view);
+    if (!sourceReturn.origin) sourceTrigger.current = null;
+    if (clear) { setSelected(null); setSourceOrigin(null); }
+    setReturnFocus(n => n + 1); setAnnouncement(clear ? "Highlighting cleared. Returned to review." : "Returned to review. The source highlight is kept for reference.");
+  }
   function addManual(title: string, quote: string, condition: string) {
     if (!inputState.ready) throw new Error(inputState.message);
     if (busy || actions.length >= 20) throw new Error("A receipt can hold up to 20 actions. Wait for processing to finish before adding one.");
@@ -350,18 +380,18 @@ export default function ReceiptWorkspace() {
             <section className="source-panel" aria-labelledby="source-heading"><div className="panel-heading"><div><FileText size={17} /><h2 id="source-heading" tabIndex={-1}>The original notice</h2></div><span className="panel-caption">YOUR SOURCE OF TRUTH</span></div>
               <div className="source-meta"><label htmlFor="notice-title">Notice name <span>(optional)</span></label><input id="notice-title" maxLength={120} value={title} onChange={e => { workspaceVersion.current++; setTitle(e.target.value); }} placeholder="e.g. Campus workshop registration" /></div>
               <div className="source-tabs" role="group" aria-label="Source view"><button aria-pressed={!editing} className={!editing ? "active" : ""} onClick={() => setEditing(false)} disabled={!source}><FileText size={14} /> Read & inspect</button><button aria-pressed={editing} className={editing ? "active" : ""} onClick={() => setEditing(true)}><Pencil size={14} /> Edit notice</button></div>
+              {selected && !editing && <SourceInspectionBar count={selected.starts.length} origin={sourceReturn.origin} onReturn={() => returnFromSource()} onClear={() => returnFromSource(true)} />}
               {editing ? <div className="notice-editor"><label className="sr-only" htmlFor="notice-text">Paste the notice text</label><textarea ref={noticeInput} id="notice-text" value={source} aria-invalid={inputState.kind === "long" || inputState.kind === "short"} aria-describedby="notice-validation" placeholder="Paste a school, club, or event notice here. Include the dates and conditions exactly as written." onChange={e => resetResults(e.target.value, { kind: "source_edit", label: "Before editing the notice" })} /><div className="editor-footer"><span>{recoveryCopy ? "Editing clears results. A recovery copy is available above." : "Editing clears previous results and approvals."}</span><span>{source.length.toLocaleString("en-US")} / 15,000</span></div></div> : <div className="notice-paper">{source ? <><p className="document-kicker">{restoredReview ? "LOADED NOTICE · FILE METADATA UNVERIFIED" : mode === "sample" ? "SYNTHETIC EXAMPLE" : shortPractice ? "SYNTHETIC PRACTICE · FRESH LOCAL SCAN" : "ORIGINAL TEXT"}</p><pre className="notice-content" tabIndex={0} aria-label="Original notice text"><SourcePassage source={source} selected={selected} /></pre><div className="paper-end"><span /><ReceiptText size={17} /><span /></div></> : <div className="empty-source"><FileText size={30} /><h3>A little context goes a long way.</h3><p>Paste the complete notice, including dates and conditions.</p><button className="text-button" onClick={() => { setEditing(true); setTimeout(() => noticeInput.current?.focus(), 0); }}>Paste a notice <ArrowRight size={14} /></button></div>}</div>}
-              {selected && !editing && <div className="highlight-note"><Quote size={13} /> {selected.starts.length} exact match{selected.starts.length === 1 ? "" : "es"} highlighted<button onClick={() => setSelected(null)} aria-label="Clear source highlighting"><X size={13} /></button></div>}
               <div className="analyze-area"><p id="notice-validation" className={`notice-validation ${inputState.ready ? "" : "needs-input"}`} role="status">{inputState.message}</p><button className="primary-button analyze-button" disabled={busy || !inputState.ready} onClick={analyze}>{busy ? <LoaderCircle size={17} className="spin" /> : <FileText size={17} />}{busy ? "Checking your notice…" : actions.length > 0 && mode !== "sample" ? "Scan again (clears review)" : "Find actions locally"}<ArrowRight size={17} /></button><p>Uses text rules in this browser. No text is sent to a server or AI service.</p><p className="processing-disclosure">Scanning replaces current actions and approvals. Check for missed instructions and unclear date roles.</p>{error && <div className="error-message" role="alert"><TriangleAlert size={16} /><span>{error}</span></div>}</div>
             </section>
             <section className="actions-panel" aria-labelledby="actions-heading"><div className="panel-heading"><div><ReceiptText size={17} /><h2 id="actions-heading" tabIndex={-1}>Your action receipt</h2><span className="count-badge">{active.length}</span></div><span className="panel-caption">YOUR DECISIONS</span></div>
               <ReviewGuide actions={actions} items={attention} hasResults={mode !== null} canScan={inputState.ready} inputStatus={inputState.kind} disabled={busy || openingReview} onGo={goToReview} onScan={() => void analyze()} onPaste={() => { setEditing(true); setTimeout(() => noticeInput.current?.focus(), 0); }} onDate={id => reviewLinkedAction(id, "date")} questionCount={questionCount} onQuestions={openQuestions} />
-              {attention.length > 0 && <SourceReviewQueue key={requestId.current} items={attention} actions={actions} focusedFlag={focusedFlag} disabled={busy || openingReview} onEvidence={highlight} onAction={reviewLinkedAction} onRecord={recordFlag} onCreate={createFromFlag} />}
+              {attention.length > 0 && <SourceReviewQueue key={requestId.current} items={attention} actions={actions} focusedFlag={focusedFlag} disabled={busy || openingReview} onEvidence={(evidence, id, trigger) => highlight(evidence, { kind: "flag", id, label: "Flagged passage" }, trigger)} onAction={reviewLinkedAction} onRecord={recordFlag} onCreate={createFromFlag} />}
               <div className="actions-list">
                 {actions.length > 0 && <ActionViewControls view={actionView} plan={actionViewPlan} disabled={busy || openingReview} onChoose={selectActionView} />}
                 <div id="action-list-items" className="action-list-items">
                   {busy ? <div className="empty-actions"><span className="empty-icon"><Sparkles size={28} className="pulse" /></span><h3>Finding the next steps.</h3><p>Actions and source passages will appear here for your review.</p></div> : actions.length ? <>
-                    {actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} hidden={!actionViewPlan.visibleIds.has(a.id)} focusSignal={focusedAction.id === a.id ? focusedAction.signal : 0} focusField={focusedAction.id === a.id ? focusedAction.field : "title"} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={highlight} />)}
+                    {actions.map((a, index) => <ActionCard key={a.id} action={a} index={index} hidden={!actionViewPlan.visibleIds.has(a.id)} focusSignal={focusedAction.id === a.id ? focusedAction.signal : 0} focusField={focusedAction.id === a.id ? focusedAction.field : "title"} onChange={next => { workspaceVersion.current++; setActions(old => old.map(item => item.id === next.id ? next : item)); }} onEvidence={(evidence, trigger) => highlight(evidence, { kind: "action", id: a.id, label: `Action ${index + 1}: ${a.title || "Untitled action"}` }, trigger)} />)}
                     {actionViewPlan.visibleCount === 0 && <div className="empty-actions empty-action-view"><span className="empty-icon"><ReceiptText size={28} /></span><h3>{actionView.filter === "approved" ? "No approved actions yet." : actionView.filter === "omitted" ? "No omitted actions." : "No actions waiting in this view."}</h3><p>{actionView.filter === "approved" ? "Check each action against its source before approving. A calendar date is optional." : actionView.filter === "omitted" ? "Actions you omit individually will be available here to inspect or restore." : "Flagged passages and optional calendar details may still need attention."}</p><button className="text-button" onClick={() => selectActionView("all")}>Show all actions <ArrowRight size={14} /></button></div>}
                   </> : <div className="empty-actions"><span className="empty-icon"><ReceiptText size={30} /></span><h3>{mode === "local" ? "No actions were identified." : "A clear next step starts here."}</h3><p>{mode === "local" ? "Check the original notice yourself. The text rules may have missed something. Add actions from exact source passages." : "Scan a notice locally, add an action from its exact source text, or try a sample. Nothing is approved automatically."}</p></div>}
                 </div>

@@ -75,3 +75,30 @@ The existing paper/forest appearance is preserved. Buttons wrap on narrow screen
 Distribution is regenerated from the checked source. The publication operations and Git commit metadata identify the final source and deployment; a commit must not claim an unreturned deployment result. No submission or account work was performed.
 
 Next useful work: inspect supported browser behavior if that capability becomes available; otherwise review actual long-source navigation, source-flag forms and recoverable error states for a concrete UI defect. Preserve the stable view behavior and shared export gates rather than adding another visual theme or changing extraction scope.
+
+## Source-inspection return path: v0.18.0
+
+Verified starting state: public main `890f6530fa2d05a7b8ec6b21914f86289bfb479d`, Sites source `a3756b9614dd913d196a5663887151a07cfdebec`, shared tree `3e9692c6fade65f2a92a309bbaaba60108fab117`. The preceding private deployment succeeded as `appgdep_6ad0b4c157b88191ac2199ee09867567` for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_d94000edb90c8191b95570078fc835b2`. Current public main, recent commits, open PRs, the source checkout and this record were checked before work. No open PR or observable concurrent writer was found. The existing source was synchronized with the supported Sites helper. Access remains custom owner-only, with no additional visitors.
+
+### Problem and change
+
+Inspecting evidence moved focus to the original notice but left no direct route back to the action or source flag. The small highlight count also sat below the entire source, making it harder to find with long notices.
+
+The source now has a compact inspection bar above the notice, styled within the existing paper/forest system. It shows the number of exact matches and, for actions, the originating action number and wording. A contextual Back to action or Back to flagged passage control returns to the actual clicked evidence button when it is still mounted. This includes date and additional-evidence buttons inside open details. The trigger is taken from the click event rather than the browser's possibly unrelated active element.
+
+If a view hides the action while its evidence is being inspected, returning reveals it before restoring focus. If the original button was removed, existing guided navigation opens the current action or flag instead. Stale action and flag identities are rejected separately. Clearing highlights also returns to review rather than leaving focus on a removed control. Back retains the exact highlight for reference and manual excerpt reuse. Source replacement and rescanning clear the return context.
+
+The inspection bar is sticky within the source area, wraps its controls, truncates only the contextual action label and is excluded from printing. All original source text, matching excerpts, warning content and review gates remain unchanged. Return navigation is presentation state only, excluded from review files, recovery snapshots, save-change detection and exports. No new runtime dependency or persistence was added.
+
+### Executed checks and limits
+
+- All 178 automated tests passed. Two new behavioral tests cover reveal-before-return, stable visible views, stale identities and distinct action/flag namespaces.
+- TypeScript checking passed.
+- The supported static build, all 14 fresh synthetic notice checks and the source-hashed production-domain rehearsal passed. The fingerprint list includes the new inspection component and the new library helper.
+- Six actual SSR states passed structural checks: initial workspace, action return, repeated matches, long action label, flag return and a missing/stale origin. Checks covered unique IDs, label/description targets, contextual control names, singular/plural match wording, no inspection controls before selection and initial unchecked approvals. Rendering the bar independently does not exercise the workspace focus effects.
+- Two specified new foreground/background pairs calculated at 7.60:1 and 9.24:1 contrast. These calculations are not a complete accessibility audit.
+- The required control-browser skill remains unavailable. No browser rendering, actual sticky positioning, viewport fit, focus restoration, keyboard interaction, screen-reader behavior or real download was tested. Those remain explicit review items.
+
+The checked portable archive is regenerated from the final source/build/rehearsal state and its member hashes verified. Exact final source, public commit, saved-version and deployment identities are provided by the publication results and public commit metadata, not inferred from a URL. Submission, personal declarations, entry copy, video and account work remain untouched.
+
+Next useful task: with a supported browser, test long-source round trips from action evidence, date evidence and source flags at desktop/mobile widths. Also check hidden-view return and a source flag whose card changes while inspecting. If browser access remains unavailable, inspect actual recoverable file/error and source-flag form flows for a bounded defect; do not add another theme or broaden extraction.

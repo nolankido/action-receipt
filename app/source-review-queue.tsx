@@ -7,7 +7,7 @@ import { sourceReviewState, sourceReviewSummary, type DecisionInput } from "../l
 
 export type FlagActionInput = { title: string; quote: string; condition: string; note: string };
 type Props = { items: SourceReviewItem[]; actions: ReviewedAction[]; disabled: boolean; focusedFlag?: { id: string; signal: number };
-  onEvidence: (e: Evidence) => void; onAction: (id: string) => void;
+  onEvidence: (e: Evidence, flagId: string, trigger: HTMLElement) => void; onAction: (id: string) => void;
   onRecord: (id: string, input: DecisionInput) => void; onCreate: (id: string, input: FlagActionInput) => void };
 
 function FlagCard({ item, actions, disabled, onEvidence, onAction, onRecord, onCreate }: Omit<Props, "items"> & { item: SourceReviewItem }) {
@@ -26,7 +26,7 @@ function FlagCard({ item, actions, disabled, onEvidence, onAction, onRecord, onC
     <p className={`queue-status ${state.addressed ? "addressed" : "pending"}`}>{state.addressed ? <Check size={14} /> : <TriangleAlert size={14} />}{state.label}</p>
     <p className="queue-reason"><strong>Original flag:</strong> {item.reason}</p>
     <blockquote tabIndex={0} aria-label="Flagged source passage">{item.evidence.quote}</blockquote>
-    <button className="text-button" onClick={() => onEvidence(item.evidence)}><Quote size={13} /> Inspect in the full notice <ArrowUpRight size={13} /></button>
+    <button className="text-button" onClick={event => onEvidence(item.evidence, item.id, event.currentTarget)}><Quote size={13} /> Inspect in the full notice <ArrowUpRight size={13} /></button>
     {item.decision && <div className="queue-decision"><strong>{item.decision.origin === "imported" ? "Loaded decision (unverified)" : "Your recorded decision"}</strong><p>{item.decision.kind === "linked" ? "Linked to an action" : item.decision.kind === "not_action" ? "Not an obligation" : "Needs clarification"}</p><p>{item.decision.note}</p>{item.decision.actionId && actions.some(a => a.id === item.decision!.actionId) && <button className="text-button" onClick={() => onAction(item.decision!.actionId!)}>Review linked action <ArrowUpRight size={13} /></button>}</div>}
     <div className="queue-tools"><button disabled={disabled || actions.length >= 20} onClick={() => { setEditor(editor === "create" ? null : "create"); setError(""); }}><Plus size={14} /> Create an action from this passage</button><button disabled={disabled} onClick={() => { setKind(item.decision?.kind ?? "linked"); setActionId(item.decision?.actionId ?? ""); setNote(item.decision?.note ?? note); setEditor(editor === "decision" ? null : "decision"); setError(""); }}>{item.decision ? "Recheck or change decision" : "Record a decision"}</button></div>
     {editor && <form className="queue-form" onSubmit={e => { e.preventDefault(); if (disabled) return; try { if (editor === "create") onCreate(item.id, { title, quote, condition, note }); else onRecord(item.id, { kind, note, actionId: kind === "linked" ? actionId : null }); setEditor(null); setError(""); } catch (e) { setError(e instanceof Error ? e.message : "This decision could not be recorded."); } }}>
