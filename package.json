@@ -14,7 +14,8 @@
     "db:generate": "drizzle-kit generate",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "rehearse:demo": "node --experimental-strip-types scripts/rehearse-demo.ts"
+    "rehearse:demo": "node --experimental-strip-types scripts/rehearse-demo.ts",
+    "check:submission": "python scripts/check-submission.py"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

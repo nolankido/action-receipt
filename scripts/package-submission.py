@@ -58,7 +58,7 @@ files = [
     "devpost/demo/automated-checklist.md", "devpost/demo/automated-calendar.ics",
     "devpost/local-smoke.json", "devpost/usability/facilitator-guide.md",
     "devpost/usability/participant-notices.md", "devpost/usability/observation-template.md",
-    "devpost/submission/README.md", "devpost/submission/project-description.md",
+    "devpost/submission/README.md", "devpost/submission/READY-TO-SUBMIT.md", "devpost/submission/project-description.md",
     "devpost/submission/entry-data.json", "devpost/submission/planned-captions.srt",
     "devpost/submission/action-receipt-cover.png", "devpost/submission/action-receipt-cover.svg",
     "devpost/demo/technical-video-domain-data.json", "devpost/submission/technical-video-manifest.json",
@@ -83,7 +83,7 @@ launcher = f'''<!doctype html>
 <li><a href="devpost/demo/recording-guide.md">Screen-action recording checklist</a> and <a href="devpost/judge-guide.md">judge instructions</a>.</li>
 <li><a href="package-manifest.json">Package hashes</a>; automated reference artifacts under <code>devpost/demo/</code> are labeled as scripted checks.</li></ul>
 <h2>Factual project draft</h2><p class="note">Prepared with AI assistance under your delegation. Select and copy the text as needed. Personal reflections and eligibility answers are intentionally absent. The current authenticated form has not been inspected.</p><textarea readonly aria-label="AI-assisted factual project draft">{story}</textarea>
-<h2>Remaining account work</h2><p>Authenticate to Devpost, provide the real public video URL, complete any personal fields accurately, and handle required acceptance of terms. No face or voice is required by the published rules; actual footage of the functioning software is required. A caption file or project illustration cannot replace it.</p>
+<h2>Finish the entry</h2><p><a href="devpost/submission/READY-TO-SUBMIT.md">Open the short completion checklist</a>: try and record the actual app, upload the real video, complete the current Devpost draft and retain the submission confirmation.</p><p>Authenticate to Devpost, provide the real public video URL, complete any personal fields accurately, and handle required acceptance of terms. No face or voice is required by the published rules; actual footage of the functioning software is required. A caption file or project illustration cannot replace it.</p>
 <p>Deadline: October 26, 2026, 11 a.m. Hawaiʻi (21:00 UTC).</p><p><a href="devpost/submission/README.md">Authorship, workflow status and evidence limits</a></p></main></body></html>'''.encode()
 contents["START-HERE.html"] = launcher
 for name, data in contents.items():

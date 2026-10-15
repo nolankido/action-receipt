@@ -88,7 +88,7 @@
     "lib/times.ts": "48e2b7d8a9a7fa896ee9c67cdd8e3ba46fd7a5ec7ee704cb334d865db3da98b8",
     "lib/utils.ts": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68",
     "lib/workspace-recovery.ts": "957f1fc5a64c3d3de8351b12ecce80897a41bd923013bed346f45cd6c96cbd8e",
-    "package.json": "66b1499f8239997b60227cc5fbd6e904ceda88066c4c97131e332d92a39399c3",
+    "package.json": "af06b106485787ca5c8b6c3888e6ca0e4a5011a72b5f21455d0246e8b925f094",
     "pnpm-lock.yaml": "095ba6f301ba3997da2c251dfc4b805c220624bdf0921d905eaceee0d1fb29c9",
     "scripts/build-static.mjs": "900499024204b337c728e5a1338a364938f5fdf0949ea7df362c8dce0258697e",
     "scripts/rehearse-demo.ts": "6e1e8c8e6eb486c4c998c34cfa5191c1d243a7bd095e3e44c5f0521aff3ac148",

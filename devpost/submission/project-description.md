@@ -22,6 +22,8 @@ Action approval and calendar-date confirmation are separate. An approved task wi
 
 The invented practice notice separates registration and payment deadlines, exposes a missed consent-form instruction and preserves a conditional "next Friday" without guessing its date. A completed review yields four checklist tasks and only two calendar entries. Preview shows the exact Markdown and iCalendar content before download. Nothing is automatically added to a calendar or sent to another person.
 
+The design choice is to keep source inspection, omissions and uncertainty inside the same small review loop. Exact quotations and separate task/date checks make a correction inspectable later. Offline files keep that workflow usable without an account or service budget. The tradeoff is limited language coverage and deliberate human review; this is not a claim that task lists or source citations are new inventions.
+
 ### How it was built
 
 The official Devpost Learn Skill Pack was installed and used with Codex. Its generated `scope.md`, `prd.md` and `spec.md` are in the public repository, alongside workflow and installation evidence. The interface uses React and TypeScript; Vite packages it as one self-contained HTML file. Standard starter code and dependencies are disclosed in the repository notices.
@@ -30,7 +32,7 @@ The finished app uses bounded English text rules, not a runtime AI model. It run
 
 ### Engineering findings and validation
 
-The implementation separates quotation matching from meaning, action approval from date confirmation, and imported data from current-session trust. Regression work covered abbreviated dates, contradictory weekdays, malformed clocks, conditional scope and cutoff conversion. Automated verification includes 128 regression tests, seven fresh synthetic notices and a reproducible source-to-export rehearsal. These are technical checks, not human usability findings. Browser interaction and actual participant testing remain unverified.
+The implementation separates quotation matching from meaning, action approval from date confirmation, and imported data from current-session trust. Regression work covered abbreviated dates, contradictory weekdays, malformed clocks, conditional scope, cutoff conversion, review-file recovery and download failure states. Automated verification includes 186 regression tests, 14 fresh synthetic notice checks and a reproducible source-to-export rehearsal. These are technical checks, not human usability findings. Browser interaction and actual participant testing remain unverified.
 
 ### Next step
 

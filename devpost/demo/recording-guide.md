@@ -17,7 +17,7 @@ Technical shot plan. Target **2:35**, leaving 25 seconds below the three-minute 
 | 0:00 to 0:15 | Full original notice and workspace; introduce audience/problem in your own words | Invented notice label, original text and unapproved counts |
 | 0:15 to 0:30 | Run **Scan again**, then show registration/payment source links | Actual local-rule mode, separate deadlines, no automatic approval |
 | 0:30 to 1:05 | Review the consent flag and create its action. Record the waived fee as not an obligation with an explanation | Exact quote, manual origin, undated repair and decision trail |
-| 1:05 to 1:40 | Review actions. Confirm only registration and payment date/time/offset; then approve. Leave email/consent dates unresolved | Preserved transport condition, explicit checks, “next Friday” not guessed |
+| 1:05 to 1:40 | Review actions. Open **Review details**, then **Optional calendar details** for registration and payment. Confirm only those dates/time/offset; then approve. Leave email/consent dates unresolved | Preserved transport condition, explicit checks, “next Friday” not guessed |
 | 1:40 to 2:15 | Preview and download both formats; open actual output text | Four checklist tasks, two calendar entries, source quotes and exclusion reasons |
 | 2:15 to 2:35 | Show method/privacy and briefly point to public source and generated planning documents | Local/offline constraints and actual Skill Pack provenance |
 

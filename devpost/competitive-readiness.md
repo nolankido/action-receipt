@@ -26,10 +26,10 @@ Each criterion carries 25%. Ratings below describe evidence coverage, not predic
 
 | Criterion | Current assessment | Improvement completed in this pass | Evidence still needed |
 | --- | --- | --- | --- |
-| Design | Functional review loop; first-use friction and usability remain unmeasured | Freshly scan a short invented notice on launch; place review guidance beside the source; tuck extra examples and file tools into secondary disclosures | Human desktop/offline review, keyboard checks and actual export opening. Fix any observed confusion. |
+| Design | Coherent source/action review; usability remains unmeasured | Paper/forest typography and hierarchy, source-return navigation, stable action views, explicit file/download feedback, optional calendar controls and source-backed repair | Human desktop/offline review, keyboard checks and actual export opening. Fix any observed confusion. |
 | Potential Impact | Specific student-notice hypothesis, no observed audience results | Make the relevant failure cases reproducible and supply exact success criteria for the existing trial kit | Observe willing students using a different notice without coaching. Report successes, failures and assistance honestly. Do not claim time savings or adoption from automated checks. |
 | Innovation/Idea | Incremental workflow distinction in a crowded category | Focus the demonstration on source-backed repair, unresolved dates and separate approval/calendar gates | Explain the tradeoff in the entrant's own words. Test whether this combination is useful enough to justify another tool. No uniqueness claim is supported. |
-| Presentation | Weakest entry component because the mandatory video is absent | One coherent short scenario, checked export artifacts, judge instructions and a 2:35 recording plan | Real end-to-end screen recording, entrant narration, accurate written answers and a signed-out video-link check. |
+| Presentation | Weakest entry component because the mandatory video is absent | One coherent short scenario, checked export artifacts, judge instructions and a 2:35 recording plan | Real end-to-end screen recording, aligned captions or narration, accurate written answers and a signed-out video-link check. |
 
 ## Existing tools and the defensible distinction
 

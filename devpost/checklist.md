@@ -36,7 +36,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [ ] Optional edit and transfer reflection addressed
 - [x] `devpost/app-map.html` generated from finished code, checked and shown
 
-Activity and evidence: 128 automated tests, TypeScript and the production build pass. Seven fresh notice checks cover abbreviated dates, weekday conflicts, 24-hour cutoffs and malformed clocks as well as the original cases. Initial implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
+Earlier checkpoint evidence: 128 automated tests, TypeScript and the production build passed. Seven fresh notice checks covered abbreviated dates, weekday conflicts, 24-hour cutoffs and malformed clocks as well as the original cases. Initial implementation checkpoint commit: 777eaa1. Current v0.23.0 verification has 186 passing app tests and 14 fresh notice checks, with TypeScript, build and source-hashed rehearsal passing. Actual learner review remains pending; do not substitute agent tests.
 Route and stops: reference-only route in app-map.html: ActionCard, calendarEligible, calendarText. It has not been toured with the learner.
 Edit outcome: not yet offered.
 Reflection: not yet offered; private answer must stay in the ignored profile.

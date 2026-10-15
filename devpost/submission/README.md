@@ -2,6 +2,8 @@
 
 These files reduce submission work. They do not constitute a submitted entry.
 
+Start with [READY-TO-SUBMIT.md](READY-TO-SUBMIT.md) for the short ordered completion path and prepared form values. The current source checkout provides `npm run check:submission`: it verifies rehearsal fingerprints, the app/version, every packaged member and the entry-state snapshot. It exits 2 when assets are consistent but the entry is still incomplete. `-- --assets-only` checks the preparation assets without requiring a completed entry. These are local checks, not browser or organizer verification.
+
 ## Technical video created
 
 A **2:42 narrated technical walkthrough** has been created and provided separately as `action-receipt-technical-walkthrough.mp4`. It presents real production-domain outputs captured from the notice, repair, decision, approval/date, export and reopen functions. Its input data is in `../demo/technical-video-domain-data.json`; the narration script, full spoken captions and a scene/hash manifest are included here. The voice is computer-generated offline using FFmpeg libflite, not the entrant's voice. No voice cloning, paid service or API request was used. Every scene identifies scripted synthetic choices and states that the browser interface is not shown.

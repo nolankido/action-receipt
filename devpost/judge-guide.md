@@ -18,7 +18,7 @@ The initial notice is explicitly synthetic and is freshly scanned by the ordinar
 1. Read the original notice, then use **Review this passage**. Create a separate consent-form action using the exact flagged sentence and explain the decision. Its date starts unresolved.
 2. Record that the separate membership fee is not an obligation; explain the explicit negation. This source decision never creates or approves a task.
 3. Review every active action and its **View source** passage. Keep the transport-email condition. Check actions deliberately; approval permits checklist export even when a date is unresolved.
-4. In **Review details**, confirm only the registration date and payment date/time/UTC offset, after checking their source. Keep “next Friday” and the undated consent form unresolved. Date confirmation and action approval are separate controls.
+4. Open **Review details**, then **Optional calendar details**. Confirm only the registration date and payment date/time/UTC offset, after checking their source. Keep “next Friday” and the undated consent form unresolved. Date confirmation and action approval are separate controls.
 5. **Preview downloads** should show four checklist tasks and two calendar entries after that review. Inspect the exact file content and the excluded-item reasons. Download Markdown and `.ics` and open them yourself.
 
 Expected calendar content: registration is an all-day marker on November 5, 2032; the payment cutoff is November 9 at 03:00 UTC (November 8 at 17:00 UTC-10:00). The two unresolved actions appear only in the checklist. There are no inferred reminders or event durations. Import into a calendar is optional and never automatic.

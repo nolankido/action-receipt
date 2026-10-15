@@ -287,3 +287,28 @@ The v0.23.0 application publication completed on October 15, 2026 at 16:58 UTC. 
 Private deployment `appgdep_6ad10631cd1c8191842180d4cb1b5b4d` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_979939a04d648191841827bd7fe8ebd0` at the existing preview URL. Application SHA-256: `d3e5a95c95b58ffefadc855517636de1f200414d454d41606986224ce82ba615`. Portable archive SHA-256: `6a8307ea9d9c9c86b5bc254d37dd86909e1b1efaa2fca3fa96ff7e1b3feb526d`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal fingerprints and all 34 archive members.
 
 This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
+
+
+## Submission-preparation handoff, October 15, 2026
+
+The entrant returned and requested the improvements needed for submission. Current public main was read as `960f079e8f3d3c0ba3493b294ea5d6cdd8a0f360`, matching local Sites source `77daec46b765cf7f31a6a11a80ab4e0e5d3962cf` at tree `7e875a3f80cf0d8e7f16c756b5688e97e4f327b3`. Recent commits, open PRs, this record, local source and submission materials were inspected. No open PR, repository AGENTS.md, initial dirty checkout or observable concurrent writer was found. Source was opened with the supported Sites helper. The existing preview remains owner-private with zero additional visitors.
+
+The official rules and updates were reread at https://learn-ai-basics.devpost.com/rules and https://learn-ai-basics.devpost.com/updates. The deadline remains October 26, 2026 at 21:00 UTC / 11 a.m. Hawaiʻi. Public code with generated planning documents, an English feature description and actual functioning-app footage publicly available on YouTube or Vimeo are required. No organizer eligibility decision or authenticated form inspection is claimed.
+
+### Completed preparation improvements
+
+- Added `devpost/submission/READY-TO-SUBMIT.md`: one ordered handoff for real app review/recording, prepared form fields, private personal answers, final link checks and actual confirmation. The portable launcher links to it.
+- Corrected the factual draft from 128 tests/seven notices to the freshly checked 186 app tests/14 notices. Added a specific explanation of the review/source/uncertainty design tradeoff without unsupported uniqueness or impact claims.
+- Updated judge and recording instructions for Review details followed by Optional calendar details. Corrected the historical technical video length from 120 to 162 seconds, separated historical/current checklist evidence, and removed stale presentation/account-state wording.
+- Added the read-only `npm run check:submission` command. It validates current app/version, rehearsal source/reference fingerprints, exact archive membership, every archived hash, committed-versus-packaged content, planning-document presence and entry-state consistency. It reports recorded video/form/declaration/submission blockers rather than equating a sound archive with a submitted entry. Exit 1 means asset failure; exit 2 means consistent assets with recorded incomplete-entry fields; `-- --assets-only` succeeds for valid preparation assets. This is consistency checking, not an authenticity signature, browser test or organizer ruling.
+- Added nine isolated Python tooling tests for incomplete-entry retention, technical-video non-substitution, HTTPS video-link shape and host spoof rejection, source/reference/asset/version drift, unexpected archive members and unsafe paths. These are separate from the 186 app tests. Ignored generated Python bytecode.
+
+### Executed checks and current limits
+
+All 186 application tests, nine separate tooling checks, TypeScript, the supported static build, all 14 fresh synthetic scans and the source-hashed production-domain rehearsal passed. `git diff --check` passed. The preparation archive now contains 35 verified members. The actual default readiness command returned the expected exit 2 with five incomplete-entry messages; its assets-only mode passed. No new app release/version was manufactured: the application remains v0.23.0 and its HTML is byte-identical to the previous checked release.
+
+Application SHA-256: `d3e5a95c95b58ffefadc855517636de1f200414d454d41606986224ce82ba615`. Preparation ZIP SHA-256: `c3a5622b25116697cc953fe8462f4ae7c4750c8fd98959bbcf8fd00f15bc35bc`.
+
+The Sites skill still requires skipping browser QA because the supported control-browser skill is unavailable in this managed container. No preview-server workaround, screenshot, browser footage, keyboard/accessibility result or participant finding was invented. Actual browser use/download opening and the learner's review/wrap-up are still pending. The historical 2:42 domain video is not the required public app demonstration. Devpost account handoff, the current form, public video, truthful personal answers/terms and final submission confirmation remain unfinished. Personal answers stay out of public source.
+
+Next useful task: open and review the actual offline app, record the prepared short workflow on the real interface, upload it publicly and complete the authenticated Devpost draft with the entrant. The current package is explicitly a preparation snapshot; retain its truthful missing-state fields until actual evidence changes. Returned publication identities are recorded separately.
