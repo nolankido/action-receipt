@@ -58,7 +58,7 @@
     "app/export-preview.tsx": "3fe9c534e4b61a74a0585fbd3090e7740ae219b64176a7b2dbc87f448a50bee0",
     "app/globals.css": "5e8172ff89d00f564bb18bf7e4f4a4f2915f34409089d0f128f1f8417cce0518",
     "app/manual-action-editor.tsx": "49fd6d540d25799de4a7f7c9b74d403383b4ef24bf369647f781cc356f9c918a",
-    "app/receipt-workspace.tsx": "e3da55e7bcd7c917d37168f0ae7df59eedcc2ddf35359fdd81004ae0c0831ee4",
+    "app/receipt-workspace.tsx": "5c767eff468d5e60fb0a06bd65aed6d8b206e8e1a6eb630c5c0e0d5c257ca026",
     "app/recovery-banner.tsx": "7ddee467234d6f8b181621229a1b9c9084fcc726f96e07f93cf158eb06b259fa",
     "app/review-file-feedback.tsx": "80a760e2c9724d9f32b9f2fafd8af2a0e6d85fc083efceff599566c75bf1369a",
     "app/review-guide.tsx": "a4130dd7340911a56736bc47c0a65a76fe7757368f97e6f59d65689125dc0930",
