@@ -279,3 +279,11 @@ The domain add handler, evidence checks, limits, action provenance, approval/dat
 The portable archive is regenerated and verified against the final source, HTML and rehearsal hashes. Returned publication identities are recorded separately. Submission, video, personal declarations and account work remain untouched.
 
 Next useful task: run supported browser QA when available, especially closed-form tab order, first-field focus, bottom-close return, fieldset blocking and highlighted-passage reuse. Otherwise consolidate evidence and inspect for a reproduced regression rather than adding features or cosmetic changes to fill the remaining time.
+
+### Verified publication receipt
+
+The v0.23.0 application publication completed on October 15, 2026 at 16:58 UTC. Public main was advanced without force from its expected head and reread as `0d4c7475e751e61405b3974e9b9928bdefb17540`. All 10 changed blobs and the complete 217-file tree `67f605ba4cbd80c3652feb1fd0ea68e0d185b398` were hash-matched to Sites source `1fdced951e885a1d4b748ce6848cf11b253c04b2` before main advanced.
+
+Private deployment `appgdep_6ad10631cd1c8191842180d4cb1b5b4d` returned succeeded for saved version `appgprj_6ad019944618819198aced54007cfee8~appgver_979939a04d648191841827bd7fe8ebd0` at the existing preview URL. Application SHA-256: `d3e5a95c95b58ffefadc855517636de1f200414d454d41606986224ce82ba615`. Portable archive SHA-256: `6a8307ea9d9c9c86b5bc254d37dd86909e1b1efaa2fca3fa96ff7e1b3feb526d`. Read-only post-publication checks verified identical built/committed HTML, current rehearsal fingerprints and all 34 archive members.
+
+This receipt is a documentation-only follow-up. Application, rehearsal inputs and portable archive are unchanged. Its own source/public identities are recorded in the corresponding commit metadata; the identities above identify the verified feature publication.
