@@ -19,7 +19,6 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
   Commit: `Build source-linked notice review and approved exports`
 
 ## Hands-on Checkpoints
-- [ ] Formative trial with 3–5 students completed and observed issues addressed. Prepare a technical test guide and realistic synthetic notices; do not invent participant observations or results.
 - [ ] Early usable behavior explored, combined with final review for this small integrated build
 - [ ] Final kick-the-tires exploration and feedback completed
 
@@ -27,6 +26,10 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 - [x] Guided source-review implementation mechanically verified: queue, source-backed repair, decision trail, backward-compatible local files, previews and exports. Actual learner/participant review remains open.
 - [x] Local-rule extraction checked on fresh synthetic source text; no API required
 - [ ] Final review complete: feedback resolved and learner confirms ready to ship
+
+## Recommended Audience Validation
+
+- [ ] Optional formative trial with 3 to 5 willing adult students and observed issues addressed. Guides and synthetic notices are prepared in `devpost/usability/`. This improves evidence for Potential Impact and usability; it is not an official contest requirement or a prerequisite for completing the actual learner review. No participant observations or results may be invented.
 
 ## Code Tour and App Map
 - [ ] Learning activity complete: trace a deadline from source through validation to export
@@ -69,3 +72,5 @@ Activity mode: pending.
 - Timed-cutoff reliability: reproduced malformed clocks such as 24:00 and 17:78 losing the source timed guard and becoming eligible for an all-day marker after checks. Added shared clock syntax/validation so malformed times stay timed and unresolved; explicit HH:MM is proposed without timezone inference. Seconds/fractions, single-digit bare clocks, mixed formats and conflicts remain manual. Reproduced and blocked UTC conversion to a five-digit year, with consistent preview/UI/clarification reasons. Twelve new regressions cover source fidelity, conditions, restore guards, explicit review, UTC conversion and unchanged warnings. Seven fresh notice checks are recorded. Actual browser, learner and student review remain pending.
 
 - Temporary recovery: added one detached copy before reviewed source edits/rescans and nonempty bulk notice replacements. Continuous typing and an unreviewed first scan preserve the pre-edit review. Recovery keeps committed data/provenance/IDs, re-matches evidence, clears approvals/date/source-decision confirmations and retains outgoing work as the next copy. It cancels pending scan/file loads; invalid/stale files do not replace work or its copy. Explicit discard and refresh/tab-close behavior are disclosed. Downloads and review files exclude the copy and unfinished forms. Ten new behavioral checks cover detachment, replacement policy, fresh trust, repeated swaps, provenance, stable calendar IDs, cutoff guards and data isolation. Actual browser, learner and student review remain pending.
+
+- Competition evidence pass: audited the four equal criteria against the official rules and primary product documentation. Simplified first use with a short freshly scanned synthetic notice, source-adjacent review guidance and secondary example/file controls. Added a reproducible production-domain rehearsal checking the complete source/repair/approval/export/reopen path, conspicuously labeled scripted artifacts, public judge instructions and a 2:35 recording shot plan. Reclassified the proposed student trial as recommended audience validation rather than a contest gate. This does not complete browser QA, learner activity, participant testing, narration, written entry or submission.

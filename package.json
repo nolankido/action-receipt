@@ -1,6 +1,6 @@
 {
   "name": "action-receipt",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -13,7 +13,8 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "rehearse:demo": "node --experimental-strip-types scripts/rehearse-demo.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

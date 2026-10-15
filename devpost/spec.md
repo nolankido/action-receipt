@@ -70,6 +70,8 @@ An immutable source string and revision; proposal mode/origin; candidate actions
 - `standalone/`, `vite.static.config.ts`: static browser entry.
 - `app/receipt-workspace.tsx`, `app/review-guide.tsx`, `app/source-review-queue.tsx`, `app/export-preview.tsx`, `app/clarification-sheet.tsx`, `app/recovery-banner.tsx`, `app/globals.css`: review UI.
 - `lib/local-extraction.ts`, `lib/dates.ts`, `lib/times.ts`, `lib/review-guide.ts`, `lib/clarification.ts`, `lib/workspace-recovery.ts`, `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`, `lib/samples.ts`: rules, calendar syntax, validation, downloads, local review continuation and examples.
+- `lib/demo-scenario.ts`: short explicitly invented launch fixture. The workspace initializes it with a lazy call to `extractLocally`, never a saved result. Extra saved examples/harder fresh practice and save/open tools use native secondary disclosures. Recovery and file status messages stay outside collapsed controls.
+- `scripts/rehearse-demo.ts`: reproducible production-domain integration checks and conspicuously labeled scripted reference artifacts in `devpost/demo/`. Covers scan, exact evidence, repair, decisions, separate approval/date gates, serializers, UTC conversion, edit invalidation and review-file reopen; hashes its production source inputs and outputs. Does not test browser controls or human use.
 - `scripts/build-static.mjs`: inlines JavaScript/styles/icons and license notices into the distribution, adds a network-blocking policy, rejects external runtime asset references.
 - `release/action-receipt.html`: committed standalone app.
 - `tests/`, `devpost/`: behavioral checks, Skill Pack evidence and technical plan.

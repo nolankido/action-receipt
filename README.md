@@ -4,7 +4,11 @@ Review one notice with its source evidence, clarify dates, and export only actio
 
 ## Use without installation or payment
 
-Download `release/action-receipt.html` from this public repository and open it in a current desktop browser. The file contains its JavaScript, styles, icons and dependency license notices. It runs from a local file without a server, network connection, account, API key, credits or model download. No paid hosting is required.
+Open the [finished app file](https://github.com/nolankido/action-receipt/blob/main/release/action-receipt.html), select **Download raw file**, save it as `action-receipt.html`, and open it in a current desktop browser. A [direct download](https://raw.githubusercontent.com/nolankido/action-receipt/main/release/action-receipt.html) is also available. Download the HTML itself, not the GitHub source-view page.
+
+The file contains its JavaScript, styles, icons and dependency license notices. It runs from a local file without a server, network connection, account, API key, credits or model download. No paid hosting is required. The [judge guide](devpost/judge-guide.md) gives exact review steps and expected exports.
+
+On launch, the actual local rules scan a short, explicitly invented notice. Review three proposals, repair the missed consent instruction from its exact quotation, and keep an ambiguous date unresolved. Nothing starts approved. Extra saved walkthroughs and a harder fresh-rule notice are behind **More practice**. Save/open controls are behind **Save or reopen a review**.
 
 The optional hosted review site is https://action-receipt.huzzahoptimistically.chatgpt.site. It retains the owner's existing private audience. The downloadable app in this public repository is the judge-access route and does not depend on that site.
 
@@ -29,7 +33,7 @@ These are text patterns, not semantic AI. They can miss unfamiliar wording, impl
 
 Three synthetic walkthroughs have saved example results and are labeled accordingly. **Find actions locally** runs the actual rule engine on the current text, including edited or completely new notices. It never looks up sample results. Fresh rule proposals, saved examples and user additions remain distinct in exports. Rescanning explicitly clears the current review; edits also clear approvals.
 
-**Try guided review** scans an explicitly invented field-trip notice with the actual rules. It exposes a missed consent instruction, a weekday/date conflict and a cancelled fee so you can try the review queue. Source decisions never approve actions, assign dates or certify complete extraction. Counts cover identified flags only.
+**Restart short practice** scans the initial invented architecture-trip notice again with the actual rules. It exposes separate registration/payment deadlines, a missed consent instruction, a conditional relative date and a waived fee. After deliberate review, its expected exports are four checklist tasks and only two calendar entries. **Try harder notice** under **More practice** adds a weekday/date conflict. Source decisions never approve actions, assign dates or certify complete extraction. Counts cover identified flags only.
 
 ## Data handling
 
@@ -47,12 +51,15 @@ npm run dev
 npm test
 npm run typecheck
 node --experimental-strip-types scripts/smoke-local.ts
+npm run rehearse:demo
 npm run build
 ```
 
 The build creates `dist/index.html`, `dist/action-receipt.html`, and the identical committed `release/action-receipt.html`. It embeds assets and license notices, rejects external script/style references, and adds `connect-src 'none'`. Source development uses Vite; the published output is static. No GitHub Actions or scheduled jobs are required or added.
 
-Current verification: 128 automated tests, TypeScript and the static build pass. Seven fresh synthetic notice checks pass in `devpost/local-smoke.json`. Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study or proof of complete language understanding. The [student trial guide](devpost/usability/facilitator-guide.md), [synthetic notices](devpost/usability/participant-notices.md) and [blank observation template](devpost/usability/observation-template.md) are prepared. No participant sessions or findings are claimed.
+Current verification: 128 automated tests, TypeScript and the static build pass. Seven fresh synthetic notice checks pass in `devpost/local-smoke.json`. The [synthetic demo rehearsal](devpost/demo/rehearsal.json) runs the production extraction, repair, source decisions, approval/date gates, serializers and review-file parser. It checks the four-task/two-marker outcome, exact quotes, UTC conversion, edit invalidation and fresh trust after reopening, with source and artifact hashes. Its reference files explicitly label every approval as scripted. Reproduce them with `npm run rehearse:demo`.
+
+Browser interaction and learner review remain pending because supported browser control is unavailable here. These checks are not a user study, a recording or proof of complete language understanding. The [student trial guide](devpost/usability/facilitator-guide.md), [synthetic notices](devpost/usability/participant-notices.md) and [blank observation template](devpost/usability/observation-template.md) are prepared. No participant sessions or findings are claimed. A small trial is recommended for impact/usability evidence, not required by the contest rules.
 
 ## Project structure
 
@@ -67,6 +74,8 @@ Current verification: 128 automated tests, TypeScript and the static build pass.
 - `lib/source-review.ts`: source decisions, manual repair, progress and stale-link checks.
 - `lib/receipt.ts`, `lib/export.ts`, `lib/review-file.ts`: evidence, date/review rules, approved exports and explicit local review save/open.
 - `lib/samples.ts`: synthetic notices and saved walkthroughs.
+- `lib/demo-scenario.ts`: short synthetic launch/recording fixture, always freshly scanned.
+- `scripts/rehearse-demo.ts`, `devpost/demo/`: reproducible domain-workflow checks, labeled reference artifacts and a real-recording shot checklist.
 - `scripts/build-static.mjs`: self-contained HTML packaging and license preservation.
 - `release/action-receipt.html`: runnable distribution.
 - `tests/`, `devpost/`: checks, planning, workflow evidence and app map.
@@ -81,7 +90,7 @@ The official Skill Pack was installed and used in Codex. See `devpost/workflow.m
 npx skills add challengepost/learn-ai-basics --all -y
 ```
 
-The current rules require a working project built with the Skill Pack; no runtime model API requirement is stated. This is our reading of https://learn-ai-basics.devpost.com/rules, not an organizer eligibility ruling. The public repository, a public demonstration under three minutes, actual learner review, learner-written answers and the exit survey remain part of the submission process. No completed submission is claimed.
+The current rules require a working project built with the Skill Pack; no runtime model API requirement is stated. This is our reading of https://learn-ai-basics.devpost.com/rules, not an organizer eligibility ruling. See the [four-criterion readiness audit](devpost/competitive-readiness.md) and [recording checklist](devpost/demo/recording-guide.md). Public demonstration video and entrant-written answers are still missing. Actual learner review, learning wrap-up and the exit survey remain unfinished in the Learn workflow. No completed submission is claimed.
 
 ## License
 

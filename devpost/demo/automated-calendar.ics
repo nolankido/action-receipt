@@ -1,0 +1,95 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Action Receipt//Reviewed notices//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:automated-demo-contract-r1-a1@actionreceipt.local
+DTSTAMP:20261015T000000Z
+DTSTART;VALUE=DATE:20321105
+DTEND;VALUE=DATE:20321106
+SUMMARY:Register for the architecture trip
+DESCRIPTION:Local text rules\; browser-only proposals\, no AI model or API\
+ nAction origin: Local text rules.\nNotice: AUTOMATED REHEARSAL FIXTURE: In
+ vented architecture trip\nOriginal deadline: Register for the architecture
+  trip by Nov. 5\, 2032.\nDate provenance: source proposal\; confirmed by u
+ ser.\nThis is an all-day deadline marker\; no exact cutoff time or reminde
+ r is inferred.\nAction source: Register for the architecture trip by Nov. 
+ 5\, 2032.\nDate source: Register for the architecture trip by Nov. 5\, 203
+ 2.\nOriginal review flag: Found by local English text rules. Check meaning
+ \, conditions and the complete notice.\nNotice note: AUTOMATED SYNTHETIC R
+ EHEARSAL. Approvals\, date checks and source decisions are scripted contra
+ ct checks\, not human review or usability findings.\nNotice note: Local En
+ glish text rules generated these proposals. They can miss instructions or 
+ misunderstand scope. Read every part of the notice and add missed actions 
+ manually.\nNotice note: Dates are linked only within the same passage. No 
+ dates are inferred from today's date or borrowed from a different sentence
+ .\nNotice note: Source passages flagged for review: 2. This list is not ex
+ haustive.\nNotice note: The notice contains negation or cancellation. Loca
+ l rules skip negated passages and instructions immediately followed by an 
+ explicit withdrawal referring back. Check other cross-sentence changes and
+  qualifications manually.\nOther source passages flagged for review (conte
+ xt\, not approved tasks\; not a completeness check):\nPossible instruction
+  or qualification outside the supported patterns. Inspect it and add an ac
+ tion manually if needed.\nSource: Participants must attach a signed consen
+ t form.\nReview status: Linked to approved checklist item\; date unconfirm
+ ed\nDecision origin: Recorded by user\nDecision: Link to an action\nDecisi
+ on note: Automated fixture decision: this is a separate required document\
+ ; no deadline is stated.\nLinked action: Attach a signed consent form\; as
+ sociation supplied by user\, not an inferred deadline\nThis source decisio
+ n does not approve an action or confirm a date.\nNegation or cancellation:
+  no action was created. Check its scope and any changes to other instructi
+ ons.\nSource: You do not need to pay a separate membership fee.\nReview st
+ atus: Reviewed: not an obligation\nDecision origin: Recorded by user\nDeci
+ sion: Not an obligation\nDecision note: Automated fixture decision: the no
+ tice explicitly says this separate fee is not required.\nThis source decis
+ ion does not approve an action or confirm a date.\nQuotation matching does
+  not certify interpretation or completeness.
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+END:VEVENT
+BEGIN:VEVENT
+UID:automated-demo-contract-r1-a2@actionreceipt.local
+DTSTAMP:20261015T000000Z
+DTSTART:20321109T030000Z
+SUMMARY:Pay the bus deposit
+DESCRIPTION:Local text rules\; browser-only proposals\, no AI model or API\
+ nAction origin: Local text rules.\nNotice: AUTOMATED REHEARSAL FIXTURE: In
+ vented architecture trip\nOriginal deadline: Pay the bus deposit by Nov. 8
+ \, 2032 at 17:00 UTC-10:00.\nDate provenance: source proposal\; confirmed 
+ by user.\nThis entry marks the deadline instant\; no event duration or rem
+ inder is inferred.\nAction source: Pay the bus deposit by Nov. 8\, 2032 at
+  17:00 UTC-10:00.\nDate source: Pay the bus deposit by Nov. 8\, 2032 at 17
+ :00 UTC-10:00.\nOriginal review flag: Found by local English text rules. C
+ heck meaning\, conditions and the complete notice.\nNotice note: AUTOMATED
+  SYNTHETIC REHEARSAL. Approvals\, date checks and source decisions are scr
+ ipted contract checks\, not human review or usability findings.\nNotice no
+ te: Local English text rules generated these proposals. They can miss inst
+ ructions or misunderstand scope. Read every part of the notice and add mis
+ sed actions manually.\nNotice note: Dates are linked only within the same 
+ passage. No dates are inferred from today's date or borrowed from a differ
+ ent sentence.\nNotice note: Source passages flagged for review: 2. This li
+ st is not exhaustive.\nNotice note: The notice contains negation or cancel
+ lation. Local rules skip negated passages and instructions immediately fol
+ lowed by an explicit withdrawal referring back. Check other cross-sentence
+  changes and qualifications manually.\nOther source passages flagged for r
+ eview (context\, not approved tasks\; not a completeness check):\nPossible
+  instruction or qualification outside the supported patterns. Inspect it a
+ nd add an action manually if needed.\nSource: Participants must attach a s
+ igned consent form.\nReview status: Linked to approved checklist item\; da
+ te unconfirmed\nDecision origin: Recorded by user\nDecision: Link to an ac
+ tion\nDecision note: Automated fixture decision: this is a separate requir
+ ed document\; no deadline is stated.\nLinked action: Attach a signed conse
+ nt form\; association supplied by user\, not an inferred deadline\nThis so
+ urce decision does not approve an action or confirm a date.\nNegation or c
+ ancellation: no action was created. Check its scope and any changes to oth
+ er instructions.\nSource: You do not need to pay a separate membership fee
+ .\nReview status: Reviewed: not an obligation\nDecision origin: Recorded b
+ y user\nDecision: Not an obligation\nDecision note: Automated fixture deci
+ sion: the notice explicitly says this separate fee is not required.\nThis 
+ source decision does not approve an action or confirm a date.\nQuotation m
+ atching does not certify interpretation or completeness.
+TRANSP:TRANSPARENT
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

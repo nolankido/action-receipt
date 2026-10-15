@@ -7,7 +7,7 @@ status: approved
 Source: `scope.md > The Core Loop`, `scope.md > The Unique Kernel`.
 
 ## The Core Journey
-1. Open the workspace and paste a notice, or load a clearly labeled synthetic sample.
+1. Open the workspace with a short explicitly synthetic notice freshly scanned by the actual local rules. Nothing starts approved. Paste your own notice, restart short practice, or open secondary saved walkthroughs/harder practice.
 2. Run local text rules in the browser. No notice is sent to a model or server. Sample walkthroughs use saved example results and say so.
 3. Review proposed actions, their conditions, date wording, matching source passages and unresolved issues.
 4. Edit action wording or supply an explicit date. User edits remain distinguishable from automatic proposals and invalidate prior approval.
@@ -15,7 +15,7 @@ Source: `scope.md > The Core Loop`, `scope.md > The Unique Kernel`.
 6. Download a checklist containing only approved actions, preserving unresolved wording and provenance. Download calendar entries only for approved items with confirmed complete dates.
 
 ## Screens and Layout
-One main workspace. Header with product identity and a concise explanation. Three sample choices. Left panel for source text and source highlighting. Right panel for action cards, review status and exports. Mobile stacks the panels with accessible disclosure controls on cards. A small method/about dialog explains processing and limitations.
+One main workspace. Header with product identity and a concise explanation. A short fresh-rule practice is the default; three saved walkthroughs and harder practice sit in a secondary disclosure. Save/open controls use their own disclosure; file feedback and recovery remain visible outside it. Left panel for source text and source highlighting. Right panel for next-step guidance, action cards, review status and exports. The source and guidance begin beside one another on desktop. Core notice/action text is sized for readable review. Mobile stacks the panels with accessible disclosure controls on cards. A small method/about dialog explains processing and limitations. Actual browser/usability verification is still pending.
 
 ## Look and Feel
 Carry forward the accepted calm workspace, high contrast, source-left/actions-right layout and explicit labels. Forest green, warm paper and dark ink are implementation choices within that direction. No confidence scores, ornamental dashboards or generated imagery.

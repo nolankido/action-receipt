@@ -26,3 +26,30 @@
 
 .clarification-sheet>.question-session-note{font-size:11px;line-height:1.8;color:#795f30;margin-top:10px}.question-source summary>svg:last-child{margin-left:auto}.question-source[open] summary>svg:last-child{transform:rotate(180deg)}
 .recovery-banner{padding:17px 23px;border-bottom:1px solid #d3dfc9;background:#f6f9f0;color:#405d34}.recovery-copy{display:flex;align-items:flex-start;gap:10px}.recovery-copy>svg{flex-shrink:0;margin-top:2px}.recovery-copy h3{font-size:14px;line-height:1.5}.recovery-copy p{font-size:12px;line-height:1.8;margin-top:6px;max-width:850px;overflow-wrap:anywhere}.recovery-buttons{display:flex;align-items:center;gap:12px 22px;flex-wrap:wrap;margin-top:13px}.recovery-restore{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:10px 13px;background:white;border:1px solid #b8ccb0;border-radius:6px;color:var(--green);font-size:12px;font-weight:600}.recovery-buttons .text-button{min-height:42px;font-size:12px}.recovery-banner>.recovery-boundary{font-size:11px;line-height:1.8;color:#657752;margin-top:10px;max-width:900px}@media(max-width:580px){.recovery-banner{padding:16px 15px}.recovery-buttons{align-items:stretch;flex-direction:column;gap:6px}.recovery-buttons>button{justify-content:center}}
+.practice-intro{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:18px 20px;border:1px solid #cdd8c2;border-radius:9px;background:#eef4e9}
+.practice-intro>div>p:last-child{margin-top:7px;font-size:12px;line-height:1.8;color:#506346;max-width:700px}
+.practice-intro strong{color:#304a29}
+.practice-intro button{display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;background:white;border:1px solid #b9ccb0;border-radius:6px;color:var(--green);font-size:11px;min-height:44px;padding:10px 12px}
+.sample-section{margin-top:13px}
+.sample-section>summary,.review-file-toolbar>summary{cursor:pointer;font-size:12px;line-height:1.6;color:#526848;padding:6px 0;min-height:32px}
+.sample-section>summary svg,.review-file-toolbar>summary svg{vertical-align:middle;margin-left:8px}
+.sample-section[open]>summary svg,.review-file-toolbar[open]>summary svg{transform:rotate(180deg)}
+.practice-disclosure{font-size:11px;line-height:1.8;color:#687a5b;margin:8px 0 12px}
+.review-file-toolbar[open] .review-file-buttons{margin-top:10px}
+.file-feedback{margin:0;padding:10px 23px;font-size:11px;line-height:1.7;color:var(--green);border-bottom:1px solid #e5e8dc}
+.source-panel .analyze-area{margin-top:0}
+.notice-content{font-size:14px;line-height:1.85}
+.panel-heading h2{font-size:14px}
+.source-tabs button{font-size:12px;min-height:40px}
+.action-card h3{font-size:15px}
+.action-card .badge{font-size:10px}
+.action-card .condition,.action-card .deadline-line,.action-card .evidence-line{font-size:12px}
+.action-tools .text-button{font-size:12px;min-height:40px}
+.action-card .approve-row{font-size:12px;min-height:44px}
+.action-card .checklist-only,.action-card .provenance,.action-card .correction-label{font-size:11px}
+.action-details>label:not(.check-row),.action-details .check-row{font-size:12px}
+.action-details textarea,.action-details input:not([type=checkbox]){font-size:13px}
+.review-summary{font-size:11px;flex-wrap:wrap}
+.actions-panel .guide-counts{gap:14px 25px}
+@media(max-width:900px){.practice-intro{align-items:stretch;flex-direction:column;gap:12px}.practice-intro button{align-self:flex-start}}
+@media(max-width:600px){.practice-intro{padding:15px}.practice-intro button{width:100%;align-self:stretch}.file-feedback{padding:10px 15px}}

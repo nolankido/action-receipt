@@ -1,0 +1,88 @@
+{
+  "kind": "Automated synthetic domain-workflow rehearsal",
+  "status": "passed",
+  "disclaimer": "AUTOMATED SYNTHETIC REHEARSAL. Approvals, date checks and source decisions are scripted contract checks, not human review or usability findings.",
+  "scope": "Production extraction, evidence, repair, decisions, approval/date eligibility, serializers and review-file parser. Does not exercise browser controls, downloads or calendar import.",
+  "human_review": "not_conducted",
+  "browser_interaction": "not_conducted",
+  "video": "not_recorded",
+  "fixture": {
+    "title": "Invented architecture trip",
+    "source": "CAMPUS FIELD TRIP\nSynthetic practice notice, not an actual event.\n\nRegister for the architecture trip by Nov. 5, 2032.\nPay the bus deposit by Nov. 8, 2032 at 17:00 UTC-10:00.\nParticipants must attach a signed consent form.\n\nIf you need accessible transport, email the coordinator by next Friday.\nYou do not need to pay a separate membership fee."
+  },
+  "fixture_sha256": "20257ce880b94311947a87809d3d56cf690cc04737f42f43aab9f21e161dfb70",
+  "deterministic_export_timestamp": "2026-10-15T00:00:00.000Z",
+  "stages": [
+    {
+      "stage": "Fresh local scan: no automatic approval",
+      "checklist": 0,
+      "calendar": 0,
+      "pendingFlags": 2
+    },
+    {
+      "stage": "Repair from exact source: still unapproved and undated",
+      "checklist": 0,
+      "calendar": 0,
+      "pendingFlags": 2
+    },
+    {
+      "stage": "Scripted action checks without date confirmation",
+      "checklist": 4,
+      "calendar": 0,
+      "pendingFlags": 0
+    },
+    {
+      "stage": "Scripted confirmation of only the two complete dates",
+      "checklist": 4,
+      "calendar": 2,
+      "pendingFlags": 0
+    }
+  ],
+  "assertions": [
+    "Exact source positions",
+    "Separate registration and timed payment deadlines",
+    "Missing consent instruction repaired without inferred date",
+    "Waived fee remains context, not a task",
+    "Conditional relative deadline stays unresolved",
+    "4 checklist tasks and 2 calendar markers",
+    "Timed cutoff converts to 2032-11-09 03:00 UTC",
+    "UTF-8 75-byte iCalendar folding and CRLF",
+    "Edits clear approval and date checks",
+    "Reopening requires fresh review"
+  ],
+  "source_files_sha256": {
+    "app/clarification-sheet.tsx": "99c337283b80d546b60f1fd90856c4600cf3bd4e1bd484eddbd967f592005648",
+    "app/export-preview.tsx": "db8fbfc07576dd36204afdbd57b7482c675202efd4a24a29c975bf4df79b3730",
+    "app/globals.css": "08485004bcea6387c037ab7660d1788372b2bc05ff54d43ee5d9db40b904e7f1",
+    "app/receipt-workspace.tsx": "22de35bfcba87a78b440af5f318a08b02e9044d7db6810205a8e925b9320f15a",
+    "app/recovery-banner.tsx": "9831e7aa5629e2e642ab35717bc999707faa4ee93c649dc7ea7ec381652079e6",
+    "app/review-guide.tsx": "b2db8c3f74725666169cc50e0914092cd2de5f4aef2b54987c6af90d510420e4",
+    "app/source-review-queue.tsx": "b12f93a77a87e4919238317740dd6bb4742e57ae62b2bccea97a9ac4d053314c",
+    "lib/clarification.ts": "a93304bbfcab7b87f8e845d863ca3f48cc322aec931e50775b28c184da3fde0d",
+    "lib/connector-context.ts": "bbddff68689cb0f6926fecd4b8b96f12f2054277c296e97b0df07d4ad5ece24e",
+    "lib/connector-preview.d.ts": "abd69a94f7f61f1359063bb557574faae35e8ff5a028cc4c04b9ee248ef52642",
+    "lib/connectors.ts": "1c93d747e384c8e17e3e3dd5361b24412babf5eba2a11d2ae7a75f4e0924112c",
+    "lib/dates.ts": "df5af3f7695c057ce39e3536531f7dae1ead77458d9cb90b7c091288dff13cbf",
+    "lib/demo-scenario.ts": "156e559ffc0f64a0b2674b14fee9224f26f8a3ecdde5553930d5a8a126d09cb2",
+    "lib/export.ts": "368ede329331fd68e86851e8785e3a0c8c8b20f98abb0b4a2a178093ab02f0c6",
+    "lib/local-extraction.ts": "c4016860c473304703e6f1d4d5c63ec427752f298cba1442639a999f48fc80c7",
+    "lib/receipt.ts": "9d27e23aeb191ad4c43cb26ecdba074b246740fa828dde86ee93e3d87b6f0af2",
+    "lib/review-file.ts": "05c658141f95c4425ff81fef242f53b26496197eec8054f77fdc6b71f54ff274",
+    "lib/review-guide.ts": "4163f963b3ac7d2c25fbce59733430e4b04284653aa8a8b1ed98ba4323c6028f",
+    "lib/samples.ts": "5f1d868dad8404bac17e520f4358f6a942a765453ca475a207886a4e70499a35",
+    "lib/source-review.ts": "428b5391e2cf4e6e0b1517b026ed901f6cb156fa5fec73af3df0c318ba92f857",
+    "lib/times.ts": "48de1c0360575021a4ba81acbfdb2e7d2f77f66fd8779916769b735edaaba9ea",
+    "lib/utils.ts": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68",
+    "lib/workspace-recovery.ts": "860e0bc86ae83d993133e42f7ee220686adfbc5cc6022afc89a169a1d18587e8",
+    "package.json": "3ea470f4af88f32125ee398e9105334cdf872babca5fd92a8322674d1f739485",
+    "pnpm-lock.yaml": "095ba6f301ba3997da2c251dfc4b805c220624bdf0921d905eaceee0d1fb29c9",
+    "scripts/build-static.mjs": "900499024204b337c728e5a1338a364938f5fdf0949ea7df362c8dce0258697e",
+    "scripts/rehearse-demo.ts": "7a50ba33efb1ebea80aa59a5b17dab2ea8e51caf34f4efb7b1bcde5d6a7f9769",
+    "standalone/main.tsx": "8318516a7897bd899ffab965a1c0ff4ca53792781b2a93285296ecd11553881d",
+    "vite.static.config.ts": "1b6481b96fbde556894e79dc741fd97300a4fb573922d938a0a0308ca40b7d6c"
+  },
+  "artifacts": {
+    "automated-checklist.md": "d8936ea08ccf07ea84a5215a0b4603b2da48235dfece34c695eb00a8c988729b",
+    "automated-calendar.ics": "e67b393297eedf738ea8dfcd83c567ca6418d6003189ad49ae7fe554910c805b"
+  }
+}

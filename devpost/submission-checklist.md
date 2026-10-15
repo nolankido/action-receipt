@@ -7,6 +7,8 @@ This file is technical preparation, not ready-to-paste entrant submission copy.
 - [x] Reproducible tests and production build.
 - [x] Remove runtime API dependence and build a standalone browser app with no new paid services.
 - [x] Preserve fresh local-rule scan checks and the earlier failed API experiments as history.
+- [x] Audit the four equal judging criteria and document the evidence gaps in `competitive-readiness.md`.
+- [x] Prepare public offline testing instructions in `judge-guide.md`, a reproducible synthetic workflow rehearsal and a timed recording checklist. Automated fixture approvals are explicitly labeled.
 - [ ] Learner tries the application and confirms readiness after any fixes.
 - [ ] Complete the brief learning wrap-up; do not invent a reflection.
 - [x] Public GitHub repository exists: https://github.com/nolankido/action-receipt. Public visibility and source verified; unauthenticated Git access checked separately.
@@ -24,12 +26,8 @@ Updates: https://learn-ai-basics.devpost.com/updates
 ## Recording shot checklist
 These are screen actions, not entrant narration or submission prose.
 
-1. Open the standalone HTML file while offline. Keep any saved synthetic walkthrough label visible.
-2. Paste a fresh synthetic notice and select Find actions locally. Show its local-rule label.
-3. Select registration and payment evidence, making their separate dates visible.
-4. Open an ambiguous date; clarify it explicitly and show user-supplied provenance.
-5. Confirm a date, approve selected actions and download both formats.
-6. Open the files and show that an unresolved approved action remains checklist-only.
-7. Inspect a flagged source passage, reuse its quotation for a manual correction, and show the offline/no-API behavior. Keep the complete recording below three minutes. Write and speak your own narration.
+Use `demo/recording-guide.md` for the 2:35 shot budget and exact controls. It uses the freshly scanned synthetic launch notice, source-backed consent repair, waived-fee decision, separate registration/payment deadlines and an unresolved relative date. Review and approve actions yourself, confirm only complete dates, preview/download both formats, and inspect the actual files. Expected result: four checklist tasks, two calendar markers. Do not substitute the explicitly labeled automated rehearsal artifacts for your own downloads. Write and speak your own narration. No recording is claimed.
+
+Recommended impact evidence: use the prepared student trial kit on different notices. A small formative trial is not an official entry requirement. Actual Learn learner review and wrap-up remain required by the installed workflow.
 
 Current architecture: the public repository contains `release/action-receipt.html`, which judges can download and open without hosting, API access or an app account. No live model run or account funding is a submission-preparation gate for this version. See `zero-cost-plan.md` for the rules interpretation and remaining learner steps.
