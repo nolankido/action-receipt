@@ -16,10 +16,11 @@ This file is technical preparation, not ready-to-paste entrant submission copy.
 - [ ] Complete the brief learning wrap-up; do not invent a reflection.
 - [x] Public GitHub repository exists: https://github.com/nolankido/action-receipt. Public visibility and source verified; unauthenticated Git access checked separately.
 - [x] Complete and inspect the 158.01-second edited demonstration of actual browser captures: fresh scans, evidence review, consent repair, waived-fee decision, separate approval/date checks, exact four-task/two-event previews and download requests. It is not continuous screen recording; saved download bytes are not claimed.
-- [ ] Video is less than three minutes, publicly visible on YouTube or Vimeo, and accessible while signed out.
+- [x] Publish the sub-three-minute video at https://vimeo.com/1236353555 with Public visibility and embeddable sharing; verify active owner-browser playback. Independent signed-out access remains unverified.
 - [x] Inspect the authenticated form and save project fields and cover in draft `1239349-action-receipt`. AI assistance is disclosed. The original Learn learner-authorship/experiential checkpoints are not marked complete.
 - [x] Complete Additional info, including the four resource fields, under the entrant's direction. Private answers remain in Devpost.
 - [x] Save the Skill Pack-use explanation and public repository URL in the draft.
+- [x] Save the public Vimeo URL in the draft. Four of five steps are complete, and the finalization page shows no missing-field warnings.
 - [ ] Complete the remaining final terms and declarations accurately.
 - [ ] Submit and record the actual confirmation URL/status.
 
@@ -30,7 +31,7 @@ Updates: https://learn-ai-basics.devpost.com/updates
 ## Recording shot checklist
 These are screen actions, not entrant narration or submission prose.
 
-The completed edited browser demonstration measures 158.01 seconds and has its own [manifest](submission/browser-demo-manifest.json) and [33 measured caption cues](submission/browser-demo-captions.srt). Its public video link remains missing. `demo/recording-guide.md` preserves the original 2:35 shot budget and controls for reference. The scenario uses the freshly scanned synthetic launch notice, source-backed consent repair, waived-fee decision, separate registration/payment deadlines and an unresolved relative date. Actual previews show four checklist tasks and two calendar markers; download requests were observed, but saved download bytes were unavailable. The original `submission/planned-captions.srt` remains a separate planning artifact. Face/voice narration is optional.
+The completed edited browser demonstration measures 158.01 seconds and has its own [manifest](submission/browser-demo-manifest.json) and [33 measured caption cues](submission/browser-demo-captions.srt). Its public watch URL is https://vimeo.com/1236353555. Public sharing and owner-browser playback were observed; independent signed-out access is unverified. `demo/recording-guide.md` preserves the original 2:35 shot budget and controls for reference. The scenario uses the freshly scanned synthetic launch notice, source-backed consent repair, waived-fee decision, separate registration/payment deadlines and an unresolved relative date. Actual previews show four checklist tasks and two calendar markers; download requests were observed, but saved download bytes were unavailable. The original `submission/planned-captions.srt` remains a separate planning artifact. Face/voice narration is optional.
 
 Recommended impact evidence: use the prepared student trial kit on different notices. A small formative trial is not an official entry requirement. Actual Learn learner review and wrap-up remain required by the installed workflow.
 

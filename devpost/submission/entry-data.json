@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "preparation_status": "devpost_draft_saved_video_and_final_submission_pending",
+  "preparation_status": "devpost_four_of_five_complete_awaiting_entrant_terms_and_submission",
   "registration_confirmed": true,
   "devpost_account": "kidon",
   "project_draft_created": true,
@@ -10,7 +10,7 @@
   "tagline_saved": true,
   "project_fields_saved": true,
   "gallery_uploaded": true,
-  "devpost_steps_completed": 3,
+  "devpost_steps_completed": 4,
   "devpost_steps_total": 5,
   "additional_information_status": "complete",
   "resource_fields_completed_at_entrant_direction": 4,
@@ -41,13 +41,13 @@
   "license": "MIT",
   "gallery_image_file": "action-receipt-cover.png",
   "gallery_image_type": "Original project illustration, not an app screenshot",
-  "video_url": null,
+  "video_url": "https://vimeo.com/1236353555",
   "video_recorded": true,
   "video_caption_file": "browser-demo-captions.srt",
   "caption_status": "33 measured cues for the completed edited browser demo; final cue ends at 157.055 seconds",
   "video_capture_in_progress": false,
   "current_form_inspected": true,
-  "form_access_observation": "Existing Devpost account kidon is authenticated. Draft 1239349-action-receipt has saved project fields and its cover, with three of five steps complete. Additional info, including four resource fields, is complete under the entrant's direction. The mandatory public video link, final terms and actual submission remain pending.",
+  "form_access_observation": "Existing Devpost account kidon is authenticated. Draft 1239349-action-receipt has saved project fields, cover and public video URL https://vimeo.com/1236353555, with four of five steps complete. Additional info, including four resource fields, remains complete under the entrant's direction. The finalization page shows no missing-field warnings, only an unchecked binding Official Rules / Devpost Terms of Service checkbox and Submit project. Terms acceptance and actual submission have not been observed.",
   "browser_verification": {
     "performed_by": "Agent using supported browser control",
     "environment": "Owner-authenticated production app",
@@ -99,5 +99,34 @@
     "caption_cue_count": 33,
     "caption_last_cue_end_seconds": 157.055,
     "computer_generated_narration": true
+  },
+  "video_upload_complete": true,
+  "video_url_saved_to_devpost": true,
+  "video_publication_verification": {
+    "platform": "Vimeo",
+    "public_visibility_setting_observed": true,
+    "public_visibility_label": "Public: Anyone on the internet can find and view",
+    "embeddable_setting_observed": true,
+    "watch_url_opened": true,
+    "playback_verified": true,
+    "playback_environment": "Owner-authenticated browser",
+    "player_duration_seconds": 157.999996,
+    "observed_playback_time_seconds": 26.685702,
+    "paused": false,
+    "ready_state": 4,
+    "media_error": null,
+    "independent_signed_out_access_verified": false,
+    "signed_out_verification_limit": "Independent public retrieval could not access the watch page; no separate signed-out check is claimed"
+  },
+  "finalization_page_inspected": true,
+  "missing_field_warnings_observed": false,
+  "finalization_remaining_controls": [
+    "Unchecked Official Rules / Devpost Terms of Service checkbox",
+    "Submit project"
+  ],
+  "video_metadata_saved": {
+    "title": true,
+    "description": true,
+    "content_rating": "All audiences"
   }
 }

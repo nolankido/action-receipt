@@ -52,7 +52,7 @@ TypeScript, React, Vite, Codex, Devpost Learn Skill Pack, HTML, CSS, iCalendar.
 - Runnable file: https://github.com/nolankido/action-receipt/blob/main/release/action-receipt.html
 - Judge instructions: https://github.com/nolankido/action-receipt/blob/main/devpost/judge-guide.md
 - License: MIT
-- Video: a 158.01-second edited sequence of actual production-browser screenshots with disclosed computer narration is complete locally. It is not continuous screen recording. No public video URL is claimed, and no placeholder URL should be submitted.
+- Video: https://vimeo.com/1236353555. The 158.01-second edited sequence uses actual production-browser screenshots with disclosed computer narration; it is not continuous screen recording. Vimeo Public and embeddable settings plus active playback were observed in the owner-authenticated browser. An independent signed-out access check is not claimed.
 
 ## Not answered by this draft
 

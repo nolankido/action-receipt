@@ -4,6 +4,7 @@ Does not create footage, fill personal answers, accept terms, or submit an entry
 Run from the repository root after updating source checks and image assets.
 """
 from pathlib import Path
+from runpy import run_path
 import base64
 import hashlib
 import html
@@ -16,9 +17,11 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "devpost/submission"
 digest = lambda data: hashlib.sha256(data).hexdigest()
 entry = json.loads((ASSETS / "entry-data.json").read_text())
+public_video_url = run_path(str(ROOT / "scripts/check-submission.py"))["public_video_url"]
 assert entry["submitted"] is False and entry["submission_confirmation_url"] is None
 assert entry.get("submission_site_confirmation_observed") is not True
-assert isinstance(entry["video_recorded"], bool) and entry["video_url"] is None
+assert isinstance(entry["video_recorded"], bool)
+assert entry["video_url"] is None or public_video_url(entry["video_url"])
 if entry["video_recorded"]:
     demo = entry["browser_demo"]
     assert entry["submission_demo_complete"] is True and demo["actual_browser_ui"] is True
@@ -79,6 +82,7 @@ if entry["video_recorded"]:
     assert browser_manifest["status"] == "complete" and browser_manifest["actual_browser_ui"] is True
     assert browser_manifest["media"]["sha256"] == demo["sha256"]
     assert browser_manifest["media"]["duration_seconds"] == demo["duration_seconds"]
+    assert browser_manifest["public_video_url"] == entry["video_url"]
     assert browser_manifest["captions"]["sha256"] == digest(contents["devpost/submission/browser-demo-captions.srt"])
     actual_blocks = contents["devpost/submission/browser-demo-captions.srt"].decode().strip().split("\n\n")
     actual_last_end = 0
@@ -94,13 +98,17 @@ story = html.escape((ASSETS / "project-description.md").read_text())
 icon = base64.b64encode((ROOT / "public/favicon.svg").read_bytes()).decode()
 demo_state = "The edited browser-demo video is complete locally; its public URL remains missing." if entry["video_recorded"] else "Actual browser-demo capture/editing is in progress."
 demo_next_step = "upload the finished actual-app demo publicly" if entry["video_recorded"] else "finish and inspect the actual-app demo, then upload it publicly"
+if entry["video_url"]:
+    video_url = html.escape(entry["video_url"], quote=True)
+    demo_state = f'The edited browser demonstration is published on <a href="{video_url}">Vimeo</a>; Public sharing and playback were observed in the owner-authenticated browser. A separate signed-out check is not claimed.'
+    demo_next_step = "review the existing draft and its public video link" if entry.get("video_url_saved_to_devpost") else "add the published video link to the existing draft"
 launcher = f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Action Receipt | Prepared entry materials</title>
 <style>body{{margin:0;background:#f6f5ef;color:#24382e;font:16px/1.7 Arial,sans-serif}}main{{max-width:900px;margin:auto;padding:40px 24px}}header{{display:flex;align-items:center;gap:14px}}header img{{width:48px;height:48px}}h1{{font-size:26px}}h2{{font-size:21px;margin-top:30px}}.state{{padding:16px 20px;border:1px solid #dbc78e;background:#fff9ea;border-radius:10px}}a{{color:#245846;overflow-wrap:anywhere}}.button{{display:inline-block;background:#245846;color:white;text-decoration:none;border-radius:7px;padding:12px 18px;margin:12px 10px 10px 0}}li{{margin:7px 0}}textarea{{box-sizing:border-box;width:100%;min-height:480px;padding:16px;font:14px/1.6 monospace;color:#24382e;border:1px solid #ccd7c2;border-radius:8px;background:white}}.note{{font-size:14px;color:#64715b}}code{{overflow-wrap:anywhere}}</style>
 </head><body><main><header><img src="data:image/svg+xml;base64,{icon}" alt=""><h1>Action Receipt: prepared entry materials</h1></header>
-<p class="state"><strong>The program and Devpost draft are prepared. The entry is not submitted.</strong><br>Draft 1239349-action-receipt has saved project fields, cover and entrant-directed Additional info; three of five steps are complete. {demo_state} The public video link, final terms and actual submission remain pending.</p>
+<p class="state"><strong>The program and Devpost draft are prepared. The entry is not submitted.</strong><br>Draft 1239349-action-receipt has saved project fields, cover, public video URL and entrant-directed Additional info; four of five steps are complete. Its finalization page shows no missing-field warnings. {demo_state} The binding terms checkbox remains unchecked, and actual submission has not been observed.</p>
 <a class="button" href="release/action-receipt.html">Open the offline app</a><a class="button" href="https://github.com/nolankido/action-receipt">Public source repository</a>
 <h2>Prepared for you</h2><ul>
 <li><a href="devpost/submission/action-receipt-cover.png">Gallery cover PNG</a>: original illustration, not a screenshot.</li>
@@ -109,7 +117,7 @@ launcher = f'''<!doctype html>
 <li><a href="devpost/demo/recording-guide.md">Screen-action recording checklist</a> and <a href="devpost/judge-guide.md">judge instructions</a>.</li>
 <li><a href="package-manifest.json">Package hashes</a>; automated reference artifacts under <code>devpost/demo/</code> are labeled as scripted checks.</li></ul>
 <h2>Factual project draft</h2><p class="note">Prepared with AI assistance under your delegation. The authenticated form has been inspected and its draft fields saved. Private Additional info answers remain in Devpost and are intentionally absent here. Final terms remain pending.</p><textarea readonly aria-label="AI-assisted factual project draft">{story}</textarea>
-<h2>Finish the entry</h2><p><a href="devpost/submission/READY-TO-SUBMIT.md">Open the short completion checklist</a>: {demo_next_step}, add its link to the existing draft, review final terms and retain the actual submission confirmation.</p><p>No face or voice is required by the published rules; actual footage of the functioning software is required. A caption file or project illustration cannot replace it. Focused supported-browser checks verify repeated scanning and consent-action repair; no learner trial or participant study is claimed.</p>
+<h2>Finish the entry</h2><p><a href="devpost/submission/READY-TO-SUBMIT.md">Open the short completion checklist</a>: {demo_next_step}. The entrant must review the binding Official Rules and Devpost Terms of Service, then complete the remaining checkbox and Submit project action. Retain the actual submission confirmation; saved draft fields do not prove submission.</p><p>No face or voice is required by the published rules; actual footage of the functioning software is required. A caption file or project illustration cannot replace it. Focused supported-browser checks verify repeated scanning and consent-action repair; no learner trial or participant study is claimed.</p>
 <p>Deadline: October 26, 2026, 11 a.m. Hawaiʻi (21:00 UTC).</p><p><a href="devpost/submission/README.md">Authorship, workflow status and evidence limits</a></p></main></body></html>'''.encode()
 contents["START-HERE.html"] = launcher
 for name, data in contents.items():
@@ -124,7 +132,7 @@ manifest = {
     "files_sha256": {name: digest(data) for name, data in sorted(contents.items())},
 }
 if entry["video_recorded"]:
-    manifest["browser_demo"] = {"movie_sha256": demo["sha256"], "duration_seconds": demo["duration_seconds"],
+    manifest["browser_demo"] = {"movie_sha256": demo["sha256"], "duration_seconds": demo["duration_seconds"], "public_video_url": entry["video_url"],
                                 "caption_cue_count": len(actual_blocks), "caption_last_cue_end_seconds": actual_last_end / 1000}
 manifest_bytes = (json.dumps(manifest, indent=2) + "\n").encode()
 (ASSETS / "package-manifest.json").write_bytes(manifest_bytes)

@@ -130,9 +130,9 @@
       "observed_state": "Actual public GitHub README with ActionReceipt title, DevpostLearnSkillPack disclosure, finished offline app download and installation-free instructions."
     }
   ],
-  "public_video_url": null,
+  "public_video_url": "https://vimeo.com/1236353555",
   "entry_submitted": false,
-  "limits": "Actual browser captures edited into scenes, not continuous screen recording. Download requests and exact rendered previews were checked; saved download bytes, calendar import, learner review and participant testing are not claimed. Public YouTube/Vimeo upload, final terms and submission remain pending.",
+  "limits": "Actual browser captures edited into scenes, not continuous screen recording. Download requests and exact rendered previews were checked; saved download bytes, calendar import, learner review and participant testing are not claimed. Vimeo Public and embeddable settings plus playback were observed in the owner-authenticated browser; an independent signed-out check is not claimed. The public watch URL is saved in Devpost. Binding final terms and actual submission remain pending.",
   "technical_qa": {
     "full_media_decode_passed": true,
     "frame_rate": "24/1",
@@ -147,5 +147,21 @@
     "decoded_captioned_payment_frame_visually_checked": true,
     "no_generated_or_reconstructed_ui": true,
     "continuous_screen_recording": false
+  },
+  "video_publication_verification": {
+    "platform": "Vimeo",
+    "public_visibility_setting_observed": true,
+    "public_visibility_label": "Public: Anyone on the internet can find and view",
+    "embeddable_setting_observed": true,
+    "watch_url_opened": true,
+    "playback_verified": true,
+    "playback_environment": "Owner-authenticated browser",
+    "player_duration_seconds": 157.999996,
+    "observed_playback_time_seconds": 26.685702,
+    "paused": false,
+    "ready_state": 4,
+    "media_error": null,
+    "independent_signed_out_access_verified": false,
+    "signed_out_verification_limit": "Independent public retrieval could not access the watch page; no separate signed-out check is claimed"
   }
 }
