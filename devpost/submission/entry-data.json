@@ -1,6 +1,6 @@
 {
   "format_version": 1,
-  "preparation_status": "devpost_four_of_five_complete_awaiting_entrant_terms_and_submission",
+  "preparation_status": "submitted_confirmation_observed",
   "registration_confirmed": true,
   "devpost_account": "kidon",
   "project_draft_created": true,
@@ -10,12 +10,12 @@
   "tagline_saved": true,
   "project_fields_saved": true,
   "gallery_uploaded": true,
-  "devpost_steps_completed": 4,
+  "devpost_steps_completed": 5,
   "devpost_steps_total": 5,
   "additional_information_status": "complete",
   "resource_fields_completed_at_entrant_direction": 4,
   "private_answer_storage": "Saved in Devpost; private answer values are not copied into this public repository",
-  "project_publication_verified": false,
+  "project_publication_verified": true,
   "draft_authorship": "AI-assisted factual material, delegated by entrant; not learner-written copy",
   "project_name": "Action Receipt",
   "tagline": "Turn one notice into reviewed actions, with the original words attached.",
@@ -47,7 +47,7 @@
   "caption_status": "33 measured cues for the completed edited browser demo; final cue ends at 157.055 seconds",
   "video_capture_in_progress": false,
   "current_form_inspected": true,
-  "form_access_observation": "Existing Devpost account kidon is authenticated. Draft 1239349-action-receipt has saved project fields, cover and public video URL https://vimeo.com/1236353555, with four of five steps complete. Additional info, including four resource fields, remains complete under the entrant's direction. The finalization page shows no missing-field warnings, only an unchecked binding Official Rules / Devpost Terms of Service checkbox and Submit project. Terms acceptance and actual submission have not been observed.",
+  "form_access_observation": "After the entrant explicitly confirmed reading and agreement to the binding terms and authorized submission, the agent checked the terms checkbox and clicked Submit project. At 2026-10-15T21:36:34.848Z, https://devpost.com/software/action-receipt displayed Project submitted!, SUBMITTED TO Build With AI: Basics and Edit hackathon submission. The previous INCOMPLETE label was absent. The saved public video URL is https://vimeo.com/1236353555. Private Additional info answers remain in Devpost.",
   "browser_verification": {
     "performed_by": "Agent using supported browser control",
     "environment": "Owner-authenticated production app",
@@ -72,10 +72,10 @@
   "personal_reflection": null,
   "exit_survey_answers": null,
   "eligibility_declarations": null,
-  "terms_accepted": false,
-  "submitted": false,
-  "submission_confirmation_url": null,
-  "submission_site_confirmation_observed": false,
+  "terms_accepted": true,
+  "submitted": true,
+  "submission_confirmation_url": "https://devpost.com/software/action-receipt",
+  "submission_site_confirmation_observed": true,
   "deadline_utc": "2026-10-26T21:00:00Z",
   "deadline_honolulu": "2026-10-26T11:00:00-10:00",
   "technical_video_created": true,
@@ -120,13 +120,14 @@
   },
   "finalization_page_inspected": true,
   "missing_field_warnings_observed": false,
-  "finalization_remaining_controls": [
-    "Unchecked Official Rules / Devpost Terms of Service checkbox",
-    "Submit project"
-  ],
+  "finalization_remaining_controls": [],
   "video_metadata_saved": {
     "title": true,
     "description": true,
     "content_rating": "All audiences"
-  }
+  },
+  "project_page_observation_environment": "Owner-authenticated browser; independent signed-out access is not claimed",
+  "terms_acceptance_basis": "Entrant explicitly confirmed reading and agreement to the Official Rules and Devpost Terms of Service and authorized the agent to check the box and submit",
+  "submission_confirmed_at": "2026-10-15T21:36:34.848Z",
+  "submission_receipt_file": "submission-receipt.json"
 }

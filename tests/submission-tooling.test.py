@@ -84,6 +84,29 @@ class SubmissionChecks(unittest.TestCase):
         self.assertTrue(any("Final submission" in item for item in check.entry_blockers(entry)))
         self.assertTrue(any("Final submission" in item for item in check.entry_blockers(entry | {"submission_site_confirmation_observed": False})))
 
+    def test_observed_complete_entry_requires_a_matching_packaged_receipt(self):
+        entry = self.entry | {"video_recorded": True, "submission_demo_complete": True,
+            "video_url": "https://vimeo.com/123456", "current_form_inspected": True,
+            "terms_accepted": True, "submitted": True, "submission_site_confirmation_observed": True,
+            "submission_confirmation_url": "https://devpost.com/software/action-receipt",
+            "submission_confirmed_at": "2026-10-15T21:36:34.848Z", "devpost_submission_id": "test-entry"}
+        receipt = {"status": "submitted", "confirmation_url": entry["submission_confirmation_url"],
+            "observed_at": entry["submission_confirmed_at"], "devpost_submission_id": "test-entry",
+            **{key: True for key in ("user_explicitly_authorized_terms_acceptance_and_submission",
+                "terms_checkbox_checked", "submit_project_clicked", "terms_accepted", "submission_site_confirmation_observed")}}
+        for name, value in (("devpost/submission/entry-data.json", entry), ("devpost/submission/submission-receipt.json", receipt)):
+            self.write(name, value)
+            self.members[name] = (self.root / name).read_bytes()
+            self.manifest["files_sha256"][name] = check.digest(self.members[name])
+        self.manifest.update(entry_submitted=True, video_recorded=True)
+        self.package()
+        with patch.object(check, "ROOT", self.root), patch("sys.argv", ["check-submission.py"]), redirect_stdout(io.StringIO()):
+            self.assertEqual(check.main(), 0)
+        receipt["observed_at"] = "different observation"
+        self.write("devpost/submission/submission-receipt.json", receipt)
+        with self.assertRaisesRegex(ValueError, "Submission receipt"):
+            check.verify_assets(self.root)
+
     def test_video_urls_reject_host_spoofs_and_non_video_pages(self):
         for value in (None, "https://youtube.com.evil.test/watch?v=abcdefghijk", "http://youtu.be/abcdefghijk",
                       "https://user@youtu.be/abcdefghijk", "https://youtube.com/playlist?list=abc",

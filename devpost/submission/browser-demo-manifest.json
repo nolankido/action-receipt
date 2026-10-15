@@ -131,8 +131,8 @@
     }
   ],
   "public_video_url": "https://vimeo.com/1236353555",
-  "entry_submitted": false,
-  "limits": "Actual browser captures edited into scenes, not continuous screen recording. Download requests and exact rendered previews were checked; saved download bytes, calendar import, learner review and participant testing are not claimed. Vimeo Public and embeddable settings plus playback were observed in the owner-authenticated browser; an independent signed-out check is not claimed. The public watch URL is saved in Devpost. Binding final terms and actual submission remain pending.",
+  "entry_submitted": true,
+  "limits": "Actual browser captures edited into scenes, not continuous screen recording. Download requests and exact rendered previews were checked; saved download bytes, calendar import, learner review and participant testing are not claimed. Vimeo Public and embeddable settings plus playback were observed in the owner-authenticated browser; an independent signed-out check is not claimed. The public watch URL is saved in the confirmed Devpost submission. Terms acceptance and actual submission were authorized by the entrant and observed in the supported browser; the separate submission receipt records the confirmation.",
   "technical_qa": {
     "full_media_decode_passed": true,
     "frame_rate": "24/1",
@@ -163,5 +163,7 @@
     "media_error": null,
     "independent_signed_out_access_verified": false,
     "signed_out_verification_limit": "Independent public retrieval could not access the watch page; no separate signed-out check is claimed"
-  }
+  },
+  "submission_confirmation_url": "https://devpost.com/software/action-receipt",
+  "submission_confirmed_at": "2026-10-15T21:36:34.848Z"
 }

@@ -20,9 +20,9 @@ This file is technical preparation, not ready-to-paste entrant submission copy.
 - [x] Inspect the authenticated form and save project fields and cover in draft `1239349-action-receipt`. AI assistance is disclosed. The original Learn learner-authorship/experiential checkpoints are not marked complete.
 - [x] Complete Additional info, including the four resource fields, under the entrant's direction. Private answers remain in Devpost.
 - [x] Save the Skill Pack-use explanation and public repository URL in the draft.
-- [x] Save the public Vimeo URL in the draft. Four of five steps are complete, and the finalization page shows no missing-field warnings.
-- [ ] Complete the remaining final terms and declarations accurately.
-- [ ] Submit and record the actual confirmation URL/status.
+- [x] Save the public Vimeo URL in the draft. The finalization page had no missing-field warnings before the confirmed submission.
+- [x] Complete the binding Official Rules / Devpost Terms of Service checkbox after the entrant explicitly confirmed reading and agreement and authorized the action.
+- [x] Submit and observe Project submitted! at https://devpost.com/software/action-receipt on 2026-10-15T21:36:34.848Z. See `submission/submission-receipt.json`.
 
 Official deadline checked: October 26, 2026 at 5 p.m. EDT, which is 11 a.m. Hawaiʻi time.
 Rules: https://learn-ai-basics.devpost.com/rules

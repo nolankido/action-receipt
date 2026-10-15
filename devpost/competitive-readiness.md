@@ -2,7 +2,7 @@
 
 Checked October 15, 2026. Technical assessment, not entrant submission prose or an organizer eligibility decision.
 
-**Assessment: a credible working prototype, but an incomplete entry.** More extraction features are unlikely to close the largest gaps. A clear real demonstration, actual learner use and a specific audience case matter more now. A winning probability or invented judge score would be misleading.
+**Status: the working prototype was submitted on October 15, 2026.** More extraction features are unlikely to close the largest gaps. A clear real demonstration, actual learner use and a specific audience case matter more now. A winning probability or invented judge score would be misleading.
 
 ## Rules and entry status
 
@@ -14,7 +14,7 @@ The [official rules](https://learn-ai-basics.devpost.com/rules) control this ass
 | Actual Learn Skill Pack use and generated scope, PRD and spec in the repository | `devpost/skill-pack-evidence.json`, `workflow.md`, `scope.md`, `prd.md`, `spec.md`. Agent: Codex. |
 | Public source, open-source license and runnable instructions | Public GitHub repository, MIT license, committed offline HTML, [judge guide](judge-guide.md). |
 | Public YouTube/Vimeo demonstration below three minutes | A 158.01-second edited sequence of actual browser screenshots with disclosed computer narration is complete locally. Public Vimeo upload and owner-browser playback are verified at https://vimeo.com/1236353555; independent signed-out access is unverified. [Provenance](submission/browser-demo-manifest.json) records the capture method and limits. |
-| English description and required entry fields | Authenticated draft `1239349-action-receipt` has saved project fields, cover and entrant-directed Additional info; four of five steps are complete. The public watch URL is saved and the finalization page has no missing-field warnings; binding final terms and actual submission remain pending. |
+| English description and required entry fields | Authenticated draft `1239349-action-receipt` has saved project fields, cover and entrant-directed Additional info; the public watch URL and required fields were saved before the entrant-authorized terms acceptance and confirmed submission. See `submission/submission-receipt.json`. |
 | Free judge access through judging | Public offline file is the intended route. Preserve repository access through October 30. Owner-private hosted review is not the judge route. |
 | Entrant eligibility and truthful declarations | Entrant must check personal eligibility and current form. Not certified by this audit. |
 
@@ -29,7 +29,7 @@ Each criterion carries 25%. Ratings below describe evidence coverage, not predic
 | Design | Coherent source/action review; usability remains unmeasured | Paper/forest typography and hierarchy, source-return navigation, stable action views, explicit file/download feedback, optional calendar controls and source-backed repair | Human desktop/offline review, keyboard checks and actual export opening. Fix any observed confusion. |
 | Potential Impact | Specific student-notice hypothesis, no observed audience results | Make the relevant failure cases reproducible and supply exact success criteria for the existing trial kit | Observe willing students using a different notice without coaching. Report successes, failures and assistance honestly. Do not claim time savings or adoption from automated checks. |
 | Innovation/Idea | Incremental workflow distinction in a crowded category | Focus the demonstration on source-backed repair, unresolved dates and separate approval/calendar gates | Explain the tradeoff in the entrant's own words. Test whether this combination is useful enough to justify another tool. No uniqueness claim is supported. |
-| Presentation | Public edited actual-interface demonstration uploaded with owner-browser playback verified | A 158.01-second demonstration using actual browser captures, measured captions, disclosed computer narration and source-backed workflow | Review the saved watch URL and final entry, complete binding final terms and perform the actual submission. Independent signed-out access remains unverified. |
+| Presentation | Public edited actual-interface demonstration uploaded with owner-browser playback verified | A 158.01-second demonstration using actual browser captures, measured captions, disclosed computer narration and source-backed workflow | Actual submission is confirmed. Retain public access through judging. Independent signed-out access remains unverified. |
 
 ## Existing tools and the defensible distinction
 
@@ -56,6 +56,6 @@ Artifacts in `devpost/demo/` are conspicuously labeled automated synthetic fixtu
 1. Entrant opens the latest offline file, completes the short review and checks actual downloaded files. Record any confusing step or failure. Complete the actual Learn final review and learning wrap-up; do not substitute agent checks.
 2. Recommended: run a small formative trial using `usability/facilitator-guide.md` and the blank observation template. Three to five willing adult students is a practical starting point, not a representative study or a contest gate. Use different notices from the demo. Fix observed blockers before recording.
 3. Use the published 158.01-second demonstration at https://vimeo.com/1236353555. Public and embeddable settings plus owner-browser playback were verified; independent signed-out access is not claimed. Its separate measured captions and provenance disclose the screenshot-sequence editing and computer narration. The original 2:35 recording plan remains for reference.
-4. Continue the existing authenticated draft. Its project fields, cover and entrant-directed Additional info are saved. Its public video link is saved, and no missing-field warning is shown. The entrant reviews binding final terms and completes the actual submission. Record the real confirmation URL.
+4. Continue the existing authenticated draft. Its project fields, cover and entrant-directed Additional info are saved. Its public video link is saved, and the entrant-authorized terms acceptance and actual submission are confirmed at https://devpost.com/software/action-receipt. The separate receipt records the observed result.
 
 The installed Learn `6-ship` workflow requires entrant authorship of submission copy. After this limitation was explained, the entrant requested maximal delegation. AI-assisted factual copy is now prepared under that later instruction and disclosed as such; the skill's learner-authorship and experiential checkpoints are not certified complete. No entry, participant findings, learner reflection or completed video has been fabricated. The organizer determines eligibility.

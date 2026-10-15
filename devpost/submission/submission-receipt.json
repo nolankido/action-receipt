@@ -1,0 +1,29 @@
+{
+  "format_version": 1,
+  "status": "submitted",
+  "project_name": "Action Receipt",
+  "hackathon_name": "Build With AI: Basics",
+  "devpost_submission_id": "1239349-action-receipt",
+  "confirmation_url": "https://devpost.com/software/action-receipt",
+  "observed_at": "2026-10-15T21:36:34.848Z",
+  "confirmation_banner": "Project submitted! Continue to edit your project until the hackathon deadline: October 26, 2026 at 05:00pm EDT.",
+  "sidebar_text": [
+    "SUBMITTED TO",
+    "Build With AI: Basics",
+    "Edit hackathon submission"
+  ],
+  "previous_incomplete_label_present": false,
+  "user_explicitly_authorized_terms_acceptance_and_submission": true,
+  "terms_checkbox_checked": true,
+  "submit_project_clicked": true,
+  "terms_accepted": true,
+  "submission_site_confirmation_observed": true,
+  "video_url": "https://vimeo.com/1236353555",
+  "observation_method": "Actual supported-browser confirmation observed by the submitting agent",
+  "evidence_screenshot": {
+    "filename": "action-receipt-submitted-1792100194849.jpg",
+    "sha256": "31ee5fe6ff9aa3fb53a9af29491d10f7e24cfb3a4f3c9cbf92dcf9dada8b1baa",
+    "bytes": 99058,
+    "included_in_public_archive": false
+  }
+}

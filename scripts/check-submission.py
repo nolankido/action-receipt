@@ -65,6 +65,19 @@ def entry_blockers(entry):
     return blockers
 
 
+def verify_submission_receipt(entry, receipt):
+    if (receipt.get("status") != "submitted"
+            or receipt.get("confirmation_url") != entry.get("submission_confirmation_url")
+            or not entry.get("submission_confirmed_at")
+            or receipt.get("observed_at") != entry["submission_confirmed_at"]
+            or not entry.get("devpost_submission_id")
+            or receipt.get("devpost_submission_id") != entry["devpost_submission_id"]
+            or any(receipt.get(key) is not True for key in (
+                "user_explicitly_authorized_terms_acceptance_and_submission", "terms_checkbox_checked",
+                "submit_project_clicked", "terms_accepted", "submission_site_confirmation_observed"))):
+        raise ValueError("Submission receipt does not match the observed entry confirmation.")
+
+
 def verify_assets(root):
     manifest = json.loads((root / "devpost/submission/package-manifest.json").read_text())
     entry = json.loads((root / "devpost/submission/entry-data.json").read_text())
@@ -74,6 +87,11 @@ def verify_assets(root):
         raise ValueError("Package application/version is stale. Rebuild and repackage.")
     if manifest["entry_submitted"] != entry["submitted"] or manifest["video_recorded"] != entry["video_recorded"]:
         raise ValueError("Packaged entry state differs from entry-data.json.")
+    if entry.get("submitted") is True:
+        receipt_name = "devpost/submission/submission-receipt.json"
+        if receipt_name not in manifest["files_sha256"]:
+            raise ValueError("Submitted entry is missing its packaged confirmation receipt.")
+        verify_submission_receipt(entry, json.loads((root / receipt_name).read_text()))
     rehearsal = json.loads((root / "devpost/demo/rehearsal.json").read_text())
     if rehearsal["status"] != "passed":
         raise ValueError("Rehearsal did not pass.")

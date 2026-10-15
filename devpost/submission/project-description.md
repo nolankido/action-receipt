@@ -1,6 +1,6 @@
 # Action Receipt
 
-*AI-assisted factual draft prepared at the entrant's request. Not a claim of learner-written copy or personal learning. The authenticated Devpost draft has saved project fields and a cover; the entry is not submitted.*
+*AI-assisted factual draft prepared at the entrant's request. Not a claim of learner-written copy or personal learning. The Devpost project was submitted on October 15, 2026; the separate confirmation receipt records the observed result.*
 
 ## Tagline
 
