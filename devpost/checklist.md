@@ -29,7 +29,7 @@ Build mode: fast, based on the learner's explicit request to delegate implementa
 ## Code Tour and App Map
 - [ ] Learning activity complete: trace a deadline from source through validation to export
 - [ ] Optional edit and transfer reflection addressed
-- [ ] `devpost/app-map.html` generated from finished code, checked and shown
+- [x] `devpost/app-map.html` generated from finished code, checked and shown
 
 Activity and evidence: 29 automated tests, TypeScript and the production build pass. Implementation checkpoint commit: 777eaa1. Actual learner review remains pending; do not substitute agent tests.
 Route and stops: reference-only route in app-map.html: ActionCard, calendarEligible, calendarText. It has not been toured with the learner.

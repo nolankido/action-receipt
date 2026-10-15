@@ -16,7 +16,7 @@ The profile records unknown experience and learning preferences as unknown inste
 | `3-prd` | Read product guide/template and generated `prd.md` with core journey, behavior, conditions, states and boundaries. |
 | `4-spec` | Read spec patterns/template, researched current official dependencies, generated `spec.md`; independent agent review identified and resolved concrete gaps. |
 | `5-build` | Used checklist template and fast implementation mode; built one integrated source-review-export slice; ran automated tests, type checks and production build. Actual learner exploration and learning wrap-up remain open. |
-| `6-ship` | Read shipping rules to prepare mechanical requirements; final shipping stage is pending the checks above, public GitHub/video links and learner-written answers. It is not marked complete. |
+| `6-ship` | Read shipping rules to prepare mechanical requirements; final shipping stage is pending the checks above, public video link and learner-written answers. It is not marked complete. |
 
 ## Honest verification boundaries
 - Saved sample walkthrough results are synthetic examples, not live extraction evidence.
@@ -27,3 +27,6 @@ The profile records unknown experience and learning preferences as unknown inste
 
 ## Independent review and changes
 The independent reviewer checked the plan and implementation read-only. Fixes separated action/date evidence requirements, retained ambiguity history after user resolution, added a missed-cutoff control, preserved correction provenance in both exports, and kept paid inference on the private review site. Tests cover these behaviors. A short-term per-user throttle is not presented as a global cost cap.
+
+## Published technical artifacts
+Public source: https://github.com/nolankido/action-receipt. Initial complete source tree: `522efab931887e2c63ad7a29fdf087b090952fd0`, identical in the hosted checkout and public GitHub. Private review deployment: https://action-receipt.huzzahoptimistically.chatgpt.site. Deployment succeeded. This does not mark live AI verification, learner review, video or submission complete.

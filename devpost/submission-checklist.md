@@ -8,7 +8,7 @@ This file is technical preparation, not ready-to-paste entrant submission copy.
 - [ ] Configure secure live model access and preserve actual fresh-notice test results.
 - [ ] Learner tries the application and confirms readiness after any fixes.
 - [ ] Complete the brief learning wrap-up; do not invent a reflection.
-- [ ] Public GitHub repository exists and is accessible while signed out.
+- [x] Public GitHub repository exists: https://github.com/nolankido/action-receipt. Public visibility and source verified; unauthenticated Git access checked separately.
 - [ ] Demonstration visibly shows working live extraction, evidence review, ambiguity resolution, approval and file export.
 - [ ] Video is less than three minutes, publicly visible on YouTube or Vimeo, and accessible while signed out.
 - [ ] Entrant writes the project description, other required answers and exit survey in their own words.
