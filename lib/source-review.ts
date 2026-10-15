@@ -21,7 +21,7 @@ export type SourceReviewStatus = "decision" | "recheck" | "clarify" | "not_actio
 export function sourceReviewState(item: SourceReviewItem, actions: ReviewedAction[]): { addressed: boolean; code: SourceReviewStatus; label: string } {
   const d = item.decision;
   if (!d) return { addressed: false, code: "decision", label: "Decision needed" };
-  if (!d.confirmed) return { addressed: false, code: "recheck", label: "Loaded decision needs rechecking" };
+  if (!d.confirmed) return { addressed: false, code: "recheck", label: d.origin === "imported" ? "Loaded decision needs rechecking" : "Decision needs rechecking" };
   if (d.kind === "clarify") return { addressed: false, code: "clarify", label: "Awaiting clarification" };
   if (d.kind === "not_action") return { addressed: true, code: "not_action", label: "Reviewed: not an obligation" };
   const a = actions.find(a => a.id === d.actionId);

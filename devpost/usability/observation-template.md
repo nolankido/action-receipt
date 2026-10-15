@@ -20,6 +20,7 @@ Status: blank template. No session has been run or observations recorded here. C
 | Approvals and date confirmations understood | | |
 | Preview and exported files match intended choices | | |
 | Save/reopen and fresh review understood | | |
+| Optional recovery probe: prior work recovered, checks reset, outgoing copy/expiry understood | | |
 | Optional clarification probe: selected questions/context match intent; edits clear selection; no sending or date resolution assumed | | |
 
 - Participant's words about confusion:

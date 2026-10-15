@@ -25,14 +25,14 @@ The learner wants a new project for Build With AI: Basics and accepted the sourc
 A synthetic notice yields separate registration and payment actions with different deadlines; selecting evidence highlights the source; a phrase such as "next Friday" stays unresolved; the user supplies a date, approves actions and downloads accurate files.
 
 ## The POC Boundary
-One pasted plain-text notice, local English text-rule proposals, exact evidence matching, guided review of identified flags, manual additions/corrections and conditions, explicit date review, approval, checklist and calendar export. Source decisions retain their explanation and original warning; addressed counts do not establish completeness. Explicit local JSON save/open lets the user continue the same review later, with approvals reset and imported decisions rechecked. A self-contained browser file requires no model, API, account or hosting. Saved sample walkthroughs and imported reviews remain labeled. Language coverage is deliberately limited and users must check for omissions.
+One pasted plain-text notice, local English text-rule proposals, exact evidence matching, guided review of identified flags, manual additions/corrections and conditions, explicit date review, approval, checklist and calendar export. Source decisions retain their explanation and original warning; addressed counts do not establish completeness. Explicit local JSON save/open lets the user continue the same review later, with approvals reset and imported decisions rechecked. One temporary in-memory recovery copy protects replaced work; restoring it requires fresh review and keeps the outgoing workspace as the next copy. It is excluded from downloads and disappears on refresh, tab closure or explicit discard. This is not persistent history. A self-contained browser file requires no model, API, account or hosting. Saved sample walkthroughs and imported reviews remain labeled. Language coverage is deliberately limited and users must check for omissions.
 
 ## Later
 Compare updated notices; process multiple notices; validate broader user demand.
 
 ## Explicitly Cut
 - Inbox integration and automatic actions: unnecessary access and automation for this proof.
-- Accounts and stored notice history: unnecessary persistence and privacy complexity.
+- Accounts and persistent notice history: unnecessary persistence and privacy complexity.
 - PDF/OCR and document uploads: pasted text is sufficient for notice entry. Opening the app's own saved review JSON is local continuation, with no server upload.
 - Claims of guaranteed correctness or complete extraction: unsupported.
 
